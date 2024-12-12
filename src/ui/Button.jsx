@@ -68,4 +68,8 @@ const Button = styled.button`
   box-shadow: var(--shadow-sm);
 `;
 
+Button.defaultProps = {
+  variation: 'primary',
+  size: 'medium',
+};
 export default Button;

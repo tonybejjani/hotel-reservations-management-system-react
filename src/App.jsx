@@ -21,13 +21,7 @@ function App() {
             <Heading as="h1">Escape</Heading>
             <div>
               <Heading as="h2">Check In & out</Heading>
-              <Button
-                size="small"
-                variation="primary"
-                onClick={() => alert('clicked!')}
-              >
-                Check in
-              </Button>
+              <Button onClick={() => alert('clicked!')}>Check in</Button>
               <Button size="small" variation="primary">
                 Check out
               </Button>
