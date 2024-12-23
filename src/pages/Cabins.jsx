@@ -4,7 +4,7 @@
 // import { getCabins } from '../services/apiCabins';
 import Heading from '../ui/Heading';
 import Row from '../ui/Row';
-import CabinTable from './CabinTable';
+import CabinTable from '../features/cabins/CabinTable';
 
 function Cabins() {
   // useEffect(function () {
@@ -12,11 +12,16 @@ function Cabins() {
   // }, []);
 
   return (
-    <Row type="horizontal">
-      <Heading as="h1">All cabins</Heading>
-      <CabinTable />
-      {/* <img src="https://jroqiytbtljjznebyltj.supabase.co/storage/v1/object/public/cabin-images/0.03399913173463864-cabin-002.jpg" /> */}
-    </Row>
+    <>
+      <Row type="horizontal">
+        <Heading as="h1">All cabins</Heading>
+
+        {/* <img src="https://jroqiytbtljjznebyltj.supabase.co/storage/v1/object/public/cabin-images/0.03399913173463864-cabin-002.jpg" /> */}
+      </Row>
+      <Row>
+        <CabinTable />
+      </Row>
+    </>
   );
 }
 

@@ -17,7 +17,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staletime: 60 * 1000,
+      staleTime: 10 * 1000,
     },
   },
 });
