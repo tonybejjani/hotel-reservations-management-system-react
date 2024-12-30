@@ -11,7 +11,7 @@ import FormRow from '../../ui/FormRow';
 
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createCabin } from '../../services/apiCabins';
+import { createEditCabin } from '../../services/apiCabins';
 
 // eslint-disable-next-line react/prop-types
 function CreateCabinForm({ cabinToEdit = {} }) {
@@ -25,7 +25,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
   const { errors } = formState;
   const { isLoading: isCreating, mutate } = useMutation({
-    mutationFn: createCabin,
+    mutationFn: createEditCabin,
     onSuccess: () => {
       toast.success('New cabin successfully created.');
       queryClient.invalidateQueries({
@@ -38,6 +38,23 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     onError: (err) => toast.error(err.message),
   });
 
+  const { isLoading: isEditing, mutate } = useMutation({
+    mutationFn: createEditCabin,
+    onSuccess: () => {
+      toast.success('New cabin successfully created.');
+      queryClient.invalidateQueries({
+        queryKey: ['cabins'],
+      });
+
+      reset();
+    },
+
+    onError: (err) => toast.error(err.message),
+  });
+
+  // if editing the cabin we can edit the image or not:
+  // option 1: edit the image --> keep the same logic
+  // option 2: keep the same image = image already stored in the database so keep same URL
   function onSubmit(data) {
     mutate({ ...data, image: data.image[0] });
   }
