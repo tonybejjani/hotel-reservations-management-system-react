@@ -25,7 +25,7 @@ export async function deleteCabin(id) {
 }
 
 export async function createCabin(newCabin) {
-  const imageName = `${Math.random()}-${newCabin.image[0].name}`.replaceAll(
+  const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
     '/',
     ''
   );
@@ -51,7 +51,7 @@ export async function createCabin(newCabin) {
   //2. Upload Image
   const { error: storageError } = await supabase.storage
     .from('cabin-images')
-    .upload(imageName, newCabin.image[0]);
+    .upload(imageName, newCabin.image);
 
   //3. Delete  Cabin if error uploading image
   if (storageError) {
