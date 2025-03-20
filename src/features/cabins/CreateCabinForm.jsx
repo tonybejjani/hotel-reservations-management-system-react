@@ -12,7 +12,7 @@ import useCreateCabin from './useCreateCabin';
 import useEditCabin from './useEditCabin';
 
 // eslint-disable-next-line react/prop-types
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { createCabin, isCreating } = useCreateCabin();
   const { editCabin, isEditing } = useEditCabin();
 
@@ -25,10 +25,13 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
   const { errors } = formState;
 
-  // if editing the cabin we can edit the image or not:
-  // option 1: edit the image --> keep the same logic
-  // option 2: keep the same image = image already stored in the database so keep same URL
+  // if editing the cabin we can edit the image or keep the same image so we have 2 options::
+  // option 1: keep the same image = image already stored in the database so the image is stored as URL (string)
+  // from the database
+  // option: if we are editing the cabin and we changed the image by uploading a new one, the image  uploaded
+  // would take the form of data.image[0]
   function onSubmit(data) {
+    console.log(data);
     const image = typeof data.image === 'string' ? data.image : data.image[0];
 
     isEditSession
@@ -37,6 +40,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           {
             onSuccess: () => {
               reset();
+              onCloseModal?.();
             },
           }
         )
@@ -45,6 +49,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           {
             onSuccess: () => {
               reset();
+              onCloseModal?.();
             },
           }
         );
@@ -56,8 +61,11 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
   const isWorking = isCreating || isEditing;
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label={'Cabin name'} error={errors?.name?.message} id="name">
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      type={onCloseModal ? 'modal' : 'regular'}
+    >
+      <FormRow label={'Cabin name'} error={errors?.name?.message}>
         <Input
           type="text"
           id="name"
@@ -68,11 +76,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         />
       </FormRow>
 
-      <FormRow
-        label={'Maximum capacity'}
-        error={errors?.maxCapacity?.message}
-        id="maxCapacity"
-      >
+      <FormRow label={'Maximum capacity'} error={errors?.maxCapacity?.message}>
         <Input
           type="number"
           id="maxCapacity"
@@ -87,11 +91,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         />
       </FormRow>
 
-      <FormRow
-        label={'Regular price'}
-        error={errors?.regularPrice?.message}
-        id="regularPrice"
-      >
+      <FormRow label={'Regular price'} error={errors?.regularPrice?.message}>
         <Input
           type="number"
           id="regularPrice"
@@ -106,11 +106,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         />
       </FormRow>
 
-      <FormRow
-        label={'Discount'}
-        error={errors?.discount?.message}
-        id="discount"
-      >
+      <FormRow label={'Discount'} error={errors?.discount?.message}>
         <Input
           type="number"
           id="discount"
@@ -129,7 +125,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
       <FormRow
         label={'Description for website'}
         error={errors?.description?.message}
-        id="description"
       >
         <Textarea
           type="number"
@@ -152,7 +147,11 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button disabled={isWorking}>

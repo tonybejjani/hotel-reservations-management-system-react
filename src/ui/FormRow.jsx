@@ -1,6 +1,5 @@
 /**
- * eslint-disable react/prop-types
- *
+
  * @format
  */
 
@@ -40,11 +39,10 @@ const Label = styled.label`
   font-weight: 500;
 `;
 
-// eslint-disable-next-line react/prop-types
 function FormRow({ label, error, id, children }) {
   return (
     <StyledFormRow>
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {label && <Label htmlFor={children.id}>{label}</Label>}
       {children}
       {error && <Error>{error}</Error>}
     </StyledFormRow>

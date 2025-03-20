@@ -20,20 +20,17 @@ function UpdateSettingsForm() {
 
   const { isUpdating, updateSetting } = useUpdateSettings();
 
-  // const { register, handleSubmit, getValues } = useForm({
-  //   defaultValues: { ...settings },
-  // });
-
   if (isLoading) return <Spinner />;
 
-  function handleUpdate(e, field) {
+  function handleUpdate(e, field, defaultValue) {
     const { value } = e.target;
 
-    if (!value) return;
+    if (!value || Number(value) === defaultValue) return;
 
     updateSetting({ [field]: value });
     console.log(value);
   }
+
   return (
     <Form>
       <FormRow label="Minimum nights/booking" id="minBookingLength">
@@ -42,16 +39,7 @@ function UpdateSettingsForm() {
           id="minBookingLength"
           defaultValue={minBookingLength}
           disabled={isUpdating}
-          onBlur={(e) => handleUpdate(e, 'minBookingLength')}
-
-          // disabled={isWorking}
-          // {...register('minBookingLength', {
-          //   required: 'This field is required.',
-          //   min: {
-          //     value: 1,
-          //     message: 'Minimum stay be at least 1 day.',
-          //   },
-          // })}
+          onBlur={(e) => handleUpdate(e, 'minBookingLength', minBookingLength)}
         />
       </FormRow>
       <FormRow label="Maximum nights/booking" id="maxBookingLength">
@@ -60,17 +48,7 @@ function UpdateSettingsForm() {
           id="maxBookingLength"
           defaultValue={maxBookingLength}
           disabled={isUpdating}
-          onBlur={(e) => handleUpdate(e, 'maxBookingLength')}
-          // {...register('maxBookingLength', {
-          //   required: 'This field is required.',
-          //   min: {
-          //     value: 1,
-          //     message: 'Maximum stay be at least 1 day.',
-          //   },
-          //   validate: (value) =>
-          //     +value >= +getValues().minBookingLength ||
-          //     'Maximum stay should be longer then minimum stay.',
-          // })}
+          onBlur={(e) => handleUpdate(e, 'maxBookingLength', maxBookingLength)}
         />
       </FormRow>
       <FormRow label="Maximum guests/booking" id="maxGuestsPerBooking">
@@ -79,14 +57,9 @@ function UpdateSettingsForm() {
           id="maxGuestsPerBooking"
           defaultValue={maxGuestsPerBooking}
           disabled={isUpdating}
-          onBlur={(e) => handleUpdate(e, 'maxGuestsPerBooking')}
-          // {...register('maxGuestsPerBooking', {
-          //   required: 'This field is required.',
-          //   min: {
-          //     value: 1,
-          //     message: 'Maximum guests should be at least 1.',
-          //   },
-          // })}
+          onBlur={(e) =>
+            handleUpdate(e, 'maxGuestsPerBooking', maxGuestsPerBooking)
+          }
         />
       </FormRow>
       <FormRow label="Breakfast price" id="breakfastPrice">
@@ -95,14 +68,7 @@ function UpdateSettingsForm() {
           id="breakfastPrice"
           defaultValue={breakfastPrice}
           disabled={isUpdating}
-          onBlur={(e) => handleUpdate(e, 'breakfastPrice')}
-          // {...register('breakfastPrice', {
-          //   required: 'This field is required.',
-          //   min: {
-          //     value: 1,
-          //     message: 'Breakfast price should at least 1.',
-          //   },
-          // })}
+          onBlur={(e) => handleUpdate(e, 'breakfastPrice', breakfastPrice)}
         />
       </FormRow>
     </Form>
