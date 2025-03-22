@@ -90,8 +90,10 @@ function Row({ children }) {
   );
 }
 
-function Body({ children }) {
-  return { children };
+function Body({ render, data }) {
+  if (data.length === 0)
+    return <Empty>No Cabins to be shown at the moment.</Empty>;
+  return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
 Table.Header = Header;
