@@ -13,7 +13,7 @@ function useOutsideClick(handler, eventCapturingStatus = true) {
         }
       }
 
-      document.addEventListener('click', handleClick, true);
+      document.addEventListener('click', handleClick, eventCapturingStatus);
 
       return () =>
         document.removeEventListener(
