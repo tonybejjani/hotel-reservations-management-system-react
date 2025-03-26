@@ -2,7 +2,7 @@
 import CabinRow from './CabinRow';
 import Spinner from '../../ui/Spinner';
 import useCabins from './useCabins';
-import Table from '../../ui/Table';
+import Table, { Empty } from '../../ui/Table';
 import Menus from '../../ui/Menus';
 
 import { useSearchParams } from 'react-router-dom';
@@ -11,11 +11,12 @@ function CabinTable() {
   const { isLoading, cabins } = useCabins();
 
   const [searchParams] = useSearchParams();
+
+  if (cabins?.length === 0) return <Empty resource="cabins" />;
   if (isLoading) return <Spinner />;
 
   const filterValue = searchParams.get('discount') || 'all';
-
-  console.log(filterValue);
+  const sortByValue = searchParams.get('sortBy') || 'name-asc';
 
   let filteredCabins = cabins;
 
@@ -28,14 +29,26 @@ function CabinTable() {
     filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
   }
 
+  const [field, direction] = sortByValue.split('-');
+
+  filteredCabins = filteredCabins.sort((a, b) => {
+    // another trick
+    // const modifier = direction === 'asc' ? 1 : -1;
+    // const sortedCabins=  filterCabins.sort( (a,b) => (a[field] - b[field]) * modifier);
+
+    const nameA = a[field]; // ignore upper and lowercase
+    const nameB = b[field]; // ignore upper and lowercase
+
+    if (nameA < nameB) {
+      return direction === 'asc' ? 1 : -1;
+    }
+    if (nameA > nameB) {
+      return direction === 'asc' ? -1 : 1;
+    }
+  });
+
   return (
     <Menus>
-      {/* <button onClick={() => setDiscount('all')}>All</button>
-      <button onClick={() => setDiscount('no discount')}>No Discount</button>
-      <button onClick={() => setDiscount('with discount')}>
-        With Discount
-      </button> */}
-
       <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
