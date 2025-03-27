@@ -3,15 +3,23 @@
 import { getToday } from '../utils/helpers';
 import supabase from './supabase';
 
-export async function getBookings({ filter, sortBy }) {
+export async function getBookings({ filter, sortBy, currentPage }) {
   let query = supabase
     .from('bookings')
-    .select('*, cabins(name), guests(fullName, email)');
+    .select('*, cabins(name), guests(fullName, email)', { count: 'exact' })
+    .range(currentPage - 1 * 3, currentPage * 3 - 1);
 
-  if (filter !== null)
-    query = query[filter.method || 'eq'](filter.field, filter.value);
+  if (filter) query = query[filter.method || 'eq'](filter.field, filter.value);
 
-  let { data, error } = await query;
+  if (sortBy)
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === 'asc',
+    });
+
+  let { data, error, count } = await query;
+
+  const totalPages = count ? Math.ceil(count / 3) : 0;
+  console.log(totalPages);
 
   if (error) {
     console.error(error);

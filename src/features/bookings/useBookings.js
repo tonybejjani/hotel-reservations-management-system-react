@@ -17,13 +17,24 @@ function useBookings() {
           value: filterValue,
           method: 'eq',
         };
+
+  const sortByValue = searchParams.get('sortBy') || 'startDate-desc';
+
+  const [field, direction] = sortByValue.split('-');
+  const sortBy = {
+    field,
+    direction,
+  };
+
+  const currentPage = searchParams.get('page') || '1';
+
   const {
     isLoading,
-    error,
     data: bookings,
+    error,
   } = useQuery({
-    queryKey: ['bookings', filter],
-    queryFn: () => getBookings({ filter }),
+    queryKey: ['bookings', filter, sortBy, currentPage],
+    queryFn: () => getBookings({ filter, sortBy, currentPage }),
   });
 
   return { isLoading, error, bookings };

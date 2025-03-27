@@ -1,4 +1,9 @@
-import styled from "styled-components";
+/** @format */
+
+import { useState } from 'react';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -23,8 +28,8 @@ const Buttons = styled.div`
 
 const PaginationButton = styled.button`
   background-color: ${(props) =>
-    props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
-  color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
+    props.active ? ' var(--color-brand-600)' : 'var(--color-grey-50)'};
+  color: ${(props) => (props.active ? ' var(--color-brand-50)' : 'inherit')};
   border: none;
   border-radius: var(--border-radius-sm);
   font-weight: 500;
@@ -55,3 +60,49 @@ const PaginationButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
+
+function Pagination() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [direction, setDirection] = useState();
+  let pageValue = Number(searchParams.get('page'));
+
+  if (!pageValue) pageValue = 1;
+
+  function handleClick(direction) {
+    setDirection(direction);
+    if (pageValue === 1 && direction === 'prev') return;
+
+    searchParams.set(
+      'page',
+      direction === 'prev' ? Number(pageValue) - 1 : Number(pageValue) + 1
+    );
+
+    setSearchParams(searchParams);
+  }
+
+  return (
+    <StyledPagination>
+      <P>
+        Showing <span>1</span> to <span>10</span> of <span>23</span> results.
+      </P>
+      <Buttons>
+        <PaginationButton
+          onClick={() => handleClick('prev')}
+          disabled={pageValue === 1 && direction == 'prev'}
+        >
+          <HiChevronLeft />
+          <span>Previous</span>
+        </PaginationButton>
+        <PaginationButton
+          onClick={() => handleClick('next')}
+          disabled={pageValue === 1 && direction == 'next'}
+        >
+          <span>Next</span>
+          <HiChevronRight />
+        </PaginationButton>
+      </Buttons>
+    </StyledPagination>
+  );
+}
+
+export default Pagination;
