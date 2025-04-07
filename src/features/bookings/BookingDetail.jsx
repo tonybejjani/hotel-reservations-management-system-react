@@ -9,9 +9,9 @@ import Tag from '../../ui/Tag';
 import ButtonGroup from '../../ui/ButtonGroup';
 import Button from '../../ui/Button';
 import ButtonText from '../../ui/ButtonText';
-
+import { useBooking } from './useBooking';
 import { useMoveBack } from '../../hooks/useMoveBack';
-import useBooking from './useBooking';
+
 import Spinner from '../../ui/Spinner';
 
 const HeadingGroup = styled.div`
@@ -23,6 +23,7 @@ const HeadingGroup = styled.div`
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
 
+  console.log(booking);
   const { status, id } = booking;
 
   const moveBack = useMoveBack();
@@ -40,9 +41,7 @@ function BookingDetail() {
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Booking #{id}</Heading>
-          <Tag type={statusToTagName[status]}>
-            {booking.status.replace('-', ' ')}
-          </Tag>
+          <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
