@@ -3,6 +3,7 @@
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { PAGE_SIZE } from '../utils/constants';
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -60,8 +61,6 @@ const PaginationButton = styled.button`
   }
 `;
 
-const PAGE_SIZE = 10;
-
 function Pagination({ count }) {
   console.log(count);
 
@@ -94,7 +93,7 @@ function Pagination({ count }) {
   return (
     <StyledPagination>
       <P>
-        Showing <span>{PAGE_SIZE * pageValue + 1 - 10} </span> to
+        Showing <span>{PAGE_SIZE * (pageValue - 1) + 1} </span> to
         <span>
           {' '}
           {pageValue === pageCount ? count : PAGE_SIZE * pageValue}
