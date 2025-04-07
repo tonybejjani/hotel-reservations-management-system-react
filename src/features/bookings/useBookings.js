@@ -26,18 +26,16 @@ function useBookings() {
     direction,
   };
 
-  const currentPage = searchParams.get('page') || '1';
-
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count },
     error,
   } = useQuery({
-    queryKey: ['bookings', filter, sortBy, currentPage],
-    queryFn: () => getBookings({ filter, sortBy, currentPage }),
+    queryKey: ['bookings', filter, sortBy],
+    queryFn: () => getBookings({ filter, sortBy }),
   });
 
-  return { isLoading, error, bookings };
+  return { isLoading, error, bookings, count };
 }
 
 export default useBookings;

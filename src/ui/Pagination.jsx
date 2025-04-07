@@ -1,6 +1,5 @@
 /** @format */
 
-import { useState } from 'react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -61,42 +60,54 @@ const PaginationButton = styled.button`
   }
 `;
 
-function Pagination() {
+const PAGE_SIZE = 10;
+
+function Pagination({ count }) {
+  console.log(count);
+
   const [searchParams, setSearchParams] = useSearchParams();
-  const [direction, setDirection] = useState();
-  let pageValue = Number(searchParams.get('page'));
 
-  if (!pageValue) pageValue = 1;
+  let pageValue = !searchParams.get('page')
+    ? 1
+    : Number(searchParams.get('page'));
 
-  function handleClick(direction) {
-    setDirection(direction);
-    if (pageValue === 1 && direction === 'prev') return;
+  const pageCount = Math.ceil(count / PAGE_SIZE);
 
-    searchParams.set(
-      'page',
-      direction === 'prev' ? Number(pageValue) - 1 : Number(pageValue) + 1
-    );
+  function PrevPage() {
+    if (pageValue === 1) return;
+
+    searchParams.set('page', Number(pageValue) - 1);
 
     setSearchParams(searchParams);
   }
 
+  function NextPage() {
+    if (pageValue === pageCount) return;
+
+    searchParams.set('page', Number(pageValue) + 1);
+
+    setSearchParams(searchParams);
+  }
+
+  if (pageCount === 1) return;
+
   return (
     <StyledPagination>
       <P>
-        Showing <span>1</span> to <span>10</span> of <span>23</span> results.
+        Showing <span>{PAGE_SIZE * pageValue + 1 - 10} </span> to
+        <span>
+          {' '}
+          {pageValue === pageCount ? count : PAGE_SIZE * pageValue}
+        </span>{' '}
+        of
+        <span> {count}</span> results.
       </P>
       <Buttons>
-        <PaginationButton
-          onClick={() => handleClick('prev')}
-          disabled={pageValue === 1 && direction == 'prev'}
-        >
+        <PaginationButton onClick={PrevPage} disabled={pageValue === 1}>
           <HiChevronLeft />
           <span>Previous</span>
         </PaginationButton>
-        <PaginationButton
-          onClick={() => handleClick('next')}
-          disabled={pageValue === 1 && direction == 'next'}
-        >
+        <PaginationButton onClick={NextPage} disabled={pageValue === pageCount}>
           <span>Next</span>
           <HiChevronRight />
         </PaginationButton>

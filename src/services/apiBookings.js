@@ -6,8 +6,7 @@ import supabase from './supabase';
 export async function getBookings({ filter, sortBy, currentPage }) {
   let query = supabase
     .from('bookings')
-    .select('*, cabins(name), guests(fullName, email)', { count: 'exact' })
-    .range(currentPage - 1 * 3, currentPage * 3 - 1);
+    .select('*, cabins(name), guests(fullName, email)', { count: 'exact' });
 
   if (filter) query = query[filter.method || 'eq'](filter.field, filter.value);
 
@@ -18,15 +17,12 @@ export async function getBookings({ filter, sortBy, currentPage }) {
 
   let { data, error, count } = await query;
 
-  const totalPages = count ? Math.ceil(count / 3) : 0;
-  console.log(totalPages);
-
   if (error) {
     console.error(error);
     throw new Error('Booking not found');
   }
 
-  return data;
+  return { data, count };
 }
 
 export async function getBooking(id) {
