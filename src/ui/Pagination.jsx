@@ -62,8 +62,6 @@ const PaginationButton = styled.button`
 `;
 
 function Pagination({ count }) {
-  console.log(count);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   let pageValue = !searchParams.get('page')

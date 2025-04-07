@@ -5,6 +5,7 @@ import GlobalStyles from './styles/GlobalStyles';
 import Dashboard from './pages/Dashboard';
 import Account from './pages/Account';
 import Bookings from './pages/Bookings';
+import Booking from './pages/Booking';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
 import Cabins from './pages/Cabins';
@@ -35,6 +36,8 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="account" element={<Account />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="bookings/:bookingId" element={<Booking />} />
+
             <Route path="cabins" element={<Cabins />} />
             <Route path="login" element={<Login />} />
             <Route path="settings" element={<Settings />} />
