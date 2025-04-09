@@ -44,6 +44,11 @@ function Filter({ filterField, options, defaultFilter }) {
     searchParams.get(filterField) || options[defaultFilter].value;
 
   function handleClick(value) {
+    //reset page
+    if (searchParams.get('page')) {
+      searchParams.set('page', 1);
+    }
+
     searchParams.set(filterField, value);
     setSearchParams(searchParams);
   }

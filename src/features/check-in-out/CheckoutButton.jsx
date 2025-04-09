@@ -1,4 +1,6 @@
-import Button from "../../ui/Button";
+/** @format */
+
+import Button from '../../ui/Button';
 
 function CheckoutButton({ bookingId }) {
   return (
