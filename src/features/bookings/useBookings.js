@@ -32,6 +32,7 @@ function useBookings() {
 
   const {
     isLoading,
+    isFetching,
     data: { data: bookings, count } = {},
     error,
   } = useQuery({
@@ -54,7 +55,6 @@ function useBookings() {
       queryFn: () => getBookings({ filter, sortBy, page: page - 1 }),
     });
   }
-
   return { isLoading, error, bookings, count };
 }
 

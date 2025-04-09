@@ -11,9 +11,8 @@ import Button from '../../ui/Button';
 import ButtonText from '../../ui/ButtonText';
 import { useBooking } from './useBooking';
 import { useMoveBack } from '../../hooks/useMoveBack';
-
-import Spinner from '../../ui/Spinner';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../ui/Spinner';
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -22,7 +21,8 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const { booking, isLoading } = useBooking();
+  console.log('bla bla ');
+  const { isLoading, isFetching, booking } = useBooking();
 
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ function BookingDetail() {
     'checked-out': 'silver',
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isFetching) return <Spinner />;
 
   return (
     <>
