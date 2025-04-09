@@ -74,7 +74,7 @@ function CabinRow({ cabin }) {
       ) : (
         <span>&mdash;</span>
       )}
-      <div>
+      <div> 
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={cabinId} />
