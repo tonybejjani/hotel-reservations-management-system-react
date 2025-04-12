@@ -1,6 +1,8 @@
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
+/** @format */
 
+import Heading from '../ui/Heading';
+import Row from '../ui/Row';
+import UpdateUserDataForm from '../features/authentication/UpdateUserDataForm';
 function Account() {
   return (
     <>
@@ -8,7 +10,7 @@ function Account() {
 
       <Row>
         <Heading as="h3">Update user data</Heading>
-        <p>Update user data form</p>
+        <UpdateUserDataForm />
       </Row>
 
       <Row>

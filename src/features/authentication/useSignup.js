@@ -6,16 +6,13 @@ import toast from 'react-hot-toast';
 
 export default function useSignup() {
   const { mutate: signup, isLoading } = useMutation({
-    mutationFn: ({ email, password }) => signUpApi({ email, password }),
+    mutationFn: ({ fullName, email, password }) =>
+      signUpApi({ fullName, email, password }),
     onSuccess: (user) => {
       console.log(user);
       toast.success(
-        `${user.user.email} account sign up successful. Please use user's credentials to login.`
+        `${user.user.email} account sign up successful. Please use email and password to login.`
       );
-    },
-    onError: (err) => {
-      console.log('ERROR', err);
-      toast.error('Error signing up ');
     },
   });
 
