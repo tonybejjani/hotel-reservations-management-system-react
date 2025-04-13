@@ -20,18 +20,19 @@ const GlobalStyles = createGlobalStyle`
 
 
   &, &.light-mode {
-    
-    --color-grey-0: #fff;
-    --color-grey-50: #f9fafb;
-    --color-grey-100: #f3f4f6;
-    --color-grey-200: #e5e7eb;
-    --color-grey-300: #d1d5db;
-    --color-grey-400: #9ca3af;
-    --color-grey-500: #6b7280;
-    --color-grey-600: #4b5563;
-    --color-grey-700: #374151;
-    --color-grey-800: #1f2937;
-    --color-grey-900: #111827;
+
+
+    --color-grey-0: #FCFCFA;
+    --color-grey-50: #F8F8F8;
+    --color-grey-100: #F0EFEC;
+    --color-grey-200: #E5E4DF;
+    --color-grey-300: #D6D2CC;
+    --color-grey-400: #BDB8B0;
+    --color-grey-500: #A8A39D;
+    --color-grey-600: #7A756F;
+    --color-grey-700: #4A4641;
+    --color-grey-800: #2B2825;
+    --color-grey-900: #1A1816;
 
     --color-blue-100: #e0f2fe;
     --color-blue-700: #0369a1;
@@ -43,6 +44,19 @@ const GlobalStyles = createGlobalStyle`
     --color-silver-700: #374151;
     --color-indigo-100: #e0e7ff;
     --color-indigo-700: #4338ca;
+
+
+    --color-brand-50: #f0f5ec;
+    --color-brand-100: #d8e5d3;
+    --color-brand-200: #b5cfae;
+    --color-brand-500: #8A9A5B;
+    --color-brand-600: #5B8A5B;
+    --color-brand-700: #476947;
+    --color-brand-800: #345834;
+    --color-brand-900: #213621;
+
+
+    
 
     --color-red-100: #fee2e2;
     --color-red-700: #b91c1c;
@@ -88,6 +102,15 @@ const GlobalStyles = createGlobalStyle`
     --color-red-700: #b91c1c;
     --color-red-800: #991b1b;
 
+    --color-brand-50: #fff3e6;
+    --color-brand-100: #ffe0c2;
+    --color-brand-200: #ffc285;
+    --color-brand-500: #ffa347;
+    --color-brand-600: #FF6A00;
+    --color-brand-700: #cc5500;
+    --color-brand-800: #993f00;
+    --color-brand-900: #662a00;
+
     --backdrop-color: rgba(0, 0, 0, 0.3);
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -99,14 +122,16 @@ const GlobalStyles = createGlobalStyle`
   }
 
     /* Indigo */
-  --color-brand-50: #eef2ff;
+  /* --color-brand-50: #eef2ff;
   --color-brand-100: #e0e7ff;
   --color-brand-200: #c7d2fe;
   --color-brand-500: #6366f1;
   --color-brand-600: #4f46e5;
   --color-brand-700: #4338ca;
   --color-brand-800: #3730a3;
-  --color-brand-900: #312e81;
+  --color-brand-900: #312e81; */
+
+
 
   --border-radius-tiny: 3px;
   --border-radius-sm: 5px;
@@ -132,7 +157,10 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "lato", sans-serif;
+  font-weight: 300;
+
+  letter-spacing: 0.4px;
   color: var(--color-grey-700);
 
   transition: color 0.3s, background-color 0.3s;
