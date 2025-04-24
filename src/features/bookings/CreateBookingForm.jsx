@@ -4,20 +4,37 @@
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
 import Button from '../../ui/Button';
-import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 
 import { useForm } from 'react-hook-form';
 import useCreateBooking from './useCreateBooking';
-import Select from '../../ui/Select';
 import useBookingType from './useBookingType';
+import { useState } from 'react';
+import styled from 'styled-components';
 // import useEditBooking from './useEditCabin';
+
+const StyledSelect = styled.select`
+  font-size: 1.4rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid
+    ${(props) =>
+      props.type === 'white'
+        ? 'var(--color-grey-100)'
+        : 'var(--color-grey-300)'};
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-grey-0);
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+`;
 
 // eslint-disable-next-line react/prop-types
 function CreateBookingForm({ bookingToEdit = {}, onCloseModal }) {
   const { createBooking, isCreating } = useCreateBooking();
-  const { isLoading: isLoadingBookingTypes, bookingTypes } = useBookingType();
+  const { isLoading: isLoadingBookingTypes, bookingTypes = [] } =
+    useBookingType();
+  const [bookingTypeValue, setBookingTypeValue] = useState();
+
   // const { editCabin, isEditing } = useEditCabin();
 
   const { id: editId, ...editValues } = bookingToEdit;
@@ -29,8 +46,46 @@ function CreateBookingForm({ bookingToEdit = {}, onCloseModal }) {
 
   const { errors } = formState;
 
-  //Mold bookingType to fit the <Select> component options attribute value/label structure
+  let temp = [];
+  function onlyUniqueOptions(value) {
+    let uniqueOption = !temp.includes(value.value);
 
+    if (!temp.includes(value.value)) temp.push(value.value);
+
+    return uniqueOption;
+  }
+
+  //Mold bookingType to fit the <Select> component options attribute key/value/label structure
+  const bookingTypesOptions = bookingTypes
+    ?.map((bookingType) => {
+      return {
+        key: bookingType.id,
+        value: bookingType.type,
+        label: bookingType.type,
+      };
+    })
+    .filter(onlyUniqueOptions);
+
+  const BookingMethodOptions = bookingTypes
+    ?.map((bookingType) => {
+      return {
+        key: bookingType.id,
+        type: bookingType.type,
+        value: bookingType.method,
+        label: bookingType.method,
+      };
+    })
+    .filter((value) => {
+      return bookingTypeValue === value.type;
+    });
+
+  // const bookingMethods = bookingTypes?.map((bookingType) => {
+  //   return {
+  //     key: bookingType.id,
+  //     value: bookingType.method,
+  //     label: bookingType.method,
+  //   };
+  // });
   // if editing the cabin we can edit the image or keep the same image so we have 2 options::
   // option 1: keep the same image = image already stored in the database so the image is stored as URL (string)
   // from the database
@@ -64,6 +119,9 @@ function CreateBookingForm({ bookingToEdit = {}, onCloseModal }) {
   //   console.log(errors);
   // }
 
+  function handleBookingMethods(e) {
+    setBookingTypeValue((val) => (val = e.target.value));
+  }
   // const isWorking = isCreating || isEditing;
   const isWorking = isCreating;
   return (
@@ -71,25 +129,54 @@ function CreateBookingForm({ bookingToEdit = {}, onCloseModal }) {
       onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? 'modal' : 'regular'}
     >
-      <FormRow label={'Booking type'} error={errors?.bookingType?.message}>
-        <Select
-          options={[
-            { value: 'walk-in', label: 'Direct: Walk-in' },
-            { value: 'phone', label: 'Direct: By Phone' },
-            { value: 'website', label: 'Direct: Website' },
-            { value: 'OTA', label: 'Indirect:  Online Travel Agency (OTA)' },
-            {
-              value: 'GDS',
-              label: 'Indirect: Global Distribution System (GDS)',
-            },
-          ]}
-          type="white"
+      <FormRow label={'Booking type*'} error={errors?.bookingType?.message}>
+        <StyledSelect
           id="bookingType"
+          onChangeCapture={handleBookingMethods}
+          type="white"
           disabled={isWorking || isLoadingBookingTypes}
           {...register('bookingType', {
             required: 'this field is required',
           })}
-        ></Select>
+        >
+          <option value="" disabled selected>
+            Select your option
+          </option>
+          {bookingTypesOptions.map((option) => (
+            <option
+              value={bookingTypesOptions.value}
+              key={bookingTypesOptions.key}
+            >
+              {option.label}
+            </option>
+          ))}
+        </StyledSelect>
+      </FormRow>
+
+      <FormRow
+        label={'Booking Method*'}
+        error={errors?.bookingMethods?.message}
+      >
+        <StyledSelect
+          type="white"
+          id="bookingMethods"
+          disabled={isWorking || isLoadingBookingTypes || !bookingTypeValue}
+          {...register('bookingMethods', {
+            required: 'this field is required',
+          })}
+        >
+          <option value="" disabled selected>
+            Select your option
+          </option>
+          {BookingMethodOptions.map((option) => (
+            <option
+              value={bookingTypesOptions.value}
+              key={bookingTypesOptions.key}
+            >
+              {option.label}
+            </option>
+          ))}
+        </StyledSelect>
       </FormRow>
 
       <FormRow label={'Cabin name'} error={errors?.name?.message}>
