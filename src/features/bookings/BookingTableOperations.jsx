@@ -3,9 +3,11 @@
 import SortBy from '../../ui/SortBy';
 import Filter from '../../ui/Filter';
 import TableOperations from '../../ui/TableOperations';
-import AddBooking from './AddBooking';
+import Button from '../../ui/Button';
+import { useNavigate } from 'react-router-dom';
 
 function BookingTableOperations() {
+  const navigate = useNavigate();
   return (
     <TableOperations>
       <Filter
@@ -30,7 +32,8 @@ function BookingTableOperations() {
           { value: 'totalPrice-asc', label: 'Sort by amount (low first)' },
         ]}
       />
-      <AddBooking />
+
+      <Button onClick={() => navigate('/add-booking')}>Add new booking</Button>
     </TableOperations>
   );
 }
