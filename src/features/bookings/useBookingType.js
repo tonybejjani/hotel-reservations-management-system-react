@@ -13,7 +13,6 @@ function useBookingType() {
     queryFn: getBookingTypes,
   });
 
-  console.log(bookingTypes);
   return { isLoading, bookingTypes, error };
 }
 

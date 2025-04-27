@@ -56,7 +56,6 @@ export async function getBookingTypes() {
     throw new Error('Booking Types not found');
   }
 
-  console.log(data);
   return data;
 }
 
