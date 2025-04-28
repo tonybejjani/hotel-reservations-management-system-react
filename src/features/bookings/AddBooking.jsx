@@ -18,8 +18,8 @@ import styled from 'styled-components';
 import useCabins from '../cabins/useCabins';
 import { formatCurrency, getDatesBetween } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
-import { TfiRulerAlt } from 'react-icons/tfi';
+// import { format } from 'date-fns';
+// import { TfiRulerAlt } from 'react-icons/tfi';
 // import useEditBooking from './useEditCabin';
 
 const StyledSelect = styled.select`
@@ -39,14 +39,20 @@ const StyledSelect = styled.select`
 // eslint-disable-next-line react/prop-types
 function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   const { createBooking, isCreating } = useCreateBooking();
+
   const { isLoading: isLoadingCabins, cabins } = useCabins();
+
   const { isLoading: isLoadingActiveBookings, activeBookings } =
     useActiveBookings();
+
   const { isLoading: isLoadingBookingTypes, bookingTypes = [] } =
     useBookingType();
 
   const [bookingTypeValue, setBookingTypeValue] = useState();
+
   const [cabinsAvailable, setCabinsAvailable] = useState();
+
+  const [numGuests, setNumGuests] = useState();
 
   const navigate = useNavigate();
   // const { editCabin, isEditing } = useEditCabin();
@@ -75,8 +81,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     setBookingTypeValue((val) => (val = e.target.value));
   }
 
-  function handleCabinToReserve() {}
-
   function handleBookingDate(dates, field) {
     const [startDate, endDate] = dates;
 
@@ -85,55 +89,71 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       new Date(endDate - 1) // the endDate is the checkout date so it is not a reserved date
     ).toString();
 
-    // unavailable cabins for the chosen reservation date
-    const unavailabeCabins = activeBookings
-      ?.map((booking) => {
-        return {
-          id: booking.id,
-          dates: getDatesBetween(
-            new Date(booking.startDate),
-            new Date(booking.endDate)
-          ),
-          cabinId: booking.cabinId,
-          cabin: booking.cabins.name,
-        };
-      })
-      .filter((booking) => {
-        /* a cabin is double booked if any of its reserved days collide
+    //Check if a date range has been received. Minimum booking reservation is one night.
+    if (
+      datesToReserve.length === 2 ||
+      datesToReserve[0] !== datesToReserve[1]
+    ) {
+      const unavailabeCabins = activeBookings
+        ?.map((booking) => {
+          return {
+            id: booking.id,
+            dates: getDatesBetween(
+              new Date(booking.startDate),
+              new Date(booking.endDate)
+            ),
+            cabinId: booking.cabinId,
+            cabin: booking.cabins.name,
+          };
+        })
+        .filter((booking) => {
+          /* a cabin is double booked if any of its reserved days collide
           with the chosen reservation date */
-        const activeBookingDays = booking.dates;
-        let doubleBookingsCount = 0;
+          const activeBookingDays = booking.dates;
+          let doubleBookingsCount = 0;
 
-        activeBookingDays.forEach((activeBookingDay) => {
-          // console.log(datesToReserve);
-          // console.log(activeBookingDay);
-          if (datesToReserve.includes(activeBookingDay.toString())) {
-            doubleBookingsCount++;
-          }
+          activeBookingDays.forEach((activeBookingDay) => {
+            if (datesToReserve.includes(activeBookingDay.toString())) {
+              doubleBookingsCount++;
+            }
+          });
+
+          // cabin is double booked
+          if (doubleBookingsCount > 0) return true;
+
+          // cabin not double booked
+          return false;
         });
 
-        // cabin is double booked
-        if (doubleBookingsCount > 0) return true;
+      const unavailableUniqueCabins = unavailabeCabins
+        .map((booking) => booking.cabin)
+        .reduce((acc, curr) => {
+          if (!acc.includes(curr)) acc.push(curr);
+          return acc;
+        }, []);
 
-        // cabin not double booked
-        return false;
-      });
-
-    const unavailableUniqueCabins = unavailabeCabins
-      .map((booking) => booking.cabin)
-      .reduce((acc, curr) => {
-        if (!acc.includes(curr)) acc.push(curr);
+      const availableCabins = cabins?.reduce((acc, curr) => {
+        if (!unavailableUniqueCabins.includes(curr.name)) acc.push(curr);
         return acc;
       }, []);
 
-    // console.log(unavailableUniqueCabins);
+      if (availableCabins) {
+        setCabinsAvailable(availableCabins);
 
-    const availableCabins = cabins?.reduce((acc, curr) => {
-      if (!unavailableUniqueCabins.includes(curr.name)) acc.push(curr);
-      return acc;
-    }, []);
+        const numGuests = availableCabins[0].maxCapacity;
 
-    setCabinsAvailable(availableCabins);
+        let numGuestArr = [];
+        for (let i = 1; i <= numGuests; i++) {
+          numGuestArr[i - 1] = i;
+        }
+        setNumGuests(numGuestArr);
+        console.log(availableCabins);
+      }
+    } else {
+      setCabinsAvailable(null);
+    }
+    // unavailable cabins for the chosen reservation date
+
     return field.onChange(dates);
   }
 
@@ -196,20 +216,20 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   //   console.log(errors);
   // }
 
-  // function handleNumGuests(e) {
-  //   return null;
-  //   const cabinDescription = e.target.value;
+  /* Extract Max number of guests from chosen cabin
+  and list all range of numbers in an array to 
+  be listed in the drop down of (number of guests)  */
+  function handleNumGuests(e) {
+    const arrCabin = e.target.value.split('—');
+    const numGuests1 = Number(arrCabin[0].match(/\d+/)[0]);
+    let numGuestArr = [];
+    for (let i = 1; i <= numGuests1; i++) {
+      numGuestArr[i - 1] = i;
+    }
 
-  //   if (!cabinDescription.includes('guests')) return;
-
-  //   var pos1 = cabinDescription.indexOf('—'); // locate first occurence of character "—"
-  //   var pos2 = cabinDescription.indexOf('—', pos1 + 1); // locate second occurence of character "—"
-  //   var strArr = cabinDescription.slice(pos1, pos2);
-
-  //   const numGuests = strArr;
-
-  //   console.log(numGuests);
-  // }
+    console.log(numGuestArr);
+    setNumGuests(numGuestArr);
+  }
 
   // const isWorking = isCreating || isEditing;
   const isWorking = isCreating;
@@ -218,30 +238,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? 'modal' : 'regular'}
     >
-      <FormRow
-        label={'Reservation date*'}
-        error={errors?.reservationDate?.message}
-      >
-        <Controller
-          control={control}
-          name="reservationDate"
-          render={({ field }) => (
-            <DatePicker
-              selectsRange
-              startDate={field.value?.[0]}
-              endDate={field.value?.[1]}
-              onChange={(dates) => handleBookingDate(dates, field)}
-              calendarStartDay={3}
-              isClearable
-              placeholderText="Select Date Range"
-              minDate={new Date()}
-            />
-          )}
-          {...register('reservationDate', {
-            required: 'this field is required',
-          })}
-        />
-      </FormRow>
       <FormRow label={'Booking type*'} error={errors?.bookingType?.message}>
         <StyledSelect
           id="bookingType"
@@ -306,13 +302,43 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           })}
         />
       </FormRow>
-
+      <FormRow
+        label={'Reservation date*'}
+        error={errors?.reservationDate?.message}
+      >
+        <Controller
+          control={control}
+          name="reservationDate"
+          render={({ field }) => (
+            <DatePicker
+              startDate={field.value?.[0]}
+              endDate={field.value?.[1]}
+              onChange={(dates) => handleBookingDate(dates, field)}
+              calendarStartDay={3}
+              isClearable
+              placeholderText="Select Date Range"
+              minDate={new Date()}
+              selectsRange
+              inline
+              monthsShown={2}
+            />
+          )}
+          {...register('reservationDate', {
+            required: 'this field is required',
+          })}
+        />
+      </FormRow>
       <FormRow label={'Available cabins*'} error={errors?.Cabin?.message}>
         <StyledSelect
           id="cabin"
-          onChangeCapture={handleCabinToReserve}
+          onChangeCapture={handleNumGuests}
           type="white"
-          disabled={isWorking || isLoadingCabins || isLoadingActiveBookings}
+          disabled={
+            isWorking ||
+            isLoadingCabins ||
+            isLoadingActiveBookings ||
+            !cabinsAvailable
+          }
           {...register('cabin', {
             required: 'this field is required',
           })}
@@ -322,18 +348,20 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           </option>
           {cabinsAvailable?.map((cabin) => (
             <option value={cabin.value} key={cabin.id}>
-              {`${cabin.name}  — Up to ${
-                cabin.maxCapacity
-              } guests  — ${formatCurrency(cabin.regularPrice)}`}
+              {`Up to ${cabin.maxCapacity} guests  — ${formatCurrency(
+                cabin.regularPrice
+              )} — Cabin ${cabin.name} `}
             </option>
           ))}
         </StyledSelect>
       </FormRow>
-      {/* <FormRow label={'Number of guests*'} error={errors?.numGuests?.message}>
+      <FormRow label={'Number of guests*'} error={errors?.numGuests?.message}>
         <StyledSelect
           id="numGuests"
           type="white"
-          disabled={isWorking || isLoadingCabins}
+          disabled={
+            isWorking || isLoadingCabins || !cabinsAvailable || !numGuests
+          }
           {...register('numGuests', {
             required: 'this field is required',
           })}
@@ -341,16 +369,27 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           <option value="" disabled>
             Select option
           </option>
-          {cabins.map((cabin) => (
-            <option value={cabin.value} key={cabin.id}>
-              {`${cabin.name}  — Up to ${
-                cabin.maxCapacity
-              } guests  — ${formatCurrency(cabin.regularPrice)}`}
+          {numGuests?.map((num) => (
+            <option value={num} key={num}>
+              {num} guests
             </option>
           ))}
         </StyledSelect>
-      </FormRow> */}
-
+      </FormRow>
+      <FormRow>
+        {/* type is an HTML attribute! */}
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => navigate('/bookings')}
+        >
+          Cancel
+        </Button>
+        <Button disabled={isWorking}>
+          {/* {isEditSession ? 'Edit cabin' : 'Create new cabin'} */}
+          Create new booking
+        </Button>
+      </FormRow>
       {/* <FormRow label={'Maximum capacity'} error={errors?.maxCapacity?.message}>
         <Input
           type="number"
@@ -396,21 +435,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           defaultValue={0}
         />
       </FormRow> */}
-
-      <FormRow>
-        {/* type is an HTML attribute! */}
-        <Button
-          variation="secondary"
-          type="reset"
-          onClick={() => navigate('/bookings')}
-        >
-          Cancel
-        </Button>
-        <Button disabled={isWorking}>
-          {/* {isEditSession ? 'Edit cabin' : 'Create new cabin'} */}
-          Create new booking
-        </Button>
-      </FormRow>
     </Form>
   );
 }
