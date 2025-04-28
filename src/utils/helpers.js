@@ -29,3 +29,19 @@ export const formatCurrency = (value) =>
   new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
     value
   );
+
+export function getDatesBetween(startDate, endDate) {
+  const dates = [];
+
+  let currentDate = new Date(
+    startDate.getFullYear(),
+    startDate.getMonth(),
+    startDate.getDate()
+  );
+
+  while (currentDate < endDate) {
+    dates.push(new Date(currentDate)); // Push a copy to avoid modifying the original date
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dates;
+}

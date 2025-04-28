@@ -12,11 +12,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCreateBooking from './useCreateBooking';
 import useBookingType from './useBookingType';
+import useActiveBookings from './useActiveBookings';
 import { useState } from 'react';
 import styled from 'styled-components';
 import useCabins from '../cabins/useCabins';
-import { formatCurrency } from '../../utils/helpers';
+import { formatCurrency, getDatesBetween } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
+import { TfiRulerAlt } from 'react-icons/tfi';
 // import useEditBooking from './useEditCabin';
 
 const StyledSelect = styled.select`
@@ -37,11 +40,15 @@ const StyledSelect = styled.select`
 function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   const { createBooking, isCreating } = useCreateBooking();
   const { isLoading: isLoadingCabins, cabins } = useCabins();
+  const { isLoading: isLoadingActiveBookings, activeBookings } =
+    useActiveBookings();
   const { isLoading: isLoadingBookingTypes, bookingTypes = [] } =
     useBookingType();
-  const [bookingTypeValue, setBookingTypeValue] = useState();
-  const navigate = useNavigate();
 
+  const [bookingTypeValue, setBookingTypeValue] = useState();
+  const [cabinsAvailable, setCabinsAvailable] = useState();
+
+  const navigate = useNavigate();
   // const { editCabin, isEditing } = useEditCabin();
 
   const { id: editId, ...editValues } = bookingToEdit;
@@ -62,6 +69,65 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     if (!temp.includes(value.value)) temp.push(value.value);
 
     return uniqueOption;
+  }
+
+  function handleBookingMethods(e) {
+    setBookingTypeValue((val) => (val = e.target.value));
+  }
+
+  function handleCabinToReserve() {}
+
+  function handleBookingDate(dates, field) {
+    const [startDate, endDate] = dates;
+
+    const datesToReserve = getDatesBetween(
+      new Date(startDate),
+      new Date(endDate)
+    ).toString();
+
+    // unavailable cabins for the chosen reservation date
+    const unavailabeCabins = activeBookings
+      ?.map((booking) => {
+        return {
+          id: booking.id,
+          dates: getDatesBetween(
+            new Date(booking.startDate),
+            new Date(booking.endDate)
+          ),
+          cabinId: booking.cabinId,
+          cabin: booking.cabins.name,
+        };
+      })
+      .filter((booking) => {
+        /* a cabin is double booked if any of its reserved days match 
+          the chosen reservation date */
+        const activeBookingDays = booking.dates;
+        let countDoubleBookings = 0;
+
+        activeBookingDays.forEach((activeBookingDay) => {
+          if (datesToReserve.includes(activeBookingDay.toString())) {
+            countDoubleBookings++;
+          }
+        });
+
+        // cabin is double booked
+        if (countDoubleBookings > 0) return true;
+
+        // cabin not double booked
+        return false;
+      });
+
+    // const unavailableCabinsGroup = unavailabeCabins.reducer(
+    //   acc,
+    //   (curr) => curr,
+    //   cabins
+    // );
+    // const availableCabins = cabins.filter(cabin => )
+
+    console.log(cabins);
+    console.log(unavailabeCabins);
+    // console.log(unavailabeCabins);
+    return field.onChange(dates);
   }
 
   //Mold bookingType to fit the <Select> component options attribute key/value/label structure
@@ -88,7 +154,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     .filter((value) => {
       return bookingTypeValue === value.type;
     });
-
   // if editing the cabin we can edit the image or keep the same image so we have 2 options::
   // option 1: keep the same image = image already stored in the database so the image is stored as URL (string)
   // from the database
@@ -124,18 +189,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   //   console.log(errors);
   // }
 
-  function handleBookingMethods(e) {
-    setBookingTypeValue((val) => (val = e.target.value));
-  }
-
-  function handleCabinToReserve() {
-    return null;
-  }
-
-  function handleChangeDate(dates, field) {
-    return field.onChange(dates);
-  }
-
   // function handleNumGuests(e) {
   //   return null;
   //   const cabinDescription = e.target.value;
@@ -159,7 +212,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       type={onCloseModal ? 'modal' : 'regular'}
     >
       <FormRow
-        label={'Reservation Date*'}
+        label={'Reservation date*'}
         error={errors?.reservationDate?.message}
       >
         <Controller
@@ -170,7 +223,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
               selectsRange
               startDate={field.value?.[0]}
               endDate={field.value?.[1]}
-              onChange={(dates) => handleChangeDate(dates, field)}
+              onChange={(dates) => handleBookingDate(dates, field)}
               calendarStartDay={3}
               isClearable
               placeholderText="Select Date Range"
@@ -246,12 +299,12 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label={'Cabin to reserve*'} error={errors?.Cabin?.message}>
+      <FormRow label={'Available cabins*'} error={errors?.Cabin?.message}>
         <StyledSelect
           id="cabin"
           onChangeCapture={handleCabinToReserve}
           type="white"
-          disabled={isWorking || isLoadingCabins}
+          disabled={isWorking || isLoadingCabins || isLoadingActiveBookings}
           {...register('cabin', {
             required: 'this field is required',
           })}
@@ -335,19 +388,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           defaultValue={0}
         />
       </FormRow> */}
-
-      <FormRow
-        label={'Description for website'}
-        error={errors?.description?.message}
-      >
-        <Textarea
-          type="number"
-          id="description"
-          disabled={isWorking}
-          {...register('description', { required: 'this field is required' })}
-          defaultValue=""
-        />
-      </FormRow>
 
       <FormRow>
         {/* type is an HTML attribute! */}

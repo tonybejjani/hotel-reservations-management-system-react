@@ -46,6 +46,20 @@ export async function getBooking(id) {
   return data;
 }
 
+export async function getActiveBookings() {
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('id, startDate, endDate, status, cabinId, cabins(name)')
+    .or('status.eq.checked-in,status.eq.unconfirmed');
+
+  if (error) {
+    console.error(error);
+    throw new Error('Booking not found');
+  }
+
+  return data;
+}
+
 export async function getBookingTypes() {
   const { data, error } = await supabase
     .from('bookingType')
@@ -70,7 +84,7 @@ export async function getBookingsAfterDate(date) {
 
   if (error) {
     console.error(error);
-    throw new Error('Bookings could not get loaded');
+    throw new Error('Bookings could not be loaded');
   }
 
   return data;
@@ -87,7 +101,7 @@ export async function getStaysAfterDate(date) {
 
   if (error) {
     console.error(error);
-    throw new Error('Bookings could not get loaded');
+    throw new Error('Bookings could not be loaded');
   }
 
   return data;
@@ -109,7 +123,7 @@ export async function getStaysTodayActivity() {
 
   if (error) {
     console.error(error);
-    throw new Error('Bookings could not get loaded');
+    throw new Error('Bookings could not be loaded');
   }
   return data;
 }
