@@ -39,7 +39,7 @@ export function getDatesBetween(startDate, endDate) {
     startDate.getDate()
   );
 
-  while (currentDate < endDate) {
+  while (currentDate <= endDate) {
     dates.push(new Date(currentDate)); // Push a copy to avoid modifying the original date
     currentDate.setDate(currentDate.getDate() + 1);
   }

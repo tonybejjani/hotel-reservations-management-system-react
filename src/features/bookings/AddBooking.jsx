@@ -82,7 +82,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
     const datesToReserve = getDatesBetween(
       new Date(startDate),
-      new Date(endDate)
+      new Date(endDate - 1) // the endDate is the checkout date so it is not a reserved date
     ).toString();
 
     // unavailable cabins for the chosen reservation date
@@ -99,34 +99,41 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
         };
       })
       .filter((booking) => {
-        /* a cabin is double booked if any of its reserved days match 
-          the chosen reservation date */
+        /* a cabin is double booked if any of its reserved days collide
+          with the chosen reservation date */
         const activeBookingDays = booking.dates;
-        let countDoubleBookings = 0;
+        let doubleBookingsCount = 0;
 
         activeBookingDays.forEach((activeBookingDay) => {
+          // console.log(datesToReserve);
+          // console.log(activeBookingDay);
           if (datesToReserve.includes(activeBookingDay.toString())) {
-            countDoubleBookings++;
+            doubleBookingsCount++;
           }
         });
 
         // cabin is double booked
-        if (countDoubleBookings > 0) return true;
+        if (doubleBookingsCount > 0) return true;
 
         // cabin not double booked
         return false;
       });
 
-    // const unavailableCabinsGroup = unavailabeCabins.reducer(
-    //   acc,
-    //   (curr) => curr,
-    //   cabins
-    // );
-    // const availableCabins = cabins.filter(cabin => )
+    const unavailableUniqueCabins = unavailabeCabins
+      .map((booking) => booking.cabin)
+      .reduce((acc, curr) => {
+        if (!acc.includes(curr)) acc.push(curr);
+        return acc;
+      }, []);
 
-    console.log(cabins);
-    console.log(unavailabeCabins);
-    // console.log(unavailabeCabins);
+    // console.log(unavailableUniqueCabins);
+
+    const availableCabins = cabins?.reduce((acc, curr) => {
+      if (!unavailableUniqueCabins.includes(curr.name)) acc.push(curr);
+      return acc;
+    }, []);
+
+    setCabinsAvailable(availableCabins);
     return field.onChange(dates);
   }
 
@@ -227,6 +234,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
               calendarStartDay={3}
               isClearable
               placeholderText="Select Date Range"
+              minDate={new Date()}
             />
           )}
           {...register('reservationDate', {
@@ -312,7 +320,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           <option value="" disabled>
             Select option
           </option>
-          {cabins?.map((cabin) => (
+          {cabinsAvailable?.map((cabin) => (
             <option value={cabin.value} key={cabin.id}>
               {`${cabin.name}  — Up to ${
                 cabin.maxCapacity
