@@ -308,7 +308,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
         </StyledSelect>
       </FormRow>
 
-      <FormRow label={'First name*'} error={errors?.firstName?.message}>
+      <FormRow label={'Guest Information*'} error={errors?.firstName?.message}>
         <Input
           type="text"
           id="firstName"
@@ -318,16 +318,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           })}
         />
       </FormRow>
-      <FormRow label={'Last name*'} error={errors?.lastName?.message}>
-        <Input
-          type="text"
-          id="lastName"
-          disabled={isWorking}
-          {...register('lastName', {
-            required: 'this field is required',
-          })}
-        />
-      </FormRow>
+
       <FormRow
         label={'Reservation date*'}
         error={errors?.reservationDate?.message}
@@ -338,7 +329,8 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           name="reservationDate"
           render={({ field }) => (
             <DatePicker
-              showIcon
+              // showIcon
+              // toggleCalendarOnIconClick
               icon={<HiCalendar />}
               startDate={field.value?.[0]}
               endDate={field.value?.[1]}
@@ -348,7 +340,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
               minDate={new Date()}
               selectsRange
               monthsShown={2}
-              withPortal
+              // withPortal
               customInput={<Input type="text" id="reservationDate" />}
             />
           )}

@@ -9,6 +9,7 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from 'react-icons/hi2';
+import { HiOutlineUser, HiOutlineUserCircle } from 'react-icons/hi';
 
 const NavList = styled.ul`
   display: flex;
@@ -72,14 +73,21 @@ function MainNav() {
           </StyledNavLink>
         </li>
         <li>
+          <StyledNavLink to="/guests">
+            <HiOutlineUsers />
+            <span>Guests</span>
+          </StyledNavLink>
+        </li>
+        <li>
           <StyledNavLink to="/cabins">
             <HiOutlineHomeModern />
             <span>Cabins</span>
           </StyledNavLink>
         </li>
+
         <li>
           <StyledNavLink to="/users">
-            <HiOutlineUsers />
+            <HiOutlineUserCircle />
             <span>Users</span>
           </StyledNavLink>
         </li>

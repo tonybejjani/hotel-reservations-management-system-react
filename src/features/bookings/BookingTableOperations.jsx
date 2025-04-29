@@ -5,7 +5,6 @@ import Filter from '../../ui/Filter';
 import TableOperations from '../../ui/TableOperations';
 import Button from '../../ui/Button';
 import { useNavigate } from 'react-router-dom';
-// import { HiMiniPlusCircle } from 'react-icons/hi2';
 
 function BookingTableOperations() {
   const navigate = useNavigate();
