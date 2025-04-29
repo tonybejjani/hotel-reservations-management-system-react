@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import DashboardBox from './DashboardBox';
-import Heading from '../../ui/heading';
+import Heading from '../../ui/Heading';
 import {
   Area,
   AreaChart,

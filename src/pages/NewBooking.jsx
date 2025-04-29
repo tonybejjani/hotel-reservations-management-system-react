@@ -1,6 +1,6 @@
 /** @format */
 import AddBooking from '../features/bookings/AddBooking';
-import Heading from '../ui/heading';
+import Heading from '../ui/Heading';
 import Row from '../ui/Row';
 function NewBooking() {
   return (

@@ -1,16 +1,22 @@
 /** @format */
-// import AddBooking from '../features/bookings/AddBooking';
-import Heading from '../ui/heading';
+import Heading from '../ui/Heading';
 import Row from '../ui/Row';
+// import GuestsTableOperations from '../features/guests/GuestsTableOperations';
+import GuestsTable from '../features/guests/GuestsTable';
+// import AddGuests from '../features/guests/AddGuest';
+
 function Guests() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Guests</Heading>
+        <Heading as="h1">All guests</Heading>
+
+        {/* <GuestsTableOperations />
+        <AddGuests /> */}
       </Row>
-      {/* <Row>
-        <AddBooking />
-      </Row> */}
+      <Row>
+        <GuestsTable />
+      </Row>
     </>
   );
 }
