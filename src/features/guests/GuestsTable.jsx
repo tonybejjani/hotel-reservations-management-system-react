@@ -4,9 +4,13 @@ import Spinner from '../../ui/Spinner';
 import useGuests from './useGuests';
 import Table, { Empty } from '../../ui/Table';
 import Menus from '../../ui/Menus';
+import styled from 'styled-components';
 
 // import { useSearchParams } from 'react-router-dom';
 
+const FullName = styled.div`
+  padding-left: 1.5rem;
+`;
 function GuestsTable() {
   const { isLoading, guests } = useGuests();
 
@@ -50,13 +54,13 @@ function GuestsTable() {
 
   return (
     <Menus>
-      <Table columns="1.5fr 1.5fr 1fr 1fr 1fr 0.5fr">
+      <Table columns="1.5fr 1.5fr 1fr 0.8fr 0.5fr 0.2fr">
         <Table.Header>
-          <div>Full Name</div>
+          <FullName>Full Name</FullName>
           <div>Email</div>
           <div>nationalID</div>
           <div>Nationality</div>
-          <div>Country Flag</div>
+          <div></div>
           <div></div>
         </Table.Header>
         <Table.Body

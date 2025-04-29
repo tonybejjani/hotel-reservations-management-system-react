@@ -1,11 +1,10 @@
 /** @format */
 
+import styled from 'styled-components';
+import GuestsSearch from './GuestsSearch';
+
 function GuestsTableOperations() {
-  return (
-    <div>
-      <p>guests table operations</p>
-    </div>
-  );
+  return <GuestsSearch />;
 }
 
 export default GuestsTableOperations;

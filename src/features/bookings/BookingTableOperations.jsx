@@ -5,6 +5,11 @@ import Filter from '../../ui/Filter';
 import TableOperations from '../../ui/TableOperations';
 import Button from '../../ui/Button';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const OperationsButton = styled.div`
+  margin-left: auto;
+`;
 
 function BookingTableOperations() {
   const navigate = useNavigate();
@@ -33,7 +38,11 @@ function BookingTableOperations() {
         ]}
       />
 
-      <Button onClick={() => navigate('/add-booking')}>Add new booking</Button>
+      <OperationsButton>
+        <Button onClick={() => navigate('/add-booking')}>
+          Add new booking
+        </Button>
+      </OperationsButton>
     </TableOperations>
   );
 }

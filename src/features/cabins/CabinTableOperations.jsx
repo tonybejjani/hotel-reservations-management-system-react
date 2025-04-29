@@ -3,7 +3,11 @@
 import TableOperations from '../../ui/TableOperations';
 import Filter from '../../ui/Filter';
 import SortBy from '../../ui/SortBy';
-
+import styled from 'styled-components';
+import AddCabin from '../cabins/AddCabin';
+const OperationsButton = styled.div`
+  margin-left: auto;
+`;
 function CabinTableOperations() {
   return (
     <TableOperations>
@@ -20,7 +24,10 @@ function CabinTableOperations() {
         options={[
           { value: 'name-asc', label: 'Sort by name (A-Z)' },
           { value: 'name-desc', label: 'Sort by name (Z-A)' },
-          { value: 'regularPrice-asc', label: 'Sort by price (lowest first)' },
+          {
+            value: 'regularPrice-asc',
+            label: 'Sort by price (lowest first)',
+          },
           {
             value: 'regularPrice-desc',
             label: 'Sort by price (highest first)',
@@ -35,6 +42,9 @@ function CabinTableOperations() {
           },
         ]}
       />
+      <OperationsButton>
+        <AddCabin />
+      </OperationsButton>
     </TableOperations>
   );
 }

@@ -26,6 +26,21 @@ const Img = styled.img`
   transform: scale(0.5);
 `;
 
+const Name = styled.div`
+  padding-left: 1rem;
+  font-weight: 600;
+  color: var(--color-grey-600);
+`;
+
+const Email = styled.div`
+  font-weight: 300;
+`;
+
+const NationalID = styled.div`
+  color: var(--color-green-700);
+  font-weight: 500;
+`;
+
 // eslint-disable-next-line react/prop-types
 function GuestRow({ guest }) {
   // const { deleteCabin, isDeleting } = useDeleteCabin();
@@ -42,9 +57,9 @@ function GuestRow({ guest }) {
 
   return (
     <Table.Row>
-      <div>{fullName}</div>
-      <div>{email}</div>
-      <div>{nationalID}</div>
+      <Name>{fullName}</Name>
+      <Email>{email}</Email>
+      <NationalID>{nationalID}</NationalID>
       <div>{nationality}</div>
       <Img src={countryFlag} />
       <div>
