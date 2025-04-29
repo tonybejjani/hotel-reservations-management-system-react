@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import useCabins from '../cabins/useCabins';
 import { formatCurrency, getDatesBetween } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
+import { HiCalendar } from 'react-icons/hi';
 // import { format } from 'date-fns';
 // import { TfiRulerAlt } from 'react-icons/tfi';
 // import useEditBooking from './useEditCabin';
@@ -54,6 +55,8 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
   const [numGuests, setNumGuests] = useState();
 
+  const [numNights, setNumNights] = useState('');
+
   const navigate = useNavigate();
   // const { editCabin, isEditing } = useEditCabin();
 
@@ -84,12 +87,19 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   function handleBookingDate(dates, field) {
     const [startDate, endDate] = dates;
 
+    /* endDate -1 because the endDate is the checkout date
+       so it is not considered a a date to reserve */
     const datesToReserve = getDatesBetween(
       new Date(startDate),
-      new Date(endDate - 1) // the endDate is the checkout date so it is not a reserved date
+      new Date(endDate - 1)
     ).toString();
 
-    //Check if a date range has been received. Minimum booking reservation is one night.
+    const numNights = datesToReserve.split(',').length;
+    setNumNights(numNights);
+    /* Before proceeding checek if below conditions are true: 
+    1- Check if 2 date ranges has been received because a 
+       minimum booking reservation in the system is one night. 
+    2- Check if both startDate and endDate are not identical  */
     if (
       datesToReserve.length === 2 ||
       datesToReserve[0] !== datesToReserve[1]
@@ -118,13 +128,14 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             }
           });
 
-          // cabin is double booked
+          // cabin is double booked - reservation date collision
           if (doubleBookingsCount > 0) return true;
 
           // cabin not double booked
           return false;
         });
 
+      // remove duplicate cabins
       const unavailableUniqueCabins = unavailabeCabins
         .map((booking) => booking.cabin)
         .reduce((acc, curr) => {
@@ -132,6 +143,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           return acc;
         }, []);
 
+      // extract the remaining available cabins from the list of cabins
       const availableCabins = cabins?.reduce((acc, curr) => {
         if (!unavailableUniqueCabins.includes(curr.name)) acc.push(curr);
         return acc;
@@ -140,14 +152,15 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       if (availableCabins) {
         setCabinsAvailable(availableCabins);
 
-        const numGuests = availableCabins[0].maxCapacity;
+        const maxGuests = availableCabins[0].maxCapacity;
 
-        let numGuestArr = [];
-        for (let i = 1; i <= numGuests; i++) {
-          numGuestArr[i - 1] = i;
+        // spread the number of guests from minGuests to MaxGuests to an array
+        let guests = [];
+        for (let minGuests = 1; minGuests <= maxGuests; minGuests++) {
+          guests[minGuests - 1] = minGuests;
         }
-        setNumGuests(numGuestArr);
-        console.log(availableCabins);
+
+        setNumGuests(guests);
       }
     } else {
       setCabinsAvailable(null);
@@ -181,11 +194,12 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     .filter((value) => {
       return bookingTypeValue === value.type;
     });
-  // if editing the cabin we can edit the image or keep the same image so we have 2 options::
-  // option 1: keep the same image = image already stored in the database so the image is stored as URL (string)
-  // from the database
-  // option: if we are editing the cabin and we changed the image by uploading a new one, the image  uploaded
-  // would take the form of data.image[0]
+
+  /* if editing the cabin we can edit the image or keep the same image so we have 2 options::
+   option 1: keep the same image = image already stored in the database so the image is stored as URL (string)
+  from the database
+   option: if we are editing the cabin and we changed the image by uploading a new one, the image  uploaded
+   would take the form of data.image[0] */
   function onSubmit(data) {
     console.log(getValues());
     console.log(data);
@@ -221,14 +235,26 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   be listed in the drop down of (number of guests)  */
   function handleNumGuests(e) {
     const arrCabin = e.target.value.split('—');
-    const numGuests1 = Number(arrCabin[0].match(/\d+/)[0]);
-    let numGuestArr = [];
-    for (let i = 1; i <= numGuests1; i++) {
-      numGuestArr[i - 1] = i;
+    const maxGuests = Number(arrCabin[0].match(/\d+/)[0]);
+
+    let guests = [];
+    for (let minGuests = 1; minGuests <= maxGuests; minGuests++) {
+      guests[minGuests - 1] = minGuests;
     }
 
-    console.log(numGuestArr);
-    setNumGuests(numGuestArr);
+    setNumGuests(guests);
+  }
+
+  function handleUserNumGuests(e) {
+    const userInputGuests = e.target.value;
+
+    // spread the number of guests from minGuests to MaxGuests to an array
+    let guests = [];
+    for (let minGuests = 1; minGuests <= userInputGuests; minGuests++) {
+      guests[minGuests - 1] = minGuests;
+    }
+
+    setNumGuests(guests);
   }
 
   // const isWorking = isCreating || isEditing;
@@ -305,27 +331,41 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       <FormRow
         label={'Reservation date*'}
         error={errors?.reservationDate?.message}
+        type="datePicker"
       >
         <Controller
           control={control}
           name="reservationDate"
           render={({ field }) => (
             <DatePicker
+              showIcon
+              icon={<HiCalendar />}
               startDate={field.value?.[0]}
               endDate={field.value?.[1]}
               onChange={(dates) => handleBookingDate(dates, field)}
               calendarStartDay={3}
-              isClearable
               placeholderText="Select Date Range"
               minDate={new Date()}
               selectsRange
-              inline
               monthsShown={2}
+              withPortal
+              customInput={<Input type="text" id="reservationDate" />}
             />
           )}
-          {...register('reservationDate', {
+          // {...register('reservationDate', {
+          //   required: 'this field is required',
+          // })}
+        />
+      </FormRow>
+      <FormRow label={'Number of nights*'} error={errors?.numNights?.message}>
+        <Input
+          type="text"
+          id="numNights"
+          disabled
+          {...register('numNights', {
             required: 'this field is required',
           })}
+          value={numNights}
         />
       </FormRow>
       <FormRow label={'Available cabins*'} error={errors?.Cabin?.message}>
@@ -365,6 +405,8 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           {...register('numGuests', {
             required: 'this field is required',
           })}
+          value={numGuests?.length}
+          onChange={handleUserNumGuests}
         >
           <option value="" disabled>
             Select option
@@ -376,6 +418,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           ))}
         </StyledSelect>
       </FormRow>
+
       <FormRow>
         {/* type is an HTML attribute! */}
         <Button

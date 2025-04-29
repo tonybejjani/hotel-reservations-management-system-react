@@ -5,7 +5,7 @@
 
 /** @format */
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Error from '../ui/Error';
 
 const StyledFormRow = styled.div`
@@ -33,15 +33,24 @@ const StyledFormRow = styled.div`
     justify-content: flex-end;
     gap: 1.2rem;
   }
+
+  ${(props) =>
+    props.type === 'datePicker' &&
+    css`
+      display: grid !important;
+      gap: 2.4rem !important;
+
+      /* gap: 2.4rem !important; */
+    `}
 `;
 
 const Label = styled.label`
   font-weight: 500;
 `;
 
-function FormRow({ label, error, id, children }) {
+function FormRow({ label, error, id, children, type }) {
   return (
-    <StyledFormRow>
+    <StyledFormRow type={type}>
       {label && <Label htmlFor={children.id}>{label}</Label>}
       {children}
       {error && <Error>{error}</Error>}
