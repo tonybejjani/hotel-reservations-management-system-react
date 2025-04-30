@@ -6,6 +6,9 @@ import Table, { Empty } from '../../ui/Table';
 import Menus from '../../ui/Menus';
 import styled from 'styled-components';
 
+import { GuestsContext } from '../../pages/Guests';
+import { useContext } from 'react';
+
 // import { useSearchParams } from 'react-router-dom';
 
 const FullName = styled.div`
@@ -13,6 +16,7 @@ const FullName = styled.div`
 `;
 function GuestsTable() {
   const { isLoading, guests } = useGuests();
+  const { guestsSearchResults } = useContext(GuestsContext);
 
   // const [searchParams] = useSearchParams();
 
@@ -64,7 +68,7 @@ function GuestsTable() {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={guests}
+          data={guestsSearchResults?.length > 0 ? guestsSearchResults : guests}
           render={(guest) => <GuestRow guest={guest} key={guest.id} />}
         />
       </Table>

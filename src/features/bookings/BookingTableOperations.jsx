@@ -7,7 +7,7 @@ import Button from '../../ui/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const OperationsButton = styled.div`
+const ActionButton = styled.div`
   margin-left: auto;
 `;
 
@@ -38,11 +38,11 @@ function BookingTableOperations() {
         ]}
       />
 
-      <OperationsButton>
+      <ActionButton>
         <Button onClick={() => navigate('/add-booking')}>
           Add new booking
         </Button>
-      </OperationsButton>
+      </ActionButton>
     </TableOperations>
   );
 }

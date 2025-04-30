@@ -5,7 +5,7 @@ import Filter from '../../ui/Filter';
 import SortBy from '../../ui/SortBy';
 import styled from 'styled-components';
 import AddCabin from '../cabins/AddCabin';
-const OperationsButton = styled.div`
+const ActionButton = styled.div`
   margin-left: auto;
 `;
 function CabinTableOperations() {
@@ -42,9 +42,9 @@ function CabinTableOperations() {
           },
         ]}
       />
-      <OperationsButton>
+      <ActionButton>
         <AddCabin />
-      </OperationsButton>
+      </ActionButton>
     </TableOperations>
   );
 }
