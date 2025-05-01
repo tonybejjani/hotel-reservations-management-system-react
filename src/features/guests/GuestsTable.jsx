@@ -16,7 +16,7 @@ const FullName = styled.div`
 `;
 function GuestsTable() {
   const { isLoading, guests } = useGuests();
-  const { guestsSearchResults } = useContext(GuestsContext);
+  const { guestsSearchResults, userSearchInput } = useContext(GuestsContext);
 
   // const [searchParams] = useSearchParams();
 
@@ -68,7 +68,7 @@ function GuestsTable() {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={guestsSearchResults?.length > 0 ? guestsSearchResults : guests}
+          data={userSearchInput ? guestsSearchResults : guests}
           render={(guest) => <GuestRow guest={guest} key={guest.id} />}
         />
       </Table>

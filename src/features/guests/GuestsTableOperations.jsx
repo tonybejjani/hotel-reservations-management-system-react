@@ -8,6 +8,11 @@ import { useNavigate } from 'react-router-dom';
 
 const OperationsButton = styled.div`
   margin-left: auto;
+
+  & button {
+    box-shadow: 0 3px 6px 0 rgba(25, 27, 36, 0.16),
+      0 -1px 4px 0 rgba(25, 27, 36, 0.04);
+  }
 `;
 function GuestsTableOperations() {
   const navigate = useNavigate();

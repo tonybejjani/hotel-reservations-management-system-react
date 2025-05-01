@@ -62,12 +62,25 @@ export async function getActiveBookings() {
 
 export async function getBookingTypes() {
   const { data, error } = await supabase
-    .from('bookingType')
-    .select('id, type, method, description');
+    .from('bookingTypes')
+    .select('id, name, label, description');
 
   if (error) {
     console.error(error);
     throw new Error('Booking Types not found');
+  }
+
+  return data;
+}
+
+export async function getBookingMethods() {
+  const { data, error } = await supabase
+    .from('bookingMethods')
+    .select('id, typeId, name, label, description');
+
+  if (error) {
+    console.error(error);
+    throw new Error('Booking Methods not found');
   }
 
   return data;

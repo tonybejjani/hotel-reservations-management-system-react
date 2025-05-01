@@ -179,6 +179,7 @@ select {
 
 button {
   cursor: pointer;
+
 }
 
 *:disabled {
@@ -199,6 +200,9 @@ select:focus {
   outline-offset: -1px;
 }
 
+input::-webkit-calendar-picker-indicator {
+              opacity: 100;
+}
 /* Parent selector, finally 😃 */
 button:has(svg) {
   line-height: 0;

@@ -10,15 +10,23 @@ import { createContext, useState } from 'react';
 export const GuestsContext = createContext();
 
 function Guests() {
+  const [userSearchInput, setUserSearchInput] = useState();
   const [guestsSearchResults, setGuestsSearchResults] = useState();
+
+  function handleUserSearchInput(userInput) {
+    setUserSearchInput(userInput);
+  }
 
   function handleSearchResults(guests) {
     setGuestsSearchResults(guests);
   }
+
   return (
     <GuestsContext.Provider
       value={{
+        onUserSearchInput: handleUserSearchInput,
         onSearchResults: handleSearchResults,
+        userSearchInput,
         guestsSearchResults,
       }}
     >

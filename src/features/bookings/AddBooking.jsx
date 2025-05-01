@@ -1,24 +1,29 @@
 /** @format */
 /** @format */
 
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm, Controller } from 'react-hook-form';
+import useCabins from '../cabins/useCabins';
+import useGuests from '../guests/useGuests';
+import useCreateBooking from './useCreateBooking';
+import useBookingType from './useBookingType';
+import useBookingMethods from './useBookingMethods';
+import useActiveBookings from './useActiveBookings';
+
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
 import Button from '../../ui/Button';
-import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
+// import Textarea from '../../ui/Textarea';
 
-import { useForm, Controller } from 'react-hook-form';
+import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import useCreateBooking from './useCreateBooking';
-import useBookingType from './useBookingType';
-import useActiveBookings from './useActiveBookings';
-import { useState } from 'react';
-import styled from 'styled-components';
-import useCabins from '../cabins/useCabins';
+
 import { formatCurrency, getDatesBetween } from '../../utils/helpers';
-import { useNavigate } from 'react-router-dom';
 import { HiCalendar } from 'react-icons/hi';
+
 // import { format } from 'date-fns';
 // import { TfiRulerAlt } from 'react-icons/tfi';
 // import useEditBooking from './useEditCabin';
@@ -41,6 +46,8 @@ const StyledSelect = styled.select`
 function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   const { createBooking, isCreating } = useCreateBooking();
 
+  const { isLoading: isLoadingGuests, guests } = useGuests();
+
   const { isLoading: isLoadingCabins, cabins } = useCabins();
 
   const { isLoading: isLoadingActiveBookings, activeBookings } =
@@ -49,40 +56,28 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   const { isLoading: isLoadingBookingTypes, bookingTypes = [] } =
     useBookingType();
 
-  const [bookingTypeValue, setBookingTypeValue] = useState();
-
-  const [cabinsAvailable, setCabinsAvailable] = useState();
+  const { isLoading: isLoadingBookingMethods, bookingMethods = [] } =
+    useBookingMethods();
 
   const [numGuests, setNumGuests] = useState();
-
+  const [bookingTypeId, setBookingTypeId] = useState();
+  const [checkInOutDates, setCheckInOutDates] = useState();
+  const [cabinsAvailable, setCabinsAvailable] = useState();
   const [numNights, setNumNights] = useState('');
-
+  const [guestInput, setGuestInput] = useState('');
   const navigate = useNavigate();
   // const { editCabin, isEditing } = useEditCabin();
-
   const { id: editId, ...editValues } = bookingToEdit;
   const isEditSession = Boolean(editId);
 
   const { register, handleSubmit, reset, formState, getValues, control } =
     useForm({
-      defaultValues: isEditSession ? editValues : {},
+      defaultValues: {
+        isEditSession: isEditSession ? editValues : {},
+      },
     });
 
   const { errors } = formState;
-
-  // Booking Types
-  let temp = [];
-  function onlyUniqueOptions(value) {
-    let uniqueOption = !temp.includes(value.value);
-
-    if (!temp.includes(value.value)) temp.push(value.value);
-
-    return uniqueOption;
-  }
-
-  function handleBookingMethods(e) {
-    setBookingTypeValue((val) => (val = e.target.value));
-  }
 
   function handleBookingDate(dates, field) {
     const [startDate, endDate] = dates;
@@ -104,6 +99,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       datesToReserve.length === 2 ||
       datesToReserve[0] !== datesToReserve[1]
     ) {
+      setCheckInOutDates(datesToReserve);
       const unavailabeCabins = activeBookings
         ?.map((booking) => {
           return {
@@ -170,36 +166,43 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     return field.onChange(dates);
   }
 
-  //Mold bookingType to fit the <Select> component options attribute key/value/label structure
-  const bookingTypesOptions = bookingTypes
-    ?.map((bookingType) => {
-      return {
-        key: bookingType.id,
-        value: bookingType.type,
-        label: bookingType.type,
-      };
-    })
-    .filter(onlyUniqueOptions);
+  function handleBookingMethods(e) {
+    console.log(e.target.value);
+    setBookingTypeId(Number(e.target.value));
+  }
 
   // Booking Methods
-  const BookingMethodOptions = bookingTypes
-    ?.map((bookingType) => {
-      return {
-        key: bookingType.id,
-        type: bookingType.type,
-        value: bookingType.description,
-        label: bookingType.description,
-      };
-    })
-    .filter((value) => {
-      return bookingTypeValue === value.type;
-    });
+  const BookingMethodOptions = bookingMethods?.filter((bookingMethod) => {
+    return bookingTypeId === bookingMethod.typeId;
+  });
 
-  /* if editing the cabin we can edit the image or keep the same image so we have 2 options::
-   option 1: keep the same image = image already stored in the database so the image is stored as URL (string)
-  from the database
-   option: if we are editing the cabin and we changed the image by uploading a new one, the image  uploaded
-   would take the form of data.image[0] */
+  function handleNumGuests(e) {
+    const cabinId = Number(e.target.value);
+
+    const cabin = cabins
+      ?.map((cabin) => {
+        return { id: cabin.id, maxCapacity: cabin.maxCapacity };
+      })
+      .filter((cabin) => {
+        return cabin.id === cabinId;
+      });
+
+    let guests = [];
+    for (let minGuests = 1; minGuests <= cabin[0].maxCapacity; minGuests++) {
+      guests[minGuests - 1] = minGuests;
+    }
+
+    setNumGuests(guests);
+  }
+
+  function handleSearchOnFocus(e) {
+    setGuestInput('');
+  }
+  function handleSearchOnChange(e) {
+    setGuestInput(e.target.value);
+    console.log(getValues());
+  }
+
   function onSubmit(data) {
     console.log(getValues());
     console.log(data);
@@ -226,251 +229,185 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     );
   }
 
-  // function onError(errors) {
-  //   console.log(errors);
-  // }
-
-  /* Extract Max number of guests from chosen cabin
-  and list all range of numbers in an array to 
-  be listed in the drop down of (number of guests)  */
-  function handleNumGuests(e) {
-    const arrCabin = e.target.value.split('—');
-    const maxGuests = Number(arrCabin[0].match(/\d+/)[0]);
-
-    let guests = [];
-    for (let minGuests = 1; minGuests <= maxGuests; minGuests++) {
-      guests[minGuests - 1] = minGuests;
-    }
-
-    setNumGuests(guests);
-  }
-
-  function handleUserNumGuests(e) {
-    const userInputGuests = e.target.value;
-
-    // spread the number of guests from minGuests to MaxGuests to an array
-    let guests = [];
-    for (let minGuests = 1; minGuests <= userInputGuests; minGuests++) {
-      guests[minGuests - 1] = minGuests;
-    }
-
-    setNumGuests(guests);
-  }
-
-  // const isWorking = isCreating || isEditing;
   const isWorking = isCreating;
+
   return (
-    <Form
-      onSubmit={handleSubmit(onSubmit)}
-      type={onCloseModal ? 'modal' : 'regular'}
-    >
-      <FormRow label={'Booking type*'} error={errors?.bookingType?.message}>
-        <StyledSelect
-          id="bookingType"
-          onChangeCapture={handleBookingMethods}
-          type="white"
-          disabled={isWorking || isLoadingBookingTypes}
-          {...register('bookingType', {
-            required: 'this field is required',
-          })}
+    <>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormRow
+          label={'Guest full name*'}
+          error={errors?.guestfullName?.message}
         >
-          <option value="" disabled>
-            Select your option
-          </option>
-          {bookingTypesOptions?.map((option) => (
-            <option value={option.value} key={option.key}>
-              {option.label}
-            </option>
-          ))}
-        </StyledSelect>
-      </FormRow>
+          <Input
+            type="text"
+            name="guestfullName"
+            id="guestfullName"
+            list="searchableFullNames"
+            placeholder="Select option..."
+            value={guestInput}
+            onFocus={handleSearchOnFocus}
+            onChangeCapture={handleSearchOnChange}
+            // onClick={handleSearchOnClick}
+            disabled={isWorking}
+            {...register('guestfullName', {
+              required: 'this field is required',
+            })}
+          />
 
-      <FormRow
-        label={'Booking method*'}
-        error={errors?.bookingMethods?.message}
-      >
-        <StyledSelect
-          type="white"
-          id="bookingMethods"
-          disabled={isWorking || isLoadingBookingTypes || !bookingTypeValue}
-          {...register('bookingMethods', {
-            required: 'this field is required',
-          })}
-        >
-          <option value="" disabled>
-            Select your option
-          </option>
-          {BookingMethodOptions.map((option) => (
-            <option value={option.value} key={option.key}>
-              {option.label}
-            </option>
-          ))}
-        </StyledSelect>
-      </FormRow>
-
-      <FormRow label={'Guest Information*'} error={errors?.firstName?.message}>
-        <Input
-          type="text"
-          id="firstName"
-          disabled={isWorking}
-          {...register('firstName', {
-            required: 'this field is required',
-          })}
-        />
-      </FormRow>
-
-      <FormRow
-        label={'Reservation date*'}
-        error={errors?.reservationDate?.message}
-        type="datePicker"
-      >
-        <Controller
-          control={control}
-          name="reservationDate"
-          render={({ field }) => (
-            <DatePicker
-              // showIcon
-              // toggleCalendarOnIconClick
-              icon={<HiCalendar />}
-              startDate={field.value?.[0]}
-              endDate={field.value?.[1]}
-              onChange={(dates) => handleBookingDate(dates, field)}
-              calendarStartDay={3}
-              placeholderText="Select Date Range"
-              minDate={new Date()}
-              selectsRange
-              monthsShown={2}
-              // withPortal
-              customInput={<Input type="text" id="reservationDate" />}
-            />
+          {!isLoadingGuests && (
+            <datalist id="searchableFullNames">
+              {guests.map((option) => {
+                return (
+                  <option
+                    value={option.fullName}
+                    id={option.id}
+                    key={option.id}
+                  />
+                );
+              })}
+            </datalist>
           )}
-          // {...register('reservationDate', {
-          //   required: 'this field is required',
-          // })}
-        />
-      </FormRow>
-      <FormRow label={'Number of nights*'} error={errors?.numNights?.message}>
-        <Input
-          type="text"
-          id="numNights"
-          disabled
-          {...register('numNights', {
-            required: 'this field is required',
-          })}
-          value={numNights}
-        />
-      </FormRow>
-      <FormRow label={'Available cabins*'} error={errors?.Cabin?.message}>
-        <StyledSelect
-          id="cabin"
-          onChangeCapture={handleNumGuests}
-          type="white"
-          disabled={
-            isWorking ||
-            isLoadingCabins ||
-            isLoadingActiveBookings ||
-            !cabinsAvailable
-          }
-          {...register('cabin', {
-            required: 'this field is required',
-          })}
+        </FormRow>
+        <FormRow label={'Booking type*'} error={errors?.bookingType?.message}>
+          <StyledSelect
+            id="bookingType"
+            onChangeCapture={handleBookingMethods}
+            type="white"
+            disabled={isWorking || isLoadingBookingTypes}
+            {...register('bookingType', {
+              required: 'this field is required',
+            })}
+          >
+            <option value="">Select option...</option>
+            {bookingTypes?.map((option) => (
+              <option value={option.id} key={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </StyledSelect>
+        </FormRow>
+        <FormRow
+          label={'Booking method*'}
+          error={errors?.bookingMethods?.message}
         >
-          <option value="" disabled>
-            Select option
-          </option>
-          {cabinsAvailable?.map((cabin) => (
-            <option value={cabin.value} key={cabin.id}>
-              {`Up to ${cabin.maxCapacity} guests  — ${formatCurrency(
-                cabin.regularPrice
-              )} — Cabin ${cabin.name} `}
-            </option>
-          ))}
-        </StyledSelect>
-      </FormRow>
-      <FormRow label={'Number of guests*'} error={errors?.numGuests?.message}>
-        <StyledSelect
-          id="numGuests"
-          type="white"
-          disabled={
-            isWorking || isLoadingCabins || !cabinsAvailable || !numGuests
-          }
-          {...register('numGuests', {
-            required: 'this field is required',
-          })}
-          value={numGuests?.length}
-          onChange={handleUserNumGuests}
+          <StyledSelect
+            type="white"
+            id="bookingMethods"
+            disabled={isWorking || isLoadingBookingTypes || !bookingTypeId}
+            {...register('bookingMethods', {
+              required: 'this field is required',
+            })}
+          >
+            <option value="">Select option...</option>
+            {BookingMethodOptions.map((option) => (
+              <option value={option.id} key={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </StyledSelect>
+        </FormRow>
+        <FormRow
+          label={'Reservation date*'}
+          error={errors?.reservationDate?.message}
+          type="datePicker"
         >
-          <option value="" disabled>
-            Select option
-          </option>
-          {numGuests?.map((num) => (
-            <option value={num} key={num}>
-              {num} guests
-            </option>
-          ))}
-        </StyledSelect>
-      </FormRow>
-
-      <FormRow>
-        {/* type is an HTML attribute! */}
-        <Button
-          variation="secondary"
-          type="reset"
-          onClick={() => navigate('/bookings')}
-        >
-          Cancel
-        </Button>
-        <Button disabled={isWorking}>
-          {/* {isEditSession ? 'Edit cabin' : 'Create new cabin'} */}
-          Create new booking
-        </Button>
-      </FormRow>
-      {/* <FormRow label={'Maximum capacity'} error={errors?.maxCapacity?.message}>
-        <Input
-          type="number"
-          id="maxCapacity"
-          disabled={isWorking}
-          {...register('maxCapacity', {
-            required: 'this field is required',
-            min: {
-              value: 1,
-              message: 'Capacity should be at least 1',
-            },
-          })}
-        />
-      </FormRow>
-
-      <FormRow label={'Regular price'} error={errors?.regularPrice?.message}>
-        <Input
-          type="number"
-          id="regularPrice"
-          disabled={isWorking}
-          {...register('regularPrice', {
-            required: 'this field is required',
-            min: {
-              value: 1,
-              message: 'Regular Price should be at least 1',
-            },
-          })}
-        />
-      </FormRow>
-
-      <FormRow label={'Discount'} error={errors?.discount?.message}>
-        <Input
-          type="number"
-          id="discount"
-          disabled={isWorking}
-          min="0"
-          {...register('discount', {
-            required: 'this field is required',
-            validate: (value) =>
-              +value <= +getValues().regularPrice ||
-              'Discount should be less then regular price',
-          })}
-          defaultValue={0}
-        />
-      </FormRow> */}
-    </Form>
+          <Controller
+            control={control}
+            name="reservationDate"
+            {...register('reservationDate', {
+              required: 'this field is required',
+            })}
+            render={({ field }) => (
+              <DatePicker
+                // showIcon
+                // toggleCalendarOnIconClick
+                icon={<HiCalendar />}
+                startDate={field.value?.[0]}
+                endDate={field.value?.[1]}
+                onChange={(dates) => handleBookingDate(dates, field)}
+                calendarStartDay={3}
+                placeholderText="Select Date Range"
+                minDate={new Date()}
+                selectsRange
+                monthsShown={2}
+                withPortal
+                customInput={<Input type="text" />}
+              />
+            )}
+          />
+        </FormRow>
+        <FormRow label={'Number of nights*'} error={errors?.numNights?.message}>
+          <Input
+            type="text"
+            id="numNights"
+            disabled
+            {...register('numNights', {
+              required: 'this field is required',
+            })}
+            value={numNights}
+          />
+        </FormRow>
+        <FormRow label={'Available cabins*'} error={errors?.cabin?.message}>
+          <StyledSelect
+            id="cabin"
+            onChangeCapture={handleNumGuests}
+            type="white"
+            disabled={
+              isWorking ||
+              isLoadingCabins ||
+              isLoadingActiveBookings ||
+              !cabinsAvailable
+            }
+            {...register('cabin', {
+              required: 'this field is required',
+            })}
+          >
+            <option value="">Select option...</option>
+            {cabinsAvailable?.map((cabin) => (
+              <option value={cabin.id} key={cabin.id}>
+                {`Up to ${cabin.maxCapacity} guests  — ${formatCurrency(
+                  cabin.regularPrice
+                )} — Cabin ${cabin.name} `}
+              </option>
+            ))}
+          </StyledSelect>
+        </FormRow>
+        <FormRow label={'Number of guests*'} error={errors?.numGuests?.message}>
+          <StyledSelect
+            id="numGuests"
+            type="white"
+            disabled={
+              isWorking || isLoadingCabins || !cabinsAvailable || !numGuests
+            }
+            // onChangeCapture={handleUserNumGuests}
+            {...register('numGuests', {
+              required: 'this field is required',
+            })}
+          >
+            <option value="">Select option...</option>
+            {numGuests?.map((num) => (
+              <option value={num} key={num}>
+                {num} guests
+              </option>
+            ))}
+          </StyledSelect>
+        </FormRow>
+        <FormRow>
+          {/* type is an HTML attribute! */}
+          <Button
+            variation="secondary"
+            type="reset"
+            onClick={() => navigate('/bookings')}
+          >
+            Cancel
+          </Button>
+          <Button disabled={isWorking}>
+            {/* {isEditSession ? 'Edit cabin' : 'Create new cabin'} */}
+            Create new booking
+          </Button>
+        </FormRow>
+      </Form>
+    </>
   );
 }
 
