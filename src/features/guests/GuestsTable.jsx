@@ -5,12 +5,13 @@ import useGuests from './useGuests';
 import Table, { Empty } from '../../ui/Table';
 import Menus from '../../ui/Menus';
 import styled from 'styled-components';
+import Pagination from '../../ui/Pagination';
 
 const FullName = styled.div`
   padding-left: 1.5rem;
 `;
 function GuestsTable() {
-  const { isLoading, guests } = useGuests();
+  const { isLoading, guests, count } = useGuests();
 
   if (isLoading) return <Spinner />;
 
@@ -31,6 +32,9 @@ function GuestsTable() {
           data={guests}
           render={(guest) => <GuestRow guest={guest} key={guest.id} />}
         />
+        <Table.Footer>
+          <Pagination count={count}></Pagination>
+        </Table.Footer>
       </Table>
     </Menus>
   );
