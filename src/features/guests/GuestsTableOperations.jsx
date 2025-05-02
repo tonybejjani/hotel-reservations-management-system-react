@@ -3,10 +3,9 @@
 import styled from 'styled-components';
 import GuestsSearch from './GuestsSearch';
 import TableOperations from '../../ui/TableOperations';
-import Button from '../../ui/Button';
-import { useNavigate } from 'react-router-dom';
+import AddGuest from './AddGuest';
 
-const OperationsButton = styled.div`
+const ActionButton = styled.div`
   margin-left: auto;
 
   & button {
@@ -15,13 +14,12 @@ const OperationsButton = styled.div`
   }
 `;
 function GuestsTableOperations() {
-  const navigate = useNavigate();
   return (
     <TableOperations>
       <GuestsSearch />
-      <OperationsButton>
-        <Button onClick={() => navigate('/add-booking')}>Add new guest</Button>
-      </OperationsButton>
+      <ActionButton>
+        <AddGuest />
+      </ActionButton>
     </TableOperations>
   );
 }

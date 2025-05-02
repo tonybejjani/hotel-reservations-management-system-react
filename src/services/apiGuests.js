@@ -26,3 +26,35 @@ export async function getSearchGuests(fullName) {
 
   return data;
 }
+
+export async function createEditGuest(newGuest, id) {
+  console.log(newGuest);
+  console.log(id);
+
+  let query = supabase.from('guests');
+
+  //1. Create Cabin
+  if (!id) query = query.insert([{ ...newGuest }]);
+
+  if (id) query = query.update({ ...newGuest }).eq('id', id);
+
+  const { data, error } = await query.select();
+
+  if (error) {
+    console.error(error);
+    throw new Error('Guest could not be added.');
+  }
+
+  return data;
+}
+
+export async function deleteGuest(id) {
+  const { data, error } = await supabase.from('guests').delete().eq('id', id);
+
+  if (error) {
+    console.error(error);
+    throw new Error('Guests could not be deleted.');
+  }
+
+  return data;
+}

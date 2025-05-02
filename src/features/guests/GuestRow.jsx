@@ -8,14 +8,16 @@
 
 import styled from 'styled-components';
 // import { formatCurrency } from '../../utils/helpers';
-// import CreateCabinForm from './CreateCabinForm';
+
 // import useDeleteCabin from './useDeleteCabin';
 // import useCreateCabin from './useCreateCabin';
 import { HiPencil, HiTrash } from 'react-icons/hi2';
 import Modal from '../../ui/Modal';
-// import ConfirmDelete from '../../ui/ConfirmDelete';
+import ConfirmDelete from '../../ui/ConfirmDelete';
 import Table from '../../ui/Table';
 import Menus from '../../ui/Menus';
+import CreateGuestForm from './CreateGuestForm';
+import useDeleteGuest from './useDeleteGuest';
 
 const Img = styled.img`
   display: block;
@@ -43,8 +45,8 @@ const NationalID = styled.div`
 
 // eslint-disable-next-line react/prop-types
 function GuestRow({ guest }) {
-  // const { deleteCabin, isDeleting } = useDeleteCabin();
-  // const { createCabin, isCreating } = useCreateCabin();
+  const { deleteGuest, isDeleting } = useDeleteGuest();
+
   // eslint-disable-next-line react/prop-types
   const {
     id: guestId,
@@ -68,7 +70,7 @@ function GuestRow({ guest }) {
             <Menus.Toggle id={guestId} />
 
             <Menus.List id={guestId}>
-              <Modal.Open opens="edit-form">
+              <Modal.Open opens="guestForm">
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
               <Modal.Open opens="delete-form">
@@ -76,16 +78,16 @@ function GuestRow({ guest }) {
               </Modal.Open>
             </Menus.List>
 
-            <Modal.Window opens="edit-form">
-              {/* <CreateCabinForm guestToEdit={guest} /> */}
+            <Modal.Window opens="guestForm">
+              <CreateGuestForm guestToEdit={guest} />
             </Modal.Window>
 
-            <Modal.Window name="delete" opens="delete-form">
-              {/* <ConfirmDelete
+            <Modal.Window opens="delete-form">
+              <ConfirmDelete
                 resourceName={`Guest ` + fullName}
                 disabled={isDeleting}
-                 onConfirm={() => deleteGuest(guestId)}
-              /> */}
+                onConfirm={() => deleteGuest(guestId)}
+              />
             </Modal.Window>
           </Menus.Menu>
         </Modal>

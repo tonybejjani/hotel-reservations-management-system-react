@@ -19,25 +19,18 @@ const Search = styled.input`
     font-style: italic;
     font-size: 1.5rem;
   }
-
-  /* background-image: url(https://cdn2.hubspot.net/hubfs/4004166/bioticresearch_website_assets/images/search_icon.png);
-  background-repeat: no-repeat;
-  background-position: left center; */
 `;
 
 function GuestsSearch() {
   const [userSearchInput, setUserSearchInput] = useState();
-  const [isLoading, setIsLoading] = useState(false);
 
   const { onSearchResults, onUserSearchInput } = useContext(GuestsContext);
 
   useEffect(() => {
     async function getSearchResults() {
-      setIsLoading(true);
       const res = await getSearchGuests(userSearchInput);
       onUserSearchInput(userSearchInput);
       onSearchResults(res);
-      setIsLoading(false);
     }
 
     getSearchResults();
@@ -46,8 +39,6 @@ function GuestsSearch() {
   function handleSearchInput(e) {
     setUserSearchInput(e.target.value);
   }
-
-  // if (isLoading) return <Spinner />;
 
   return (
     <Search

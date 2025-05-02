@@ -25,9 +25,6 @@ export async function deleteCabin(id) {
 }
 
 export async function createEditCabin(newCabin, id) {
-  console.log(newCabin);
-  console.log(id);
-
   // check if there is a new image being uploaded
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
