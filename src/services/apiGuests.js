@@ -6,6 +6,7 @@ import supabase from './supabase';
 export async function getGuests({ page }) {
   let query = supabase.from('guests').select('*', { count: 'exact' });
 
+  console.log(page);
   if (page) {
     const from = (page - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
