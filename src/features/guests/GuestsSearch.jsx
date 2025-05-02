@@ -1,10 +1,7 @@
 /** @format */
 
-import { useState, useEffect, useContext } from 'react';
-import { GuestsContext } from '../../pages/Guests';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { getSearchGuests } from '../../services/apiGuests';
-import Spinner from '../../ui/Spinner';
 
 const Search = styled.input`
   border: 1px solid var(--color-grey-100);
@@ -23,18 +20,6 @@ const Search = styled.input`
 
 function GuestsSearch() {
   const [userSearchInput, setUserSearchInput] = useState();
-
-  const { onSearchResults, onUserSearchInput } = useContext(GuestsContext);
-
-  useEffect(() => {
-    async function getSearchResults() {
-      const res = await getSearchGuests(userSearchInput);
-      onUserSearchInput(userSearchInput);
-      onSearchResults(res);
-    }
-
-    getSearchResults();
-  }, [userSearchInput]);
 
   function handleSearchInput(e) {
     setUserSearchInput(e.target.value);

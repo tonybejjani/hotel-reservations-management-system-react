@@ -6,15 +6,11 @@ import Table, { Empty } from '../../ui/Table';
 import Menus from '../../ui/Menus';
 import styled from 'styled-components';
 
-import { GuestsContext } from '../../pages/Guests';
-import { useContext } from 'react';
-
 const FullName = styled.div`
   padding-left: 1.5rem;
 `;
 function GuestsTable() {
   const { isLoading, guests } = useGuests();
-  const { guestsSearchResults, userSearchInput } = useContext(GuestsContext);
 
   if (isLoading) return <Spinner />;
 
@@ -32,7 +28,7 @@ function GuestsTable() {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={userSearchInput ? guestsSearchResults : guests}
+          data={guests}
           render={(guest) => <GuestRow guest={guest} key={guest.id} />}
         />
       </Table>

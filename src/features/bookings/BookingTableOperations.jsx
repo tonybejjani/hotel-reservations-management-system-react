@@ -2,6 +2,7 @@
 
 import SortBy from '../../ui/SortBy';
 import Filter from '../../ui/Filter';
+import { HiMiniPlus } from 'react-icons/hi2';
 import TableOperations from '../../ui/TableOperations';
 import Button from '../../ui/Button';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +15,17 @@ const ActionButton = styled.div`
     box-shadow: 0 3px 6px 0 rgba(25, 27, 36, 0.16),
       0 -1px 4px 0 rgba(25, 27, 36, 0.04);
   }
+  & svg {
+    scale: 1.8;
+  }
+`;
+
+const ButtonContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 1rem;
+  padding: 0.2rem 0;
 `;
 
 function BookingTableOperations() {
@@ -45,7 +57,10 @@ function BookingTableOperations() {
 
       <ActionButton>
         <Button onClick={() => navigate('/add-booking')}>
-          Add new booking
+          <ButtonContentWrapper>
+            <HiMiniPlus />
+            <span> New Booking</span>
+          </ButtonContentWrapper>
         </Button>
       </ActionButton>
     </TableOperations>
