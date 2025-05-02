@@ -13,14 +13,16 @@ function Cabins() {
   //   getCabins().then((data) => console.log(data));
   // }, []);
 
+  {
+    /* <img src="https://jroqiytbtljjznebyltj.supabase.co/storage/v1/object/public/cabin-images/0.03399913173463864-cabin-002.jpg" /> */
+  }
+
   return (
     <>
-      <Row type="horizontal">
+      <Row type="vertical">
         <Heading as="h1">All cabins</Heading>
 
         <CabinTableOperations />
-
-        {/* <img src="https://jroqiytbtljjznebyltj.supabase.co/storage/v1/object/public/cabin-images/0.03399913173463864-cabin-002.jpg" /> */}
       </Row>
       <Row>
         <CabinTable />

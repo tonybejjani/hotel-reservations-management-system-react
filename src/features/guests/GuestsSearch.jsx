@@ -1,6 +1,5 @@
 /** @format */
-
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Search = styled.input`
@@ -8,7 +7,7 @@ const Search = styled.input`
   border: 1px solid var(--color-grey-100);
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-sm);
-  padding: 0.4rem 1.6rem;
+  padding: 0.8rem 1.6rem 0.8rem 4.6rem;
   box-shadow: var(--shadow-sm);
   width: 30rem;
 
@@ -19,10 +18,10 @@ const Search = styled.input`
 `;
 
 function GuestsSearch() {
-  const [userSearchInput, setUserSearchInput] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   function handleSearchInput(e) {
-    setUserSearchInput(e.target.value);
+    setSearchParams({ search: e.target.value });
   }
 
   return (

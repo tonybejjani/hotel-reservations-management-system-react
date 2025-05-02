@@ -12,6 +12,9 @@ const ActionButton = styled.div`
     box-shadow: 0 3px 6px 0 rgba(25, 27, 36, 0.16),
       0 -1px 4px 0 rgba(25, 27, 36, 0.04);
   }
+  & svg {
+    scale: 1.8;
+  }
 `;
 function CabinTableOperations() {
   return (

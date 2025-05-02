@@ -7,7 +7,7 @@ import GuestsTableOperations from '../features/guests/GuestsTableOperations';
 function Guests() {
   return (
     <>
-      <Row type="horizontal">
+      <Row type="vertical">
         <Heading as="h1">All guests</Heading>
         <GuestsTableOperations />
       </Row>

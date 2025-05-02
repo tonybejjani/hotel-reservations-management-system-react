@@ -2,10 +2,11 @@
 import GuestRow from './GuestRow';
 import Spinner from '../../ui/Spinner';
 import useGuests from './useGuests';
-import Table, { Empty } from '../../ui/Table';
+import Table from '../../ui/Table';
 import Menus from '../../ui/Menus';
 import styled from 'styled-components';
 import Pagination from '../../ui/Pagination';
+import Empty from '../../ui/Empty';
 
 const FullName = styled.div`
   padding-left: 1.5rem;
@@ -15,7 +16,7 @@ function GuestsTable() {
 
   if (isLoading) return <Spinner />;
 
-  if (guests?.length === 0) return <Empty resource="guests" />;
+  if (guests.length === 0) return <Empty resource="guests" />;
 
   return (
     <Menus>

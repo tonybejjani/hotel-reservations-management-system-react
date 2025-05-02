@@ -9,16 +9,18 @@ function useGuests() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
-  console.log(searchParams.get('page'));
+  // console.log(searchParams.get('page'));
   const page = !searchParams.get('page') ? 1 : Number(searchParams.get('page'));
+
+  const search = !searchParams.get('search') ? '' : searchParams.get('search');
 
   const {
     isLoading,
     error,
     data: { data: guests, count } = {},
   } = useQuery({
-    queryKey: ['guests', page],
-    queryFn: () => getGuests({ page }),
+    queryKey: ['guests', page, search],
+    queryFn: () => getGuests({ page, search }),
   });
 
   const pageCount = Math.ceil(count / PAGE_SIZE);

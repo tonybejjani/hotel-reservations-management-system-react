@@ -22,7 +22,7 @@ const Container = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  gap: 1.6rem;
 `;
 function AppLayout() {
   return (
