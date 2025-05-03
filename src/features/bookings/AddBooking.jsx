@@ -86,7 +86,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
   const { errors } = formState;
 
-  ////// RESERVATION DATES //////
+  ////// Reservation dates validation && Fetching number of cabins && number of nights //////
   function handleBookingDate(e, userInput) {
     const startDate =
       userInput === 'checkinDate' ? e.target.value : getValues().checkin;
@@ -242,7 +242,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormRow label={'Guest full name*'} error={errors?.fullName?.message}>
+        {/* <FormRow label={'Guest full name*'} error={errors?.fullName?.message}>
           <Input
             type="text"
             name="fullName"
@@ -271,7 +271,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
               })}
             </datalist>
           )}
-        </FormRow>
+        </FormRow> */}
 
         <FormRow label="Check in" error={errors?.checkin?.message}>
           <Input
@@ -279,13 +279,15 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             name="checkin"
             id="checkin"
             onChangeCapture={(e) => handleBookingDate(e, 'checkinDate')}
+            onBlurCapture={() => trigger(['checkin', 'checkout'])}
             min={new Date().toLocaleString('fr-CA').substr(0, 10)}
             {...register('checkin', {
               required: 'this field is required',
               validate: (value) => {
+                if (!getValues().checkout) return;
                 return (
                   value <= getValues().checkout ||
-                  'Checkin should be earlier then checkout'
+                  'Check in date should be earlier then check out date.'
                 );
               },
             })}
@@ -298,13 +300,15 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             name="checkout"
             id="checkout"
             onChangeCapture={(e) => handleBookingDate(e, 'checkoutDate')}
+            onBlurCapture={() => trigger(['checkin', 'checkout'])}
             min={new Date().toLocaleString('fr-CA').substr(0, 10)}
             {...register('checkout', {
               required: 'this field is required',
               validate: (value) => {
+                if (!getValues().checkin) return;
                 return (
                   value > getValues().checkin ||
-                  'Checkout should be later then checkout'
+                  'Check out date should be later then check in date.'
                 );
               },
             })}
