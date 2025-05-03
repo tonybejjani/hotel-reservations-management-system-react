@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import useCabins from '../cabins/useCabins';
 import useGuests from '../guests/useGuests';
 import useCreateBooking from './useCreateBooking';
@@ -17,11 +17,9 @@ import FormRow from '../../ui/FormRow';
 // import Textarea from '../../ui/Textarea';
 
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { formatCurrency, getDatesBetween } from '../../utils/helpers';
-import { HiCalendar } from 'react-icons/hi';
 
 // import { format } from 'date-fns';
 // import { TfiRulerAlt } from 'react-icons/tfi';
@@ -39,6 +37,11 @@ const StyledSelect = styled.select`
   background-color: var(--color-grey-0);
   font-weight: 500;
   box-shadow: var(--shadow-sm);
+`;
+
+const FormSection = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 // eslint-disable-next-line react/prop-types
@@ -60,45 +63,53 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
   const [numGuests, setNumGuests] = useState();
   const [bookingTypeId, setBookingTypeId] = useState();
-  const [checkInOutDates, setCheckInOutDates] = useState();
   const [cabinsAvailable, setCabinsAvailable] = useState();
-  const [numNights, setNumNights] = useState('');
   const [guestInput, setGuestInput] = useState('');
   const navigate = useNavigate();
   // const { editCabin, isEditing } = useEditCabin();
   const { id: editId, ...editValues } = bookingToEdit;
   const isEditSession = Boolean(editId);
 
-  const { register, handleSubmit, reset, formState, getValues, control } =
-    useForm({
-      defaultValues: {
-        isEditSession: isEditSession ? editValues : {},
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState,
+    getValues,
+    setValue,
+    trigger,
+  } = useForm({
+    defaultValues: {
+      isEditSession: isEditSession ? editValues : {},
+    },
+  });
 
   const { errors } = formState;
 
-  function handleBookingDate(dates, field) {
-    const [startDate, endDate] = dates;
+  ////// RESERVATION DATES //////
+  function handleBookingDate(e, userInput) {
+    const startDate =
+      userInput === 'checkinDate' ? e.target.value : getValues().checkin;
 
-    /* endDate -1 because the endDate is the checkout date
-       so it is not considered a a date to reserve */
+    setValue('checkin', startDate);
+
+    const endDate =
+      userInput === 'checkoutDate' ? e.target.value : getValues().checkout;
+
+    setValue('checkout', endDate);
+
     const datesToReserve = getDatesBetween(
       new Date(startDate),
-      new Date(endDate - 1)
+      new Date(endDate) - 1
     ).toString();
 
-    const numNights = datesToReserve.split(',').length;
-    setNumNights(numNights);
-    /* Before proceeding checek if below conditions are true: 
-    1- Check if 2 date ranges has been received because a 
-       minimum booking reservation in the system is one night. 
-    2- Check if both startDate and endDate are not identical  */
-    if (
-      datesToReserve.length === 2 ||
-      datesToReserve[0] !== datesToReserve[1]
-    ) {
-      setCheckInOutDates(datesToReserve);
+    const numNights = datesToReserve.split(',').length - 1;
+
+    setValue('numNights', numNights);
+
+    console.log(getValues());
+
+    if (startDate && endDate && startDate < endDate) {
       const unavailabeCabins = activeBookings
         ?.map((booking) => {
           return {
@@ -161,8 +172,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       setCabinsAvailable(null);
     }
     // unavailable cabins for the chosen reservation date
-
-    return field.onChange(dates);
   }
 
   function handleBookingMethods(e) {
@@ -233,22 +242,18 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormRow
-          label={'Guest full name*'}
-          error={errors?.guestfullName?.message}
-        >
+        <FormRow label={'Guest full name*'} error={errors?.fullName?.message}>
           <Input
             type="text"
-            name="guestfullName"
-            id="guestfullName"
+            name="fullName"
+            id="fullName"
             list="searchableFullNames"
             placeholder="Select option..."
-            value={guestInput}
             onFocus={handleSearchOnFocus}
             onChangeCapture={handleSearchOnChange}
             // onClick={handleSearchOnClick}
             disabled={isWorking}
-            {...register('guestfullName', {
+            {...register('fullName', {
               required: 'this field is required',
             })}
           />
@@ -267,13 +272,52 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             </datalist>
           )}
         </FormRow>
-        <FormRow label={'Booking type*'} error={errors?.bookingType?.message}>
+
+        <FormRow label="Check in" error={errors?.checkin?.message}>
+          <Input
+            type="date"
+            name="checkin"
+            id="checkin"
+            onChangeCapture={(e) => handleBookingDate(e, 'checkinDate')}
+            min={new Date().toLocaleString('fr-CA').substr(0, 10)}
+            {...register('checkin', {
+              required: 'this field is required',
+              validate: (value) => {
+                return (
+                  value <= getValues().checkout ||
+                  'Checkin should be earlier then checkout'
+                );
+              },
+            })}
+          />
+        </FormRow>
+
+        <FormRow label="Check out" error={errors?.checkout?.message}>
+          <Input
+            type="date"
+            name="checkout"
+            id="checkout"
+            onChangeCapture={(e) => handleBookingDate(e, 'checkoutDate')}
+            min={new Date().toLocaleString('fr-CA').substr(0, 10)}
+            {...register('checkout', {
+              required: 'this field is required',
+              validate: (value) => {
+                return (
+                  value > getValues().checkin ||
+                  'Checkout should be later then checkout'
+                );
+              },
+            })}
+          />
+        </FormRow>
+
+        <FormRow label={'Booking type*'} error={errors?.bookingTypeId?.message}>
           <StyledSelect
-            id="bookingType"
+            id="bookingTypeId"
             onChangeCapture={handleBookingMethods}
             type="white"
             disabled={isWorking || isLoadingBookingTypes}
-            {...register('bookingType', {
+            {...register('bookingTypeId', {
               required: 'this field is required',
             })}
           >
@@ -287,13 +331,13 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
         </FormRow>
         <FormRow
           label={'Booking method*'}
-          error={errors?.bookingMethods?.message}
+          error={errors?.bookingMethodId?.message}
         >
           <StyledSelect
             type="white"
-            id="bookingMethods"
+            id="bookingMethodId"
             disabled={isWorking || isLoadingBookingTypes || !bookingTypeId}
-            {...register('bookingMethods', {
+            {...register('bookingMethodId', {
               required: 'this field is required',
             })}
           >
@@ -305,36 +349,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             ))}
           </StyledSelect>
         </FormRow>
-        <FormRow
-          label={'Reservation date*'}
-          error={errors?.reservationDate?.message}
-          type="datePicker"
-        >
-          <Controller
-            control={control}
-            name="reservationDate"
-            {...register('reservationDate', {
-              required: 'this field is required',
-            })}
-            render={({ field }) => (
-              <DatePicker
-                // showIcon
-                // toggleCalendarOnIconClick
-                icon={<HiCalendar />}
-                startDate={field.value?.[0]}
-                endDate={field.value?.[1]}
-                onChange={(dates) => handleBookingDate(dates, field)}
-                calendarStartDay={3}
-                placeholderText="Select Date Range"
-                minDate={new Date()}
-                selectsRange
-                monthsShown={2}
-                withPortal
-                customInput={<Input type="text" />}
-              />
-            )}
-          />
-        </FormRow>
+
         <FormRow label={'Number of nights*'} error={errors?.numNights?.message}>
           <Input
             type="text"
@@ -343,7 +358,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             {...register('numNights', {
               required: 'this field is required',
             })}
-            value={numNights}
           />
         </FormRow>
         <FormRow label={'Available cabins*'} error={errors?.cabin?.message}>

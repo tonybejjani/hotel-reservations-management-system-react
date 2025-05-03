@@ -16,9 +16,9 @@ const StyledFormRow = styled.div`
 
   padding: 1.2rem 0;
 
-  &:first-child {
-    padding-top: 0;
-  }
+  /* &:first-child {
+      padding-top: 0;
+    } */
 
   &:last-child {
     padding-bottom: 0;

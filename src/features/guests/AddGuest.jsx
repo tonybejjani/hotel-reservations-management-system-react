@@ -24,7 +24,7 @@ function AddGuests() {
           </ButtonContentWrapper>
         </Button>
       </Modal.Open>
-      <Modal.Window opens="guestForm">
+      <Modal.Window opens="guestForm" title="new guest">
         <CreateGuestForm />
       </Modal.Window>
     </Modal>

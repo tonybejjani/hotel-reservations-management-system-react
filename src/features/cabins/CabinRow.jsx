@@ -74,7 +74,7 @@ function CabinRow({ cabin }) {
       ) : (
         <span>&mdash;</span>
       )}
-      <div> 
+      <div>
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={cabinId} />
@@ -91,7 +91,7 @@ function CabinRow({ cabin }) {
               </Modal.Open>
             </Menus.List>
 
-            <Modal.Window opens="edit-form">
+            <Modal.Window opens="edit-form" title="edit cabin ">
               <CreateCabinForm cabinToEdit={cabin} />
             </Modal.Window>
 

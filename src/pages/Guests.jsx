@@ -8,7 +8,7 @@ function Guests() {
   return (
     <>
       <Row type="vertical">
-        <Heading as="h1">All guests</Heading>
+        <Heading as="h1">Guests</Heading>
         <GuestsTableOperations />
       </Row>
       <Row>

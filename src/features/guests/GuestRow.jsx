@@ -78,7 +78,7 @@ function GuestRow({ guest }) {
               </Modal.Open>
             </Menus.List>
 
-            <Modal.Window opens="guestForm">
+            <Modal.Window opens="guestForm" title="edit guest ">
               <CreateGuestForm guestToEdit={guest} />
             </Modal.Window>
 

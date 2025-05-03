@@ -26,7 +26,7 @@ function AddCabin() {
             </ButtonContentWrapper>
           </Button>
         </Modal.Open>
-        <Modal.Window opens="cabinForm">
+        <Modal.Window opens="cabinForm" title="new cabin">
           <CreateCabinForm />
         </Modal.Window>
       </Modal>
