@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+
+// Custom Hooks
 import useCabins from '../cabins/useCabins';
 import useGuests from '../guests/useGuests';
 import useCreateBooking from './useCreateBooking';
@@ -10,6 +12,10 @@ import useBookingType from './useBookingType';
 import useBookingMethods from './useBookingMethods';
 import useActiveBookings from './useActiveBookings';
 
+// Custom Components
+import GuestsTable from '../guests/GuestsTable';
+
+//UI
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
 import Button from '../../ui/Button';
@@ -21,9 +27,20 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { formatCurrency, getDatesBetween } from '../../utils/helpers';
 
+import FormSection from '../../ui/FormSection';
+import Heading from '../../ui/Heading';
+import { HiMiniMagnifyingGlass } from 'react-icons/hi2';
+import Modal from '../../ui/Modal';
 // import { format } from 'date-fns';
 // import { TfiRulerAlt } from 'react-icons/tfi';
 // import useEditBooking from './useEditCabin';
+
+const GuestHeadingSection = styled.div`
+  display: flex;
+  column-gap: 2em;
+  align-items: center;
+  padding-bottom: 1.4rem;
+`;
 
 const StyledSelect = styled.select`
   font-size: 1.4rem;
@@ -37,11 +54,6 @@ const StyledSelect = styled.select`
   background-color: var(--color-grey-0);
   font-weight: 500;
   box-shadow: var(--shadow-sm);
-`;
-
-const FormSection = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 // eslint-disable-next-line react/prop-types
@@ -103,13 +115,12 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       new Date(endDate) - 1
     ).toString();
 
-    const numNights = datesToReserve.split(',').length - 1;
-
-    setValue('numNights', numNights);
-
     console.log(getValues());
 
     if (startDate && endDate && startDate < endDate) {
+      const numNights = datesToReserve.split(',').length - 1;
+      setValue('numNights', numNights);
+
       const unavailabeCabins = activeBookings
         ?.map((booking) => {
           return {
@@ -170,6 +181,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       }
     } else {
       setCabinsAvailable(null);
+      setValue('numNights', null);
     }
     // unavailable cabins for the chosen reservation date
   }
@@ -203,13 +215,21 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     setNumGuests(guests);
   }
 
-  function handleSearchOnFocus(e) {
-    setGuestInput('');
-  }
-  function handleSearchOnChange(e) {
-    setGuestInput(e.target.value);
-    console.log(getValues());
-  }
+  ///// FIRST METHOD: DEPRECATED ////
+  // function handleSearchOnFocus(e) {
+  //   setValue('fullName', null);
+  // }
+
+  // function handleSearchOnClick(e) {
+  //   setValue('fullName', null);
+  // }
+
+  // function handleSearchOnChange(e) {
+  //   console.log(e.options);
+  //   setValue('fullName', e.target.value);
+
+  //   console.log(getValues());
+  // }
 
   function onSubmit(data) {
     console.log(getValues());
@@ -242,16 +262,48 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <GuestHeadingSection>
+          <Heading as="h2">Add Guest Information</Heading>
+          <Modal>
+            <Modal.Open opens="searchGuest">
+              <Button>Search Guests</Button>
+            </Modal.Open>
+            {/* <Modal.Open opens="addGuest">
+              <Button>Add Existing Guests</Button>
+            </Modal.Open> */}
+            <Modal.Window opens="searchGuest">
+              <GuestsTable />
+            </Modal.Window>
+            {/* <Modal.Window opens="addGuest">
+              <p>Add Guest</p>
+            </Modal.Window> */}
+          </Modal>
+        </GuestHeadingSection>
+        <FormSection title="Add Guest Info ">
+          <FormRow label={'Full name'}>
+            <Input type="text" id="fullName" disabled />
+          </FormRow>
+          <FormRow label={'National ID'}>
+            <Input type="text" id="nationalId" disabled />
+          </FormRow>
+          <FormRow label={'Nationality'}>
+            <Input type="text" id="nationality" disabled />
+          </FormRow>
+          <FormRow label={'Email'}>
+            <Input type="text" id="email" disabled />
+          </FormRow>
+        </FormSection>
         {/* <FormRow label={'Guest full name*'} error={errors?.fullName?.message}>
           <Input
             type="text"
             name="fullName"
             id="fullName"
             list="searchableFullNames"
-            placeholder="Select option..."
+            placeholder="Search exisiting guests..."
             onFocus={handleSearchOnFocus}
             onChangeCapture={handleSearchOnChange}
-            // onClick={handleSearchOnClick}
+            // onMouseDown={handleSearchOnClick}
+            onClick={handleSearchOnClick}
             disabled={isWorking}
             {...register('fullName', {
               required: 'this field is required',
@@ -263,7 +315,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
               {guests.map((option) => {
                 return (
                   <option
-                    value={option.fullName}
+                    value={`${option.fullName} Id: ${option.nationalID}`}
                     id={option.id}
                     key={option.id}
                   />
