@@ -23,7 +23,7 @@ import Button from '../../ui/Button';
 import FormRow from '../../ui/FormRow';
 import FormSection from '../../ui/FormSection';
 import Heading from '../../ui/Heading';
-import { HiMiniMagnifyingGlass } from 'react-icons/hi2';
+import { HiMiniMagnifyingGlass, HiMiniPlus } from 'react-icons/hi2';
 import Modal from '../../ui/Modal';
 
 //// Styling
@@ -32,10 +32,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 //// Helpers
 import { formatCurrency, getDatesBetween } from '../../utils/helpers';
+import CreateGuestForm from '../guests/CreateGuestForm';
 
 const HeadingSection = styled.div`
   display: flex;
-  column-gap: 4em;
+  column-gap: 2em;
   align-items: center;
   margin-bottom: 0.4rem;
   padding-bottom: 1.2rem;
@@ -111,6 +112,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   const { isLoading: isLoadingBookingMethods, bookingMethods = [] } =
     useBookingMethods();
 
+  const [guestRowData, setGuestRowData] = useState({});
   const [numGuests, setNumGuests] = useState();
   const [bookingTypeId, setBookingTypeId] = useState();
   const [cabinsAvailable, setCabinsAvailable] = useState();
@@ -296,57 +298,79 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
   const isWorking = isCreating;
 
-  const [guestRowData, setGuestRowData] = useState({});
-
-  let guestsPass = 'test';
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <HeadingSection>
-          <Heading as="h2">
-            <TitleWrapper>
-              <NumberCircle>1</NumberCircle>
-              <span>Guest Details</span>
-            </TitleWrapper>
-          </Heading>
-          <Modal>
-            <Modal.Open opens="searchGuest">
-              <SearchWrapper>
-                <HiMiniMagnifyingGlass />
-                <Button size="smallMedium">Search Guests</Button>
-              </SearchWrapper>
-            </Modal.Open>
-            {/* <Modal.Open opens="addGuest">
+      <AddBookingContext.Provider value={{ setGuestRowData }}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <HeadingSection>
+            <Heading as="h2">
+              <TitleWrapper>
+                <NumberCircle>1</NumberCircle>
+                <span>Guest Details</span>
+              </TitleWrapper>
+            </Heading>
+            <Modal>
+              <Modal.Open opens="searchGuest">
+                <SearchWrapper>
+                  <HiMiniMagnifyingGlass />
+                  <Button size="smallMedium">Search Guests</Button>
+                </SearchWrapper>
+              </Modal.Open>
+
+              <Modal.Open opens="addGuest">
+                <SearchWrapper>
+                  <HiMiniPlus />
+                  <Button size="smallMedium">Add New Guest</Button>
+                </SearchWrapper>
+              </Modal.Open>
+
+              {/* <Modal.Open opens="addGuest">
               <Button>Add Existing Guests</Button>
             </Modal.Open> */}
-            <Modal.Window opens="searchGuest">
-              <GuestsTablePicker />
-            </Modal.Window>
-            {/* <Modal.Window opens="addGuest">
-              <p>Add Guest</p>
-            </Modal.Window> */}
-          </Modal>
-        </HeadingSection>
-        <FormSection title="Add Guest Info ">
-          <FormRow label={'Full name'}>
-            <Input
-              type="text"
-              id="fullName"
-              disabled
-              value={guestRowData?.fullName}
-            />
-          </FormRow>
-          <FormRow label={'National ID'}>
-            <Input type="text" id="nationalId" disabled />
-          </FormRow>
-          <FormRow label={'Nationality'}>
-            <Input type="text" id="nationality" disabled />
-          </FormRow>
-          <FormRow label={'Email'}>
-            <Input type="text" id="email" disabled />
-          </FormRow>
-        </FormSection>
-        {/* <FormRow label={'Guest full name*'} error={errors?.fullName?.message}>
+              <Modal.Window opens="searchGuest">
+                <GuestsTablePicker />
+              </Modal.Window>
+              <Modal.Window opens="addGuest">
+                <CreateGuestForm />
+              </Modal.Window>
+            </Modal>
+          </HeadingSection>
+          <FormSection title="Add Guest Info ">
+            <FormRow label={'Full name'}>
+              <Input type="hidden" />
+              <Input
+                type="text"
+                id="fullName"
+                disabled
+                value={guestRowData?.fullName}
+              />
+            </FormRow>
+            <FormRow label={'National ID'}>
+              <Input
+                type="text"
+                id="nationalId"
+                disabled
+                value={guestRowData?.nationalID}
+              />
+            </FormRow>
+            <FormRow label={'Nationality'}>
+              <Input
+                type="text"
+                id="nationality"
+                disabled
+                value={guestRowData?.nationality}
+              />
+            </FormRow>
+            <FormRow label={'Email'}>
+              <Input
+                type="text"
+                id="email"
+                disabled
+                value={guestRowData?.email}
+              />
+            </FormRow>
+          </FormSection>
+          {/* <FormRow label={'Guest full name*'} error={errors?.fullName?.message}>
           <Input
             type="text"
             name="fullName"
@@ -377,190 +401,191 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             </datalist>
           )}
         </FormRow> */}
-        <HeadingSection>
-          <Heading as="h2">
-            <TitleWrapper>
-              <NumberCircle>2</NumberCircle>
-              <span>Booking Details</span>
-            </TitleWrapper>
-          </Heading>
-          <Modal>
-            {/* <Modal.Open opens="searchGuest">
+          <HeadingSection>
+            <Heading as="h2">
+              <TitleWrapper>
+                <NumberCircle>2</NumberCircle>
+                <span>Booking Details</span>
+              </TitleWrapper>
+            </Heading>
+            <Modal>
+              {/* <Modal.Open opens="searchGuest">
               <Button size="smallMedium">Search Guests</Button>
             </Modal.Open> */}
-            {/* <Modal.Open opens="addGuest">
+              {/* <Modal.Open opens="addGuest">
               <Button>Add Existing Guests</Button>
             </Modal.Open> */}
-            {/* <Modal.Window opens="searchGuest">
+              {/* <Modal.Window opens="searchGuest">
               <GuestsTable />
             </Modal.Window> */}
-            {/* <Modal.Window opens="addGuest">
+              {/* <Modal.Window opens="addGuest">
               <p>Add Guest</p>
             </Modal.Window> */}
-          </Modal>
-        </HeadingSection>
-        <FormSection>
-          <FormRow label="Check in" error={errors?.checkin?.message}>
-            <Input
-              type="date"
-              name="checkin"
-              id="checkin"
-              onChangeCapture={(e) => handleBookingDate(e, 'checkinDate')}
-              onBlurCapture={() => trigger(['checkin', 'checkout'])}
-              min={new Date().toLocaleString('fr-CA').substr(0, 10)}
-              {...register('checkin', {
-                required: 'this field is required',
-                validate: (value) => {
-                  if (!getValues().checkout) return;
-                  return (
-                    value <= getValues().checkout ||
-                    'Check in date should be earlier then check out date.'
-                  );
-                },
-              })}
-            />
-          </FormRow>
+            </Modal>
+          </HeadingSection>
+          <FormSection>
+            <FormRow label="Check in" error={errors?.checkin?.message}>
+              <Input
+                type="date"
+                name="checkin"
+                id="checkin"
+                onChangeCapture={(e) => handleBookingDate(e, 'checkinDate')}
+                onBlurCapture={() => trigger(['checkin', 'checkout'])}
+                min={new Date().toLocaleString('fr-CA').substr(0, 10)}
+                {...register('checkin', {
+                  required: 'this field is required',
+                  validate: (value) => {
+                    if (!getValues().checkout) return;
+                    return (
+                      value <= getValues().checkout ||
+                      'Check in date should be earlier then check out date.'
+                    );
+                  },
+                })}
+              />
+            </FormRow>
 
-          <FormRow label="Check out" error={errors?.checkout?.message}>
-            <Input
-              type="date"
-              name="checkout"
-              id="checkout"
-              onChangeCapture={(e) => handleBookingDate(e, 'checkoutDate')}
-              onBlurCapture={() => trigger(['checkin', 'checkout'])}
-              min={new Date().toLocaleString('fr-CA').substr(0, 10)}
-              {...register('checkout', {
-                required: 'this field is required',
-                validate: (value) => {
-                  if (!getValues().checkin) return;
-                  return (
-                    value > getValues().checkin ||
-                    'Check out date should be later then check in date.'
-                  );
-                },
-              })}
-            />
-          </FormRow>
+            <FormRow label="Check out" error={errors?.checkout?.message}>
+              <Input
+                type="date"
+                name="checkout"
+                id="checkout"
+                onChangeCapture={(e) => handleBookingDate(e, 'checkoutDate')}
+                onBlurCapture={() => trigger(['checkin', 'checkout'])}
+                min={new Date().toLocaleString('fr-CA').substr(0, 10)}
+                {...register('checkout', {
+                  required: 'this field is required',
+                  validate: (value) => {
+                    if (!getValues().checkin) return;
+                    return (
+                      value > getValues().checkin ||
+                      'Check out date should be later then check in date.'
+                    );
+                  },
+                })}
+              />
+            </FormRow>
 
-          <FormRow
-            label={'Booking type*'}
-            error={errors?.bookingTypeId?.message}
-          >
-            <StyledSelect
-              id="bookingTypeId"
-              onChangeCapture={handleBookingMethods}
-              type="white"
-              disabled={isWorking || isLoadingBookingTypes}
-              {...register('bookingTypeId', {
-                required: 'this field is required',
-              })}
+            <FormRow
+              label={'Booking type*'}
+              error={errors?.bookingTypeId?.message}
             >
-              <option value="">Select option...</option>
-              {bookingTypes?.map((option) => (
-                <option value={option.id} key={option.id}>
-                  {option.name}
-                </option>
-              ))}
-            </StyledSelect>
-          </FormRow>
-          <FormRow
-            label={'Booking method*'}
-            error={errors?.bookingMethodId?.message}
-          >
-            <StyledSelect
-              type="white"
-              id="bookingMethodId"
-              disabled={isWorking || isLoadingBookingTypes || !bookingTypeId}
-              {...register('bookingMethodId', {
-                required: 'this field is required',
-              })}
+              <StyledSelect
+                id="bookingTypeId"
+                onChangeCapture={handleBookingMethods}
+                type="white"
+                disabled={isWorking || isLoadingBookingTypes}
+                {...register('bookingTypeId', {
+                  required: 'this field is required',
+                })}
+              >
+                <option value="">Select option...</option>
+                {bookingTypes?.map((option) => (
+                  <option value={option.id} key={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </StyledSelect>
+            </FormRow>
+            <FormRow
+              label={'Booking method*'}
+              error={errors?.bookingMethodId?.message}
             >
-              <option value="">Select option...</option>
-              {BookingMethodOptions.map((option) => (
-                <option value={option.id} key={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </StyledSelect>
-          </FormRow>
+              <StyledSelect
+                type="white"
+                id="bookingMethodId"
+                disabled={isWorking || isLoadingBookingTypes || !bookingTypeId}
+                {...register('bookingMethodId', {
+                  required: 'this field is required',
+                })}
+              >
+                <option value="">Select option...</option>
+                {BookingMethodOptions.map((option) => (
+                  <option value={option.id} key={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </StyledSelect>
+            </FormRow>
 
-          <FormRow
-            label={'Number of nights*'}
-            error={errors?.numNights?.message}
-          >
-            <Input
-              type="text"
-              id="numNights"
-              disabled
-              {...register('numNights', {
-                required: 'this field is required',
-              })}
-            />
-          </FormRow>
-          <FormRow label={'Available cabins*'} error={errors?.cabin?.message}>
-            <StyledSelect
-              id="cabin"
-              onChangeCapture={handleNumGuests}
-              type="white"
-              disabled={
-                isWorking ||
-                isLoadingCabins ||
-                isLoadingActiveBookings ||
-                !cabinsAvailable
-              }
-              {...register('cabin', {
-                required: 'this field is required',
-              })}
+            <FormRow
+              label={'Number of nights*'}
+              error={errors?.numNights?.message}
             >
-              <option value="">Select option...</option>
-              {cabinsAvailable?.map((cabin) => (
-                <option value={cabin.id} key={cabin.id}>
-                  {`Up to ${cabin.maxCapacity} guests  — ${formatCurrency(
-                    cabin.regularPrice
-                  )} — Cabin ${cabin.name} `}
-                </option>
-              ))}
-            </StyledSelect>
-          </FormRow>
-          <FormRow
-            label={'Number of guests*'}
-            error={errors?.numGuests?.message}
-          >
-            <StyledSelect
-              id="numGuests"
-              type="white"
-              disabled={
-                isWorking || isLoadingCabins || !cabinsAvailable || !numGuests
-              }
-              // onChangeCapture={handleUserNumGuests}
-              {...register('numGuests', {
-                required: 'this field is required',
-              })}
+              <Input
+                type="text"
+                id="numNights"
+                disabled
+                {...register('numNights', {
+                  required: 'this field is required',
+                })}
+              />
+            </FormRow>
+            <FormRow label={'Available cabins*'} error={errors?.cabin?.message}>
+              <StyledSelect
+                id="cabin"
+                onChangeCapture={handleNumGuests}
+                type="white"
+                disabled={
+                  isWorking ||
+                  isLoadingCabins ||
+                  isLoadingActiveBookings ||
+                  !cabinsAvailable
+                }
+                {...register('cabin', {
+                  required: 'this field is required',
+                })}
+              >
+                <option value="">Select option...</option>
+                {cabinsAvailable?.map((cabin) => (
+                  <option value={cabin.id} key={cabin.id}>
+                    {`Up to ${cabin.maxCapacity} guests  — ${formatCurrency(
+                      cabin.regularPrice
+                    )} — Cabin ${cabin.name} `}
+                  </option>
+                ))}
+              </StyledSelect>
+            </FormRow>
+            <FormRow
+              label={'Number of guests*'}
+              error={errors?.numGuests?.message}
             >
-              <option value="">Select option...</option>
-              {numGuests?.map((num) => (
-                <option value={num} key={num}>
-                  {num} guests
-                </option>
-              ))}
-            </StyledSelect>
+              <StyledSelect
+                id="numGuests"
+                type="white"
+                disabled={
+                  isWorking || isLoadingCabins || !cabinsAvailable || !numGuests
+                }
+                // onChangeCapture={handleUserNumGuests}
+                {...register('numGuests', {
+                  required: 'this field is required',
+                })}
+              >
+                <option value="">Select option...</option>
+                {numGuests?.map((num) => (
+                  <option value={num} key={num}>
+                    {num} guests
+                  </option>
+                ))}
+              </StyledSelect>
+            </FormRow>
+          </FormSection>
+          <FormRow>
+            {/* type is an HTML attribute! */}
+            <Button
+              variation="secondary"
+              type="reset"
+              onClick={() => navigate('/bookings')}
+            >
+              Cancel
+            </Button>
+            <Button disabled={isWorking}>
+              {/* {isEditSession ? 'Edit cabin' : 'Create new cabin'} */}
+              Create new booking
+            </Button>
           </FormRow>
-        </FormSection>
-        <FormRow>
-          {/* type is an HTML attribute! */}
-          <Button
-            variation="secondary"
-            type="reset"
-            onClick={() => navigate('/bookings')}
-          >
-            Cancel
-          </Button>
-          <Button disabled={isWorking}>
-            {/* {isEditSession ? 'Edit cabin' : 'Create new cabin'} */}
-            Create new booking
-          </Button>
-        </FormRow>
-      </Form>
+        </Form>
+      </AddBookingContext.Provider>
     </>
   );
 }

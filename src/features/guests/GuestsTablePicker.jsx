@@ -13,7 +13,7 @@ import PickGuestRow from './PickGuestRow';
 const FullName = styled.div`
   padding-left: 1.5rem;
 `;
-function GuestsTablePicker() {
+function GuestsTablePicker({ onCloseModal }) {
   const { isLoading, guests, count } = useGuests();
 
   if (isLoading) return <Spinner />;
@@ -22,7 +22,7 @@ function GuestsTablePicker() {
 
   return (
     <Menus>
-      <Table columns="1.5fr 1.5fr 1.5fr 1.5fr ">
+      <Table columns="1.5fr 1.5fr 1.5fr 1.5fr">
         <Table.Header>
           <FullName>Full Name</FullName>
           <div>Email</div>
@@ -32,7 +32,13 @@ function GuestsTablePicker() {
         </Table.Header>
         <Table.Body
           data={guests}
-          render={(guest) => <PickGuestRow guest={guest} key={guest.id} />}
+          render={(guest) => (
+            <PickGuestRow
+              guest={guest}
+              key={guest.id}
+              onCloseModal={onCloseModal}
+            />
+          )}
         />
         <Table.Footer>
           <Pagination count={count}></Pagination>

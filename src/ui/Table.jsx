@@ -87,11 +87,20 @@ function Header({ children }) {
   );
 }
 
-function Row({ children, isHoverable = false }) {
+function Row({ children, isHoverable = false, rowData = {}, onSetRowData }) {
   const { columns } = useContext(TableContext);
 
+  function handleRowData(rowData) {
+    if (!isHoverable) return;
+    onSetRowData(rowData);
+  }
   return (
-    <StyledRow role="row" columns={columns} isHoverable={isHoverable}>
+    <StyledRow
+      role="row"
+      columns={columns}
+      isHoverable={isHoverable}
+      onClick={() => handleRowData(rowData)}
+    >
       {children}
     </StyledRow>
   );

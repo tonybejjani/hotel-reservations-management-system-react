@@ -12,6 +12,8 @@ import FormRow from '../../ui/FormRow';
 import { useForm } from 'react-hook-form';
 import useCreateGuest from './useCreateCabin';
 import useEditGuest from './useEditGuest';
+import { useContext } from 'react';
+import { AddBookingContext } from '../bookings/AddBooking';
 
 // eslint-disable-next-line react/prop-types
 function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
@@ -24,6 +26,8 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
   const { register, handleSubmit, reset, formState, getValues } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
+
+  const { setGuestRowData } = useContext(AddBookingContext);
 
   const { errors } = formState;
 
@@ -44,6 +48,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
             onSuccess: () => {
               reset();
               onCloseModal?.();
+              setGuestRowData(data);
             },
           }
         );

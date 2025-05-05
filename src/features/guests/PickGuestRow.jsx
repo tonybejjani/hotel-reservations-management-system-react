@@ -16,6 +16,7 @@ import CreateGuestForm from './CreateGuestForm';
 import useDeleteGuest from './useDeleteGuest';
 import Input from '../../ui/Input';
 import { useContext, useState } from 'react';
+import { AddBookingContext } from '../bookings/AddBooking';
 
 const Img = styled.img`
   display: block;
@@ -41,10 +42,15 @@ const NationalID = styled.div`
   font-weight: 500;
 `;
 
+const RowWrapper = styled.div`
+  display: flex;
+  grid-column: 1.5fr 1.5fr 1.5fr 1.5fr;
+`;
 // eslint-disable-next-line react/prop-types
-function PickGuestRow({ guest }) {
+function PickGuestRow({ guest, onCloseModal }) {
   const { deleteGuest, isDeleting } = useDeleteGuest();
 
+  const [rowData, setRowData] = useState({});
   // eslint-disable-next-line react/prop-types
   const {
     id: guestId,
@@ -55,17 +61,24 @@ function PickGuestRow({ guest }) {
     countryFlag,
   } = guest;
 
-  function handleRowData(rowData) {
-    // if (isHoverable && guestsPass === rowPass) setGuestRowData(rowData);
+  const { setGuestRowData } = useContext(AddBookingContext);
+
+  function handleSetRowData(rowData) {
+    setRowData(rowData);
+    setGuestRowData(rowData);
+    onCloseModal?.();
   }
   return (
-    <Table.Row isHoverable={true} rowData={guest} rowPass="guestsPass">
-      <div>
-        <Name>{fullName}</Name>
-        <Email>{email}</Email>
-        <NationalID>{nationalID}</NationalID>
-        <div>{nationality}</div>
-      </div>
+    <Table.Row
+      isHoverable={true}
+      rowData={guest}
+      rowPass="guestsPass"
+      onSetRowData={handleSetRowData}
+    >
+      <Name>{fullName}</Name>
+      <Email>{email}</Email>
+      <NationalID>{nationalID}</NationalID>
+      <div>{nationality}</div>
     </Table.Row>
   );
 }
