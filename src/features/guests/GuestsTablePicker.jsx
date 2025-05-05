@@ -1,5 +1,6 @@
 /** @format */
-import GuestRow from './GuestRow';
+
+/** @format */
 import Spinner from '../../ui/Spinner';
 import useGuests from './useGuests';
 import Table from '../../ui/Table';
@@ -7,11 +8,12 @@ import Menus from '../../ui/Menus';
 import styled from 'styled-components';
 import Pagination from '../../ui/Pagination';
 import Empty from '../../ui/Empty';
+import PickGuestRow from './PickGuestRow';
 
 const FullName = styled.div`
   padding-left: 1.5rem;
 `;
-function GuestsTable() {
+function GuestsTablePicker() {
   const { isLoading, guests, count } = useGuests();
 
   if (isLoading) return <Spinner />;
@@ -20,19 +22,17 @@ function GuestsTable() {
 
   return (
     <Menus>
-      <Table columns="1.5fr 1.5fr 1fr 0.8fr 0.5fr 0.2fr">
+      <Table columns="1.5fr 1.5fr 1.5fr 1.5fr ">
         <Table.Header>
           <FullName>Full Name</FullName>
           <div>Email</div>
           <div>nationalID</div>
           <div>Nationality</div>
-          <div></div>
-          <div></div>
           {/* {!isClickable && <div></div>} */}
         </Table.Header>
         <Table.Body
           data={guests}
-          render={(guest) => <GuestRow guest={guest} key={guest.id} />}
+          render={(guest) => <PickGuestRow guest={guest} key={guest.id} />}
         />
         <Table.Footer>
           <Pagination count={count}></Pagination>
@@ -42,4 +42,4 @@ function GuestsTable() {
   );
 }
 
-export default GuestsTable;
+export default GuestsTablePicker;

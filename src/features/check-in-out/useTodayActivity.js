@@ -9,6 +9,5 @@ export function useTodayActivity() {
     queryKey: ['today-activity'],
   });
 
-  console.log(activeBookings);
   return { activeBookings, isLoading };
 }

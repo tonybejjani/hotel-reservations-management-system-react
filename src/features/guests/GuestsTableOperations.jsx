@@ -1,7 +1,7 @@
 /** @format */
 
 import styled from 'styled-components';
-import GuestsSearch from './GuestsSearch';
+import GuestsSearchBar from './GuestsSearchBar';
 import TableOperations from '../../ui/TableOperations';
 import AddGuest from './AddGuest';
 import { HiMiniMagnifyingGlass } from 'react-icons/hi2';
@@ -35,7 +35,7 @@ function GuestsTableOperations() {
   return (
     <TableOperations>
       <SearchWrapper>
-        <GuestsSearch />
+        <GuestsSearchBar />
         <HiMiniMagnifyingGlass />
       </SearchWrapper>
 

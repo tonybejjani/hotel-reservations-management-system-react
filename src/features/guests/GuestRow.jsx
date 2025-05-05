@@ -44,9 +44,10 @@ const NationalID = styled.div`
 `;
 
 // eslint-disable-next-line react/prop-types
-function GuestRow({ guest }) {
+function GuestRow({ guest, clickable = false }) {
   const { deleteGuest, isDeleting } = useDeleteGuest();
 
+  console.log(clickable);
   // eslint-disable-next-line react/prop-types
   const {
     id: guestId,

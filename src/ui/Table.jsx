@@ -2,10 +2,10 @@
 
 import { createContext, useContext } from 'react';
 import styled from 'styled-components';
+import { AddBookingContext } from '../features/bookings/AddBooking';
 
 export const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
-
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
@@ -36,6 +36,13 @@ export const StyledRow = styled(CommonRow)`
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
+
+  &:hover {
+    background-color: ${(props) =>
+      props.isHoverable ? 'var(--color-grey-100)' : 'inherit'};
+
+    cursor: ${(props) => (props.isHoverable ? 'pointer' : 'inherit')};
+  }
 `;
 
 export const StyledBody = styled.section`
@@ -61,7 +68,7 @@ export const Empty = styled.p`
   margin: 2.4rem;
 `;
 
-const TableContext = createContext();
+export const TableContext = createContext();
 
 function Table({ children, columns }) {
   return (
@@ -80,10 +87,11 @@ function Header({ children }) {
   );
 }
 
-function Row({ children }) {
+function Row({ children, isHoverable = false }) {
   const { columns } = useContext(TableContext);
+
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" columns={columns} isHoverable={isHoverable}>
       {children}
     </StyledRow>
   );

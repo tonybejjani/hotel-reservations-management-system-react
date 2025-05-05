@@ -17,7 +17,7 @@ const Search = styled.input`
   }
 `;
 
-function GuestsSearch() {
+function GuestsSearchBar() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleSearchInput(e) {
@@ -34,4 +34,4 @@ function GuestsSearch() {
   );
 }
 
-export default GuestsSearch;
+export default GuestsSearchBar;

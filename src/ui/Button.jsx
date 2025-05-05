@@ -12,6 +12,13 @@ const sizes = {
     font-weight: 600;
     text-align: center;
   `,
+  smallMedium: css`
+    font-size: 1.2rem;
+    padding: 1rem 1.2rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+  `,
   medium: css`
     font-size: 1.4rem;
     padding: 1.2rem 1.6rem;

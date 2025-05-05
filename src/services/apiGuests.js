@@ -7,7 +7,11 @@ export async function getGuests({ page, search }) {
   let query = supabase.from('guests').select('*', { count: 'exact' });
 
   if (search) {
-    query = query.ilike('fullName', `%${search}%`);
+    query = query
+      .select()
+      .or(
+        `fullName.ilike.%${search}%,email.ilike.%${search}%,nationalID.ilike.%${search}%,nationality.ilike.%${search}%`
+      );
   }
 
   if (page) {

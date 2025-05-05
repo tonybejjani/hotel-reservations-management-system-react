@@ -9,8 +9,8 @@ const StyledFormSection = styled.div`
   justify-content: center;
   align-items: right;
   row-gap: 1rem;
-  border: solid 1px var(--color-grey-100);
-  padding: 2rem;
+  padding: 1.6rem;
+  margin-bottom: 3.2rem;
 `;
 
 function FormSection({ children, title, addActionBtns }) {
