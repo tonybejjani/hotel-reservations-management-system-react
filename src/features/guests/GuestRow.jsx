@@ -47,7 +47,6 @@ const NationalID = styled.div`
 function GuestRow({ guest, clickable = false }) {
   const { deleteGuest, isDeleting } = useDeleteGuest();
 
-  console.log(clickable);
   // eslint-disable-next-line react/prop-types
   const {
     id: guestId,

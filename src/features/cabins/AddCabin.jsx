@@ -22,7 +22,7 @@ function AddCabin() {
           <Button>
             <ButtonContentWrapper>
               <HiMiniPlus />
-              <span>New Cabin</span>
+              <span>Add New Cabin</span>
             </ButtonContentWrapper>
           </Button>
         </Modal.Open>

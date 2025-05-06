@@ -20,7 +20,7 @@ function AddGuests() {
         <Button>
           <ButtonContentWrapper>
             <HiMiniPlus />
-            <span>New Guest</span>
+            <span>Add New Guest</span>
           </ButtonContentWrapper>
         </Button>
       </Modal.Open>

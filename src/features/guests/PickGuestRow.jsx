@@ -16,7 +16,7 @@ import CreateGuestForm from './CreateGuestForm';
 import useDeleteGuest from './useDeleteGuest';
 import Input from '../../ui/Input';
 import { useContext, useState } from 'react';
-import { AddBookingContext } from '../bookings/AddBooking';
+import { useGlobalContext } from '../../context/GlobalContext';
 
 const Img = styled.img`
   display: block;
@@ -61,7 +61,7 @@ function PickGuestRow({ guest, onCloseModal }) {
     countryFlag,
   } = guest;
 
-  const { setGuestRowData } = useContext(AddBookingContext);
+  const { setGuestRowData } = useGlobalContext();
 
   function handleSetRowData(rowData) {
     setRowData(rowData);
@@ -70,7 +70,7 @@ function PickGuestRow({ guest, onCloseModal }) {
   }
   return (
     <Table.Row
-      isHoverable={true}
+      ishoverable="true"
       rowData={guest}
       rowPass="guestsPass"
       onSetRowData={handleSetRowData}

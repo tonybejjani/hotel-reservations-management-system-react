@@ -50,9 +50,9 @@ const GlobalStyles = createGlobalStyle`
     --color-brand-100: #d8e5d3;
     --color-brand-200: #b5cfae;
     --color-brand-500: #8A9A5B;
-    --color-brand-600: #5B8A5B;
+    --color-brand-600:rgb(50, 127, 50);
     --color-brand-700: #476947;
-    --color-brand-800: #345834;
+    --color-brand-800:rgb(54, 88, 52);
     --color-brand-900: #213621;
 
 

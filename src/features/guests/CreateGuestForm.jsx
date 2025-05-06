@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import useCreateGuest from './useCreateCabin';
 import useEditGuest from './useEditGuest';
 import { useContext } from 'react';
-import { AddBookingContext } from '../bookings/AddBooking';
+import { useGlobalContext } from '../../context/GlobalContext';
 
 // eslint-disable-next-line react/prop-types
 function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
@@ -27,7 +27,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
     defaultValues: isEditSession ? editValues : {},
   });
 
-  const { setGuestRowData } = useContext(AddBookingContext);
+  const { setGuestRowData } = useGlobalContext();
 
   const { errors } = formState;
 

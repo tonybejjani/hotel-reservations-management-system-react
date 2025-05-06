@@ -8,6 +8,13 @@ const Input = styled.input`
   border-radius: var(--border-radius-sm);
   padding: 0.8rem 1.2rem;
   box-shadow: var(--shadow-sm);
+
+  &[type='checkbox'] {
+    align-self: center;
+    justify-self: start;
+    width: 2rem;
+    height: 2rem;
+  }
 `;
 
 export default Input;

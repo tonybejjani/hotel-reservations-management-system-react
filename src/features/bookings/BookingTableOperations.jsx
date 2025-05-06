@@ -59,7 +59,7 @@ function BookingTableOperations() {
         <Button onClick={() => navigate('/add-booking')}>
           <ButtonContentWrapper>
             <HiMiniPlus />
-            <span> New Booking</span>
+            <span> Add New Booking</span>
           </ButtonContentWrapper>
         </Button>
       </ActionButton>
