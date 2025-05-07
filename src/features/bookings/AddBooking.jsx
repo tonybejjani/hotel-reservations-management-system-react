@@ -116,6 +116,9 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
   const [totalExtrasPrice, setTotalExtrasPrice] = useState();
   const [numGuests, setNumGuests] = useState();
+  const [disableIsPaid, setDisableIsPaid] = useState(true);
+  const [disableStatus, setDisableStatus] = useState(true);
+
   const [userNumGuests, setUserNumGuests] = useState();
   const [bookingTypeId, setBookingTypeId] = useState();
   const [cabinsAvailable, setCabinsAvailable] = useState();
@@ -132,11 +135,15 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     getValues,
     setValue,
     trigger,
+    watch,
   } = useForm({
     defaultValues: {
       isEditSession: isEditSession ? editValues : {},
+      ispaid: false,
     },
   });
+
+  const isPaidValue = watch('ispaid');
 
   const {
     id: guestId,
@@ -157,11 +164,20 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
   const { errors } = formState;
 
-  ////// Reservation dates validation && Fetching number of cabins && number of nights //////
+  // Booking Methods
+  const BookingMethodOptions = bookingMethods?.filter((bookingMethod) => {
+    return bookingTypeId === bookingMethod.typeId;
+  });
+
+  function handleBookingMethods(e) {
+    setBookingTypeId(Number(e.target.value));
+  }
+
+  ////// Validate cabin dates, Fetch available cabins and calculate number of night stays //////
+
   function handleBookingDate(e, userInput) {
     /// reset all values related to choosing dates first
     setCabinsAvailable(null);
-    setTotalExtrasPrice(0);
 
     setValue('cabin', null);
     setValue('numGuests', null);
@@ -176,11 +192,14 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     setValue('totalPrice', null);
     setValue('totalPriceFormat', formatCurrency(0));
 
-    console.log(getValues());
-    // setValue('extrasPriceFormat', formatCurrency(0));
-    // setValue('extrasPriceFormat', formatCurrency(0));
-    // setValue('extrasPriceFormat', formatCurrency(0));
-    /////////////////////////////////////////////////////
+    setValue('cabinDiscount', null);
+    setValue('cabinDiscountFormat', formatCurrency(0));
+
+    setValue('ispaid', false);
+    setDisableIsPaid(true);
+
+    setValue('status', null);
+    setDisableStatus(true);
 
     const startDate =
       userInput === 'checkinDate' ? e.target.value : getValues().checkin;
@@ -248,8 +267,6 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
       if (availableCabins) {
         setCabinsAvailable(availableCabins);
-
-        console.log(getValues());
       }
     } else {
       setCabinsAvailable(null);
@@ -258,26 +275,34 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     // unavailable cabins for the chosen reservation date
   }
 
-  function handleBookingMethods(e) {
-    console.log(e.target.value);
-    setBookingTypeId(Number(e.target.value));
-  }
-
-  // Booking Methods
-  const BookingMethodOptions = bookingMethods?.filter((bookingMethod) => {
-    return bookingTypeId === bookingMethod.typeId;
-  });
-
   function handleCabinChoice(e) {
     //reset all fields related to choosing a cabin
 
     setNumGuests(null);
+    setUserNumGuests(false);
+
     setValue('numGuests', null);
     setValue('hasBreakfast', null);
     setValue('extrasPrice', 0);
     setValue('extrasPriceFormat', formatCurrency(0));
-    setTotalExtrasPrice(0);
-    // setTotalBreakfastPrice(0);
+
+    setValue('cabinPrice', null);
+    setValue('cabinPriceFormat', formatCurrency(0));
+
+    setValue('totalPrice', null);
+    setValue('totalPriceFormat', formatCurrency(0));
+
+    setValue('cabinDiscount', null);
+    setValue('cabinDiscountFormat', formatCurrency(0));
+
+    setValue('ispaid', false);
+    setDisableIsPaid(true);
+
+    setValue('status', null);
+    setDisableStatus(true);
+
+    setValue('status', null);
+    setDisableStatus(true);
 
     const cabinId = Number(e.target.value);
 
@@ -300,6 +325,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
       numGuests[minGuests - 1] = minGuests;
     }
 
+    // Fill the drop down of Number of guests
     setNumGuests(numGuests);
 
     // set cabin  regular price and corresponding discount
@@ -307,73 +333,100 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     setValue('cabinPriceFormat', formatCurrency(cabin[0].price));
     setValue('cabinDiscount', cabin[0].discount);
     setValue('cabinDiscountFormat', formatCurrency(-cabin[0].discount));
-
-    const totalPrice = cabin[0].price - cabin[0].discount;
-    setValue('totalPrice', totalPrice);
-    setValue('totalPriceFormat', formatCurrency(totalPrice));
-
-    console.log(getValues());
   }
-
-  function onSubmit(data) {
-    createBooking(
-      { ...data },
-      {
-        onSuccess: () => {
-          reset();
-          onCloseModal?.();
-        },
-      }
-    );
-  }
-
-  const isWorking = isCreating;
 
   function handleUserGuestsOption(e) {
-    //reset all fields related to choosing a guest if no choise is made by the user
+    const userInput = e.target.value;
+    const hasBreakfast = getValues().hasBreakfast;
 
-    if (!e.target.value) {
+    //reset all fields related to choosing a guest if no choise is made by the user
+    if (!userInput) {
+      setTotalExtrasPrice(0);
+      setUserNumGuests(null);
       setValue('numGuests', null);
-      setValue('hasBreakfast', null);
+      setValue('hasBreakfast', false);
       setValue('extrasPrice', 0);
       setValue('extrasPriceFormat', formatCurrency(0));
-      setTotalExtrasPrice(0);
+      setValue('totalPrice', 0);
+      setValue('totalPriceFormat', formatCurrency(0));
+      setValue('ispaid', false);
+      setDisableIsPaid(true);
+      setValue('status', null);
+      setDisableStatus(true);
+
+      return;
     }
 
-    if (e.target.value && getValues().hasBreakfast) {
-      if (!getValues().numNights || !getValues().numGuests) return;
+    setUserNumGuests(userInput);
+    setValue('numGuests', userInput);
+    setValue('ispaid', false);
 
-      setValue('numGuests', e.target.value);
+    let totalPrice =
+      (getValues().cabinPrice - getValues().cabinDiscount) *
+      getValues().numNights;
 
+    if (hasBreakfast) {
       const totalExtrasPrice =
         settings?.breakfastPrice *
         getValues().numGuests *
         getValues().numNights;
 
-      setTotalExtrasPrice(totalExtrasPrice);
       setValue('extrasPrice', totalExtrasPrice);
       setValue('extrasPriceFormat', formatCurrency(totalExtrasPrice));
+
+      totalPrice = totalPrice + totalExtrasPrice;
     }
 
-    setUserNumGuests(e.target.value);
-    setValue('numGuests', e.target.value);
+    setValue('totalPrice', totalPrice);
+    setValue('totalPriceFormat', formatCurrency(totalPrice));
 
-    // if (!getValues().numGuests) set;
-    // if (getValues().numGuests) console.log(getValues());
+    setDisableIsPaid(false);
+    setValue('status', null);
+    setDisableStatus(true);
   }
 
   function handleIncludeBreakfast(e) {
     const checked = e.target.checked;
+    const totalPrice = getValues().totalPrice;
+    const totalPriceformat = getValues().totalPriceFormat;
+    const isPaid = getValues().ispaid;
 
+    // no breakfast
     if (!checked) {
+      // breakfast is removed from total price
+
+      setValue('hasBreakfast', false);
+      setValue('totalPrice', totalPrice - getValues().extrasPrice);
+      setValue(
+        'totalPriceFormat',
+        formatCurrency(totalPrice - getValues().extrasPrice)
+      );
       setValue('extrasPrice', 0);
       setValue('extrasPriceFormat', formatCurrency(0));
-      setTotalExtrasPrice(0);
+
+      setValue('status', null);
+      setDisableStatus(true);
+
+      if (isPaid) {
+        setValue('ispaid', false);
+        setDisableIsPaid(false);
+      }
     }
 
+    // load app global settings feature values first
     if (isLoadingSettings) return;
 
+    // with breakfast
     if (checked) {
+      if (isPaid) {
+        setValue('ispaid', false);
+        setDisableIsPaid(false);
+
+        setValue('status', null);
+        setDisableStatus(true);
+      }
+
+      setValue('hasBreakfast', true);
       if (!getValues().numNights || !getValues().numGuests) return;
 
       const totalExtrasPrice =
@@ -381,11 +434,57 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
         getValues().numGuests *
         getValues().numNights;
 
-      setTotalExtrasPrice(totalExtrasPrice);
       setValue('extrasPrice', totalExtrasPrice);
       setValue('extrasPriceFormat', formatCurrency(totalExtrasPrice));
+
+      setValue('totalPrice', totalPrice + getValues().extrasPrice);
+      setValue(
+        'totalPriceFormat',
+        formatCurrency(totalPrice + getValues().extrasPrice)
+      );
     }
   }
+
+  function handleIsPaid(e) {
+    const isPaid = e.target.checked;
+
+    if (isPaid) {
+      setValue('ispaid', true);
+      setDisableIsPaid(true);
+
+      setDisableStatus(false);
+    }
+    console.log(getValues().ispaid);
+  }
+
+  function onSubmit(data) {
+    const dataFormat = {
+      startDate: data.checkin,
+      endDate: data.checkout,
+      numNights: +data.numNights,
+      numGuests: +data.numGuests,
+      cabinPrice: +data.cabinPrice,
+      extrasPrice: +data.extrasPrice,
+      totalPrice: +data.totalPrice,
+      status: data.status,
+      hasBreakfast: data.hasBreakfast,
+      isPaid: data.ispaid,
+      observations: data.observation,
+      cabinId: +data.cabin,
+      guestId: +data.guestId,
+      bookingTypeId: +data.bookingTypeId,
+      bookingMethodId: +data.bookingMethodId,
+    };
+
+    console.log(dataFormat);
+    createBooking(dataFormat, {
+      onSuccess: () => {
+        reset();
+      },
+    });
+  }
+
+  const isWorking = isCreating;
 
   return (
     <>
@@ -635,12 +734,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             <Input
               type="checkbox"
               id="hasBreakfast"
-              disabled={
-                isWorking ||
-                isLoadingSettings ||
-                !userNumGuests ||
-                !getValues().numGuests
-              }
+              disabled={isWorking || isLoadingSettings || !userNumGuests}
               onClick={handleIncludeBreakfast}
               // onChangeCapture={handleUserNumGuests}
               {...register('hasBreakfast')}
@@ -686,15 +780,17 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           </FormRow>
           <FormRow
             label={'Cabin Discount'}
-            error={errors?.cabinFormatDiscount?.message}
+            error={errors?.cabinDiscountFormat?.message}
           >
             <Input type="hidden" {...register('cabinDiscount')} />
             <Input
               type="text"
-              id="cabinFormatDiscount"
+              id="cabinDiscountFormat"
               disabled
               // onChangeCapture={handleUserNumGuests}
-              {...register('cabinFormatDiscount')}
+              {...register('cabinDiscountFormat', {
+                required: 'this field is required',
+              })}
             />
           </FormRow>
           <FormRow label={'Extras'} error={errors?.extrasPriceFormat?.message}>
@@ -704,7 +800,9 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
               id="extrasPriceFormat"
               disabled
               // onChangeCapture={handleUserNumGuests}
-              {...register('extrasPriceFormat')}
+              {...register('extrasPriceFormat', {
+                required: 'this field is required',
+              })}
             />
           </FormRow>
           <FormRow
@@ -717,18 +815,24 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
               id="totalPriceFormat"
               disabled
               // onChangeCapture={handleUserNumGuests}
-              {...register('totalPriceFormat')}
+              {...register('totalPriceFormat', {
+                required: 'this field is required',
+              })}
             />
           </FormRow>
           <FormRow label={'Payment Received*'} error={errors?.ispaid?.message}>
             <Input
               type="checkbox"
               id="ispaid"
-              disabled={isWorking}
+              disabled={isWorking || disableIsPaid}
+              onChangeCapture={handleIsPaid}
               // onChangeCapture={handleUserNumGuests}
-              {...register('ispaid', {
-                required: 'this field is required',
-              })}
+              {...register('ispaid')}
+            />
+            <input
+              type="hidden"
+              value={isPaidValue}
+              {...register('ispaidValue')}
             />
           </FormRow>
         </FormSection>
@@ -741,7 +845,26 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
             </TitleWrapper>
           </Heading>
         </HeadingSection>
-        <FormSection></FormSection>
+        <FormSection>
+          <FormRow label={'Booking Status*'} error={errors?.status?.message}>
+            <StyledSelect
+              id="status"
+              type="white"
+              disabled={isWorking || disableStatus}
+              // onChangeCapture={handleUserNumGuests}
+              {...register('status', {
+                required: isPaidValue
+                  ? 'this field is required'
+                  : 'Payment not received yet.',
+              })}
+            >
+              <option value="">Select option...</option>
+              <option value="unconfirmed">Unconfirmed</option>
+              <option value="checked-in">Check in</option>
+            </StyledSelect>
+          </FormRow>
+        </FormSection>
+
         <FormRow>
           {/* type is an HTML attribute! */}
           <Button

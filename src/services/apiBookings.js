@@ -166,3 +166,20 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+
+export async function createBooking(bookingData) {
+  const { data, error } = await supabase
+    .from('bookings')
+    .insert(bookingData)
+    .select();
+
+  if (error) {
+    console.error('Error inserting data:', error);
+  } else {
+    console.log('Data inserted successfully:', data);
+  }
+
+  console.log(data);
+
+  return data;
+}
