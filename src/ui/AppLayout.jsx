@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 const StyledAppLayout = styled.div`
   display: grid;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 8rem 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
 `;
@@ -18,7 +18,7 @@ const Main = styled.main`
 `;
 
 const Container = styled.div`
-  /* max-width: 120rem; */
+  max-width: 160rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

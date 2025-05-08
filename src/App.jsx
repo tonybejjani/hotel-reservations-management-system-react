@@ -22,6 +22,7 @@ import { DarkModeProvider } from './context/DarkModeContext';
 import NewBooking from './pages/NewBooking';
 import Guests from './pages/Guests';
 import { GlobalProvider } from './context/GlobalContext';
+import BookingsMain from './features/bookings/BookingsMain';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,10 +54,8 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
 
                 <Route path="bookings" element={<Bookings />}>
-                  <Route
-                    path="/bookings/add-booking"
-                    element={<NewBooking />}
-                  />
+                  <Route index element={<BookingsMain />} />
+                  <Route path="add-booking" element={<NewBooking />} />
                 </Route>
 
                 <Route path="guests" element={<Guests />} />

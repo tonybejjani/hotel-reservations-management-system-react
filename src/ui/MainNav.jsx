@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import {
   // HiIdentification,
   // HiMiniSquares2X2,
-  HiOutlineCalendarDays,
-  HiOutlineCog6Tooth,
+  // HiOutlineCalendarDays,
+  // HiOutlineCog6Tooth,
   // HiOutlineHome,
   HiHomeModern,
   HiIdentification,
@@ -16,7 +16,7 @@ import {
   HiUserCircle,
   // HiOutlineUsers,
 } from 'react-icons/hi2';
-import { HiOutlineUser, HiOutlineUserCircle } from 'react-icons/hi';
+// import { HiOutlineUser, HiOutlineUserCircle } from 'react-icons/hi';
 
 const NavList = styled.ul`
   display: flex;
@@ -50,8 +50,8 @@ const StyledNavLink = styled(NavLink)`
   }
 
   & svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.2rem;
+    height: 2.2rem;
     color: var(--color-grey-400);
     transition: all 0.3s;
   }
@@ -65,7 +65,7 @@ const StyledNavLink = styled(NavLink)`
 
   & span {
     font-size: 1.2rem;
-    font-weight: 300;
+    font-weight: 200;
   }
 `;
 

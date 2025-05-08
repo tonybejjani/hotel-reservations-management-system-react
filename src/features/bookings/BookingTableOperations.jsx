@@ -5,7 +5,7 @@ import Filter from '../../ui/Filter';
 import { HiMiniPlus } from 'react-icons/hi2';
 import TableOperations from '../../ui/TableOperations';
 import Button from '../../ui/Button';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ActionButton = styled.div`
@@ -56,7 +56,7 @@ function BookingTableOperations() {
       />
 
       <ActionButton>
-        <Button onClick={() => navigate('/add-booking')}>
+        <Button onClick={() => navigate('add-booking')}>
           <ButtonContentWrapper>
             <HiMiniPlus />
             <span> Add New Booking</span>
