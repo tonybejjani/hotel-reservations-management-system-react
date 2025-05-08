@@ -3,11 +3,18 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import {
+  // HiIdentification,
+  // HiMiniSquares2X2,
   HiOutlineCalendarDays,
   HiOutlineCog6Tooth,
-  HiOutlineHome,
-  HiOutlineHomeModern,
-  HiOutlineUsers,
+  // HiOutlineHome,
+  HiHomeModern,
+  HiIdentification,
+  HiMiniSquares2X2,
+  HiCalendarDays,
+  HiCog6Tooth,
+  HiUserCircle,
+  // HiOutlineUsers,
 } from 'react-icons/hi2';
 import { HiOutlineUser, HiOutlineUserCircle } from 'react-icons/hi';
 
@@ -21,8 +28,9 @@ const StyledNavLink = styled(NavLink)`
   &:link,
   &:visited {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1.2rem;
+    gap: 0.6rem;
 
     color: var(--color-grey-600);
     font-size: 1.6rem;
@@ -54,6 +62,11 @@ const StyledNavLink = styled(NavLink)`
   &.active:visited svg {
     color: var(--color-brand-600);
   }
+
+  & span {
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
 `;
 
 function MainNav() {
@@ -62,38 +75,38 @@ function MainNav() {
       <NavList>
         <li>
           <StyledNavLink to="/dashboard">
-            <HiOutlineHome />
-            <span>Home</span>
+            <HiMiniSquares2X2 />
+            <span>Dashboard</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/bookings">
-            <HiOutlineCalendarDays />
+            <HiCalendarDays />
             <span>Bookings</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/guests">
-            <HiOutlineUsers />
+            <HiIdentification />
             <span>Guests</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/cabins">
-            <HiOutlineHomeModern />
+            <HiHomeModern />
             <span>Cabins</span>
           </StyledNavLink>
         </li>
 
         <li>
           <StyledNavLink to="/users">
-            <HiOutlineUserCircle />
+            <HiUserCircle />
             <span>Users</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/settings">
-            <HiOutlineCog6Tooth />
+            <HiCog6Tooth />
             <span>Settings</span>
           </StyledNavLink>
         </li>

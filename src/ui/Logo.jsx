@@ -8,7 +8,7 @@ const StyledLogo = styled.div`
 `;
 
 const Img = styled.img`
-  height: 11.6rem;
+  scale: 1;
   width: auto;
 `;
 
