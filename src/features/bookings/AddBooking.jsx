@@ -35,7 +35,6 @@ import { formatCurrency, getDatesBetween } from '../../utils/helpers';
 import CreateGuestForm from '../guests/CreateGuestForm';
 import { useGlobalContext } from '../../context/GlobalContext';
 import Textarea from '../../ui/Textarea';
-import { id } from 'date-fns/locale';
 
 const HeadingSection = styled.div`
   display: flex;
@@ -480,6 +479,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
     createBooking(dataFormat, {
       onSuccess: () => {
         reset();
+        navigate('/bookings');
       },
     });
   }

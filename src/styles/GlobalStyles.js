@@ -99,17 +99,17 @@ const GlobalStyles = createGlobalStyle`
     --color-indigo-700: #e0e7ff;
 
     --color-red-100: #fee2e2;
-    --color-red-700: #b91c1c;
+    --color-red-700:rgb(193, 81, 81);
     --color-red-800: #991b1b;
 
-    --color-brand-50: #fff3e6;
-    --color-brand-100: #ffe0c2;
-    --color-brand-200: #ffc285;
-    --color-brand-500: #ffa347;
-    --color-brand-600: #FF6A00;
-    --color-brand-700: #cc5500;
-    --color-brand-800: #993f00;
-    --color-brand-900: #662a00;
+    --color-brand-50: #f0f5ec;
+    --color-brand-100:rgb(187, 227, 171);
+    --color-brand-200:rgb(153, 206, 138);
+    --color-brand-500:rgb(136, 164, 52);
+    --color-brand-600:rgb(45, 170, 45);
+    --color-brand-700: #476947;
+    --color-brand-800:rgb(54, 88, 52);
+    --color-brand-900: #213621;
 
     --backdrop-color: rgba(0, 0, 0, 0.3);
 

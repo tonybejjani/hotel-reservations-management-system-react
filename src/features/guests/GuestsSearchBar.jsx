@@ -1,19 +1,42 @@
 /** @format */
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { HiMiniMagnifyingGlass } from 'react-icons/hi2';
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 2rem;
+
+  & label {
+    color: var(--color-grey-600);
+    font-weight: 600;
+  }
+`;
+const SearchBarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+  position: relative;
+
+  & svg {
+    scale: 1.6;
+    position: absolute;
+    left: 1.6rem;
+  }
+`;
 const Search = styled.input`
-  border: 1px solid var(--color-grey-100);
-  border: 1px solid var(--color-grey-100);
+  border: 1px solid var(--color-grey-200);
+
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-sm);
-  padding: 0.8rem 1.6rem 0.8rem 4.6rem;
+  padding: 1rem 1.6rem 1rem 4.6rem;
   box-shadow: var(--shadow-sm);
-  width: 30rem;
+  width: 40rem;
 
   &:placeholder-shown {
     font-style: italic;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 `;
 
@@ -25,12 +48,19 @@ function GuestsSearchBar() {
   }
 
   return (
-    <Search
-      onChange={handleSearchInput}
-      type="search"
-      placeholder="Search guests..."
-      results="0"
-    />
+    <>
+      <Wrapper>
+        <SearchBarWrapper>
+          <Search
+            onChange={handleSearchInput}
+            type="search"
+            placeholder="Search guests..."
+            results="0"
+          />
+          <HiMiniMagnifyingGlass />
+        </SearchBarWrapper>
+      </Wrapper>
+    </>
   );
 }
 

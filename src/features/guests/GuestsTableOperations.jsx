@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import GuestsSearchBar from './GuestsSearchBar';
 import TableOperations from '../../ui/TableOperations';
 import AddGuest from './AddGuest';
-import { HiMiniMagnifyingGlass } from 'react-icons/hi2';
 
 const ActionButton = styled.div`
   margin-left: auto;
@@ -19,25 +18,10 @@ const ActionButton = styled.div`
   }
 `;
 
-const SearchWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 1rem;
-  position: relative;
-
-  & svg {
-    scale: 1.6;
-    position: absolute;
-    left: 1.6rem;
-  }
-`;
 function GuestsTableOperations() {
   return (
     <TableOperations>
-      <SearchWrapper>
-        <GuestsSearchBar />
-        <HiMiniMagnifyingGlass />
-      </SearchWrapper>
+      <GuestsSearchBar />
 
       <ActionButton>
         <AddGuest />

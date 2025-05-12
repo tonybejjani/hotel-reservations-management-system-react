@@ -19,6 +19,7 @@ import { HiArrowUpOnSquare, HiTrash } from 'react-icons/hi2';
 import Modal from '../../ui/Modal';
 import useDeleteBooking from './useDeleteBooking';
 import ConfirmDelete from '../../ui/ConfirmDelete';
+import Empty from '../../ui/Empty';
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -32,17 +33,20 @@ function BookingDetail() {
   const { deleteBooking, isDeleting } = useDeleteBooking();
   const navigate = useNavigate();
 
-  const { status, id } = booking;
-
   const moveBack = useMoveBack();
+
+  if (isLoading || isFetching) return <Spinner />;
+
+  console.log(booking);
+  if (!booking) return <Empty resource="booking" />;
+
+  const { status, id } = booking;
 
   const statusToTagName = {
     unconfirmed: 'blue',
     'checked-in': 'green',
     'checked-out': 'silver',
   };
-
-  if (isLoading || isFetching) return <Spinner />;
 
   return (
     <>

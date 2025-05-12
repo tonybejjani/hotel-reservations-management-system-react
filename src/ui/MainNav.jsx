@@ -21,7 +21,7 @@ import {
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.6rem;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -32,7 +32,7 @@ const StyledNavLink = styled(NavLink)`
     align-items: center;
     gap: 0.6rem;
 
-    color: var(--color-grey-600);
+    color: var(--color-grey-500);
     font-size: 1.6rem;
     font-weight: 500;
     padding: 1.2rem 2.4rem;
@@ -44,15 +44,15 @@ const StyledNavLink = styled(NavLink)`
   &:active,
   &.active:link,
   &.active:visited {
-    color: var(--color-grey-800);
+    color: var(--color-grey-700);
     background-color: var(--color-grey-50);
     border-radius: var(--border-radius-sm);
   }
 
   & svg {
-    width: 2.2rem;
-    height: 2.2rem;
-    color: var(--color-grey-400);
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-grey-500);
     transition: all 0.3s;
   }
 
@@ -65,7 +65,7 @@ const StyledNavLink = styled(NavLink)`
 
   & span {
     font-size: 1.2rem;
-    font-weight: 200;
+    font-weight: 400;
   }
 `;
 
