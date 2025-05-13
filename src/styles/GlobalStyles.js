@@ -71,6 +71,13 @@ const GlobalStyles = createGlobalStyle`
       /* For dark mode */
     --image-grayscale: 0;
     --image-opacity: 100%;
+
+    ::-webkit-calendar-picker-indicator {
+
+    scale: 1.5;
+  } 
+
+
   }
 
   &.dark-mode {
@@ -119,6 +126,15 @@ const GlobalStyles = createGlobalStyle`
 
     --image-grayscale: 10%;
     --image-opacity: 90%;
+
+    ::-webkit-calendar-picker-indicator {
+    filter: invert(1)
+    brightness(111%)
+    sepia(100%)
+    saturate(10000%)
+    hue-rotate(180deg);
+    scale: 1.5;
+  } 
   }
 
     /* Indigo */
@@ -138,6 +154,7 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
 
+ 
 
 }
 
@@ -208,6 +225,8 @@ input::-webkit-calendar-picker-indicator {
 button:has(svg) {
   line-height: 0;
 }
+
+
 
 a {
   color: inherit;

@@ -35,6 +35,7 @@ import { formatCurrency, getDatesBetween } from '../../utils/helpers';
 import CreateGuestForm from '../guests/CreateGuestForm';
 import { useGlobalContext } from '../../context/GlobalContext';
 import Textarea from '../../ui/Textarea';
+import { useDarkMode } from '../../context/DarkModeContext';
 
 const HeadingSection = styled.div`
   display: flex;
@@ -86,7 +87,8 @@ const SearchWrapper = styled.div`
     scale: 1.4;
     position: absolute;
     left: 1rem;
-    color: var(--color-grey-0);
+    color: ${(props) =>
+      props.isDarkMode ? 'var(--color-grey-900)' : 'var(--color-grey-0)'};
   }
 
   & button {
@@ -97,6 +99,7 @@ const SearchWrapper = styled.div`
 // eslint-disable-next-line react/prop-types
 function AddBooking({ bookingToEdit = {}, onCloseModal }) {
   const { guestRowData } = useGlobalContext();
+  const { isDarkMode } = useDarkMode();
 
   const { createBooking, isCreating } = useCreateBooking();
 
@@ -486,6 +489,7 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
 
   const isWorking = isCreating;
 
+  console.log(isDarkMode);
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -498,14 +502,14 @@ function AddBooking({ bookingToEdit = {}, onCloseModal }) {
           </Heading>
           <Modal>
             <Modal.Open opens="searchGuest">
-              <SearchWrapper>
+              <SearchWrapper isDarkMode={isDarkMode}>
                 <HiMiniMagnifyingGlass />
                 <Button size="smallMedium">Search Guests</Button>
               </SearchWrapper>
             </Modal.Open>
 
             <Modal.Open opens="addGuest">
-              <SearchWrapper>
+              <SearchWrapper isDarkMode={isDarkMode}>
                 <HiMiniPlus />
                 <Button size="smallMedium">Add New Guest</Button>
               </SearchWrapper>
