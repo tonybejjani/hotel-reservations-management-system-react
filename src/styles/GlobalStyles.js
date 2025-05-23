@@ -21,52 +21,98 @@ const GlobalStyles = createGlobalStyle`
 
   &, &.light-mode {
 
+    /* === Updated Semantic Colors - Light Mode (Using Professional Palette) === */
+    /* Greys */
+    --color-grey-0: var(--color-pro-grey-50);    /* Page background */
+    --color-grey-50: var(--color-pro-grey-100);   /* Subtle background */
+    --color-grey-100: var(--color-pro-grey-300);  /* UI element background */
+    --color-grey-200: var(--color-pro-grey-300);  /* Borders */
+    --color-grey-300: var(--color-pro-grey-500);  /* Borders, disabled elements */
+    --color-grey-400: var(--color-pro-grey-500);  /* Hover borders */
+    --color-grey-500: var(--color-pro-grey-700);  /* Text/icons, secondary */
+    --color-grey-600: var(--color-pro-grey-700);  /* Text/icons, secondary */
+    --color-grey-700: var(--color-pro-grey-900);  /* Primary text */
+    --color-grey-800: var(--color-pro-grey-900);  /* Headings */
+    --color-grey-900: var(--color-pro-grey-900);  /* Very dark elements */
 
-    --color-grey-0: #FCFCFA;
-    --color-grey-50: #F8F8F8;
-    --color-grey-100: #F0EFEC;
-    --color-grey-200: #E5E4DF;
-    --color-grey-300: #D6D2CC;
-    --color-grey-400: #BDB8B0;
-    --color-grey-500: #A8A39D;
-    --color-grey-600: #7A756F;
-    --color-grey-700: #4A4641;
-    --color-grey-800: #2B2825;
-    --color-grey-900: #1A1816;
-
-    --color-blue-100: #e0f2fe;
-    --color-blue-700: #0369a1;
-    --color-green-100: #dcfce7;
-    --color-green-700: #15803d;
-    --color-yellow-100: #fef9c3;
-    --color-yellow-700: #a16207;
-    --color-silver-100: #e5e7eb;
-    --color-silver-700: #374151;
-    --color-indigo-100: #e0e7ff;
-    --color-indigo-700: #4338ca;
-
-
-    --color-brand-50: #f0f5ec;
-    --color-brand-100: #d8e5d3;
-    --color-brand-200: #b5cfae;
-    --color-brand-500: #8A9A5B;
-    --color-brand-600:rgb(50, 127, 50);
-    --color-brand-700: #476947;
-    --color-brand-800:rgb(54, 88, 52);
-    --color-brand-900: #213621;
-
-
+    /* Brand (mapped to Pro Blues) */
+    --color-brand-50: var(--color-pro-blue-100);
+    --color-brand-100: var(--color-pro-blue-300); 
+    --color-brand-200: var(--color-pro-blue-500); 
+    --color-brand-500: var(--color-pro-blue-700);
+    --color-brand-600: var(--color-pro-blue-700); /* Main brand color */
+    --color-brand-700: var(--color-pro-blue-900);
+    --color-brand-800: var(--color-pro-blue-900); 
+    --color-brand-900: var(--color-pro-blue-900); 
     
+    /* Accents */
+    --color-blue-100: var(--color-pro-blue-100);
+    --color-blue-700: var(--color-pro-blue-700);
+    
+    --color-green-100: var(--color-pro-blue-100); /* Using pro blue for positive bg */
+    --color-green-700: var(--color-pro-blue-500); /* Using pro blue for positive element */
+    
+    --color-yellow-100: #fef9c3; /* Keeping original yellow */
+    --color-yellow-700: #a16207; /* Keeping original yellow */
+    
+    --color-silver-100: var(--color-pro-grey-100);
+    --color-silver-700: var(--color-pro-grey-500);
+    
+    --color-indigo-100: var(--color-pro-blue-100); 
+    --color-indigo-700: var(--color-pro-blue-900); /* Using a darker pro blue */
 
+    /* Reds (Unchanged) */
     --color-red-100: #fee2e2;
     --color-red-700: #b91c1c;
     --color-red-800: #991b1b;
 
-    --backdrop-color: rgba(255, 255, 255, 0.1);
+    /* Backdrop & Shadows */
+    --backdrop-color: rgba(203, 213, 225, 0.1); /* Based on color-pro-grey-300 with alpha */
+    /* Using --color-pro-grey-700 (#334155) for shadow color */
+    --shadow-sm: 0 1px 2px rgba(51, 65, 85, 0.04);
+    --shadow-md: 0px 0.6rem 2.4rem rgba(51, 65, 85, 0.06);
+    --shadow-lg: 0 2.4rem 3.2rem rgba(51, 65, 85, 0.12);
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
+    /* === Professional Blue/Grey Palette - Light Mode === */
+    --color-pro-blue-100: #e0f2fe;
+    --color-pro-blue-300: #7dd3fc;
+    --color-pro-blue-500: #0ea5e9;
+    --color-pro-blue-700: #0369a1;
+    --color-pro-blue-900: #0c4a6e;
+
+    --color-pro-grey-50: #f8fafc;
+    --color-pro-grey-100: #f1f5f9;
+    --color-pro-grey-300: #cbd5e1;
+    --color-pro-grey-500: #64748b;
+    --color-pro-grey-700: #334155;
+    --color-pro-grey-900: #0f172a;
+    
+    --gradient-blue-light: linear-gradient(to bottom right, var(--color-pro-blue-300), var(--color-pro-blue-500));
+    --gradient-blue-dark: linear-gradient(to bottom right, var(--color-pro-blue-500), var(--color-pro-blue-700));
+    --gradient-grey-light: linear-gradient(to bottom right, var(--color-pro-grey-100), var(--color-pro-grey-300));
+    --gradient-grey-dark: linear-gradient(to bottom right, var(--color-pro-grey-300), var(--color-pro-grey-500));
+
+    /* === Commented out RBC Palette - Light Mode (Reference) === */
+    /*
+    --rbc-blue-100: #eaf6ff;
+    --rbc-blue-500: #3b99fc; 
+    --rbc-blue-600: #3174ad; 
+    --rbc-blue-700: #265985; 
+
+    --rbc-grey-50: #f7f7f7;   
+    --rbc-grey-100: #e6e6e6; 
+    --rbc-grey-200: #e5e5e5; 
+    --rbc-grey-300: #dddddd; 
+    --rbc-grey-400: #cccccc; 
+    --rbc-grey-500: #adadad; 
+    --rbc-grey-600: #999999; 
+    --rbc-grey-800: #373a3c; 
+
+    --rbc-green-500: #74ad31; 
+
+    --rbc-gradient-blue-light: linear-gradient(to bottom, var(--rbc-blue-600), var(--rbc-blue-700));
+    --rbc-gradient-grey-light: linear-gradient(to bottom, var(--rbc-grey-100), var(--rbc-grey-300));
+    */
 
       /* For dark mode */
     --image-grayscale: 0;
@@ -82,47 +128,98 @@ const GlobalStyles = createGlobalStyle`
 
   &.dark-mode {
 
-    --color-grey-0: #18212f;
-    --color-grey-50: #111827;
-    --color-grey-100: #1f2937;
-    --color-grey-200: #374151;
-    --color-grey-300: #4b5563;
-    --color-grey-400: #6b7280;
-    --color-grey-500: #9ca3af;
-    --color-grey-600: #d1d5db;
-    --color-grey-700: #e5e7eb;
-    --color-grey-800: #f3f4f6;
-    --color-grey-900: #f9fafb;
+    /* === Updated Semantic Colors - Dark Mode (Using Professional Palette) === */
+    /* Greys */
+    --color-grey-0: var(--color-pro-grey-100-dark);    /* Page background */
+    --color-grey-50: var(--color-pro-grey-300-dark);   /* UI element background */
+    --color-grey-100: var(--color-pro-grey-500-dark);  /* Subtle background/borders */
+    --color-grey-200: var(--color-pro-grey-500-dark);  /* Borders */
+    --color-grey-300: var(--color-pro-grey-700-dark);  /* Borders, disabled elements */
+    --color-grey-400: var(--color-pro-grey-700-dark);  /* Hover borders */
+    --color-grey-500: var(--color-pro-grey-900-dark);  /* Text/icons, secondary */
+    --color-grey-600: var(--color-pro-grey-900-dark);  /* Text/icons, secondary */
+    --color-grey-700: var(--color-pro-grey-900-dark);  /* Primary text */
+    --color-grey-800: var(--color-pro-grey-900-dark);  /* Headings */
+    --color-grey-900: var(--color-pro-grey-900-dark);  /* Very light elements */
 
-    --color-blue-100: #075985;
-    --color-blue-700: #e0f2fe;
-    --color-green-100: #166534;
-    --color-green-700: #dcfce7;
-    --color-yellow-100: #854d0e;
-    --color-yellow-700: #fef9c3;
-    --color-silver-100: #374151;
-    --color-silver-700: #f3f4f6;
-    --color-indigo-100: #3730a3;
-    --color-indigo-700: #e0e7ff;
+    /* Brand (mapped to Pro Blues dark) */
+    --color-brand-50: var(--color-pro-blue-100-dark);
+    --color-brand-100: var(--color-pro-blue-300-dark); 
+    --color-brand-200: var(--color-pro-blue-500-dark); 
+    --color-brand-500: var(--color-pro-blue-700-dark);
+    --color-brand-600: var(--color-pro-blue-500-dark); /* Main brand color for dark */
+    --color-brand-700: var(--color-pro-blue-300-dark); 
+    --color-brand-800: var(--color-pro-blue-100-dark); 
+    --color-brand-900: var(--color-pro-blue-100-dark); 
 
-    --color-red-100: #fee2e2;
-    --color-red-700:rgb(193, 81, 81);
+    /* Accents */
+    --color-blue-100: var(--color-pro-blue-100-dark);
+    --color-blue-700: var(--color-pro-blue-500-dark); 
+    
+    --color-green-100: var(--color-pro-blue-100-dark); /* Using pro blue for positive bg */
+    --color-green-700: var(--color-pro-blue-500-dark); /* Using pro blue for positive element */
+    
+    --color-yellow-100: #854d0e; /* Keeping original dark yellow */
+    --color-yellow-700: #fef9c3; /* Keeping original light yellow for text on dark */
+    
+    --color-silver-100: var(--color-pro-grey-300-dark);
+    --color-silver-700: var(--color-pro-grey-700-dark);
+    
+    --color-indigo-100: var(--color-pro-blue-100-dark); 
+    --color-indigo-700: var(--color-pro-blue-300-dark);
+
+    /* Reds (Unchanged from original dark mode) */
+    --color-red-100: #fee2e2; 
+    --color-red-700: rgb(193, 81, 81);
     --color-red-800: #991b1b;
 
-    --color-brand-50: #f0f5ec;
-    --color-brand-100:rgb(187, 227, 171);
-    --color-brand-200:rgb(153, 206, 138);
-    --color-brand-500:rgb(136, 164, 52);
-    --color-brand-600:rgb(45, 170, 45);
-    --color-brand-700: #476947;
-    --color-brand-800:rgb(54, 88, 52);
-    --color-brand-900: #213621;
-
-    --backdrop-color: rgba(0, 0, 0, 0.3);
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);
+    /* Backdrop & Shadows */
+    --backdrop-color: rgba(30, 41, 59, 0.3); /* Based on color-pro-grey-300-dark with alpha */
+    /* Keeping black for shadows on dark for simplicity and contrast */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5); 
+    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.4);
+    
+    /* === Professional Blue/Grey Palette - Dark Mode === */
+    --color-pro-blue-100-dark: #0c4a6e; 
+    --color-pro-blue-300-dark: #075985; 
+    --color-pro-blue-500-dark: #0ea5e9; 
+    --color-pro-blue-700-dark: #38bdf8; 
+    --color-pro-blue-900-dark: #bae6fd; 
+
+    --color-pro-grey-50-dark: #020617;  
+    --color-pro-grey-100-dark: #0f172a; 
+    --color-pro-grey-300-dark: #1e293b; 
+    --color-pro-grey-500-dark: #475569; 
+    --color-pro-grey-700-dark: #94a3b8; 
+    --color-pro-grey-900-dark: #e2e8f0; 
+
+    --gradient-blue-light-dark: linear-gradient(to bottom right, var(--color-pro-blue-300-dark), var(--color-pro-blue-500-dark));
+    --gradient-blue-dark-dark: linear-gradient(to bottom right, var(--color-pro-blue-500-dark), var(--color-pro-blue-700-dark));
+    --gradient-grey-light-dark: linear-gradient(to bottom right, var(--color-pro-grey-100-dark), var(--color-pro-grey-300-dark));
+    --gradient-grey-dark-dark: linear-gradient(to bottom right, var(--color-pro-grey-300-dark), var(--color-pro-grey-500-dark));
+
+    /* === Commented out RBC Palette - Dark Mode (Reference) === */
+    /*
+    --rbc-blue-100-dark: #1c2c3b;
+    --rbc-blue-500-dark: #62b0ff; 
+    --rbc-blue-600-dark: #58a6ff; 
+    --rbc-blue-700-dark: #4a8cdb; 
+
+    --rbc-grey-50-dark: #2d2d2d;   
+    --rbc-grey-100-dark: #3a3a3a;
+    --rbc-grey-200-dark: #444444;
+    --rbc-grey-300-dark: #555555;
+    --rbc-grey-400-dark: #666666;
+    --rbc-grey-500-dark: #888888; 
+    --rbc-grey-600-dark: #aaaaaa; 
+    --rbc-grey-800-dark: #d0d0d0; 
+    
+    --rbc-green-500-dark: #8bc34a; 
+
+    --rbc-gradient-blue-dark: linear-gradient(to bottom, var(--rbc-blue-600-dark), var(--rbc-blue-700-dark));
+    --rbc-gradient-grey-dark: linear-gradient(to bottom, var(--rbc-grey-100-dark), var(--rbc-grey-300-dark));
+    */
 
     --image-grayscale: 10%;
     --image-opacity: 90%;
