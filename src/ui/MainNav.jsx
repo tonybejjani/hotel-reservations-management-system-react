@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import {
   // HiIdentification,
   // HiMiniSquares2X2,
-  // HiOutlineCalendarDays,
+  HiOutlineCalendarDays, // Uncommented for Calendar link
   // HiOutlineCog6Tooth,
   // HiOutlineHome,
   HiHomeModern,
   HiIdentification,
   HiMiniSquares2X2,
-  HiCalendarDays,
+  HiCalendarDays, // Used for Bookings
   HiCog6Tooth,
   HiUserCircle,
   // HiOutlineUsers,
@@ -83,6 +83,12 @@ function MainNav() {
           <StyledNavLink to="/bookings">
             <HiCalendarDays />
             <span>Bookings</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/calendar">
+            <HiOutlineCalendarDays />
+            <span>Calendar</span>
           </StyledNavLink>
         </li>
         <li>

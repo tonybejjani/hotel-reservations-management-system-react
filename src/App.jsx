@@ -14,6 +14,7 @@ import Settings from './pages/Settings';
 import Account from './pages/Account';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
+import BookingsCalendar from './pages/Calendar';
 import AppLayout from './ui/AppLayout';
 import Booking from './pages/Booking';
 import Checkin from './pages/Checkin';
@@ -67,6 +68,7 @@ function App() {
                 <Route path="users" element={<Users />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="account" element={<Account />} />
+                <Route path="calendar" element={<BookingsCalendar />} />
               </Route>
 
               <Route path="login" element={<Login />} />
