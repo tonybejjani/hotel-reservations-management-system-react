@@ -8,8 +8,8 @@ const StyledLogo = styled.div`
 `;
 
 const Img = styled.img`
-  scale: 1;
-  width: auto;
+  scale: 1.5;
+  width: 50%;
 `;
 
 function Logo() {

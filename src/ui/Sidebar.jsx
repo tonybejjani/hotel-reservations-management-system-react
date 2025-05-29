@@ -13,6 +13,10 @@ const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+
+  & :first-child(img) {
+    scale: 2;
+  }
 `;
 function Sidebar() {
   return (
