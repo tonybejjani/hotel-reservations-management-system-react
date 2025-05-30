@@ -4,6 +4,7 @@ import Heading from '../ui/Heading';
 import Row from '../ui/Row';
 import GuestsContainer from '../features/guests/GuestsContainer';
 import AddGuest from '../features/guests/AddGuest';
+import GuestsSearchBar from '../features/guests/GuestsSearchBar';
 
 const StyledGuests = styled.div`
   padding: 2rem 0;
@@ -18,10 +19,13 @@ function Guests() {
     <StyledGuests>
       <Row type="horizontal">
         <Heading as="h1">All guests</Heading>
+
         <AddGuest />
       </Row>
 
       <Row>
+        <GuestsSearchBar />
+
         <GuestsContainer />
       </Row>
     </StyledGuests>

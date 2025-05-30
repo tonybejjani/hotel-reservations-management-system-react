@@ -2,6 +2,11 @@
 
 import styled from 'styled-components';
 import { HiPencil, HiTrash } from 'react-icons/hi2';
+import Modal from '../../ui/Modal';
+import Menus from '../../ui/Menus';
+import CreateGuestForm from './CreateGuestForm';
+import ConfirmDelete from '../../ui/ConfirmDelete';
+import useDeleteGuest from './useDeleteGuest';
 
 const Card = styled.div`
   background-color: var(--color-grey-0);
@@ -42,32 +47,6 @@ const GuestId = styled.span`
 const CardActions = styled.div`
   display: flex;
   gap: 0.8rem;
-`;
-
-const ActionButton = styled.button`
-  background: none;
-  border: none;
-  padding: 0.6rem;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: var(--color-grey-100);
-  }
-
-  svg {
-    width: 1.6rem;
-    height: 1.6rem;
-  }
-
-  &.edit svg {
-    color: var(--color-blue-700);
-  }
-
-  &.delete svg {
-    color: var(--color-red-700);
-  }
 `;
 
 const CardInfo = styled.div`
@@ -111,23 +90,52 @@ const CountryFlag = styled.div`
   }
 `;
 
-function GuestCard({ guest, onEdit, onDelete }) {
-  const { id, fullName, email, nationalID, nationality, countryFlag } = guest;
+function GuestCard({ guest }) {
+  const { deleteGuest, isDeleting } = useDeleteGuest();
+  const {
+    id: guestId,
+    fullName,
+    email,
+    nationalID,
+    nationality,
+    countryFlag,
+  } = guest;
 
   return (
     <Card>
       <CardHeader>
         <div>
           <GuestName>{fullName}</GuestName>
-          <GuestId>ID: {id}</GuestId>
         </div>
         <CardActions>
-          <ActionButton className="edit" onClick={() => onEdit(guest)}>
-            <HiPencil />
-          </ActionButton>
-          <ActionButton className="delete" onClick={() => onDelete(id)}>
-            <HiTrash />
-          </ActionButton>
+          <div>
+            <Modal>
+              <Menus.Menu>
+                <Menus.Toggle id={guestId} />
+
+                <Menus.List id={guestId}>
+                  <Modal.Open opens="guestForm">
+                    <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                  </Modal.Open>
+                  <Modal.Open opens="delete-form">
+                    <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                  </Modal.Open>
+                </Menus.List>
+
+                <Modal.Window opens="guestForm" title="edit guest ">
+                  <CreateGuestForm guestToEdit={guest} />
+                </Modal.Window>
+
+                <Modal.Window opens="delete-form">
+                  <ConfirmDelete
+                    resourceName={`Guest ` + fullName}
+                    disabled={isDeleting}
+                    onConfirm={() => deleteGuest(guestId)}
+                  />
+                </Modal.Window>
+              </Menus.Menu>
+            </Modal>
+          </div>
         </CardActions>
       </CardHeader>
 

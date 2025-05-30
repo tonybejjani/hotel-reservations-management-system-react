@@ -2,14 +2,15 @@
 
 import styled from 'styled-components';
 import useGuests from './useGuests';
-import useDeleteGuest from './useDeleteGuest';
+import GuestsCards from './GuestsCards';
+
 import Spinner from '../../ui/Spinner';
 import GuestsTable from './GuestsTable';
-import GuestCard from './GuestCard';
 import Empty from '../../ui/Empty';
 
 const Container = styled.div`
   width: 100%;
+  padding: 2.4rem 0;
 `;
 
 const DesktopView = styled.div`
@@ -28,29 +29,14 @@ const MobileView = styled.div`
   }
 `;
 
-const CardsGrid = styled.div`
-  display: grid;
-  gap: 2rem;
-
-  @media (min-width: 640px) and (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 639px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 20rem;
 `;
-
 function GuestsContainer() {
-  const { guests, isLoading } = useGuests();
-  const { deleteGuest, isDeleting } = useDeleteGuest();
+  const { guests, isLoading, count } = useGuests();
 
   if (isLoading) {
     return (
@@ -64,17 +50,6 @@ function GuestsContainer() {
     return <Empty resourceName="guests" />;
   }
 
-  const handleEdit = (guest) => {
-    // Add edit functionality here
-    console.log('Edit guest:', guest);
-  };
-
-  const handleDelete = (guestId) => {
-    if (window.confirm('Are you sure you want to delete this guest?')) {
-      deleteGuest(guestId);
-    }
-  };
-
   return (
     <Container>
       {/* Desktop Table View */}
@@ -84,16 +59,7 @@ function GuestsContainer() {
 
       {/* Mobile/Tablet Cards View */}
       <MobileView>
-        <CardsGrid>
-          {guests.map((guest) => (
-            <GuestCard
-              key={guest.id}
-              guest={guest}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))}
-        </CardsGrid>
+        <GuestsCards guests={guests} count={count} />
       </MobileView>
     </Container>
   );
