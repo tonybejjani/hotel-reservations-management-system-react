@@ -13,6 +13,9 @@ import {
 } from 'react-icons/hi2';
 import { useDarkMode } from '../context/DarkModeContext';
 import Avatar from './Avatar';
+import { useLogout } from '../features/authentication/useLogout';
+import { nn } from 'date-fns/locale';
+import { useNavigate } from 'react-router-dom';
 
 const MenuOverlay = styled.div`
   position: fixed;
@@ -194,7 +197,8 @@ const NotificationBadge = styled.span`
 function UserMenu({ isOpen, onClose, user }) {
   const menuRef = useRef(null);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-
+  const { logout } = useLogout();
+  const navigate = useNavigate();
   const { fullName } = user.identities[0].identity_data;
   const email = user.email;
 
@@ -220,11 +224,28 @@ function UserMenu({ isOpen, onClose, user }) {
     onClose();
     console.log(`Action: ${action}`);
     // Add navigation logic here
+    switch (action) {
+      case 'account':
+        // Navigate to profile settings
+        navigate('/account');
+        break;
+      case 'notifications':
+        // Navigate to notifications
+        break;
+      case 'settings':
+        // Navigate to app settings
+        break;
+      case 'help':
+        // Navigate to help & support
+        break;
+      default:
+        break;
+    }
   };
 
   const handleLogout = () => {
     onClose();
-    console.log('Logging out...');
+    logout();
     // Add logout logic here
   };
 
@@ -247,7 +268,7 @@ function UserMenu({ isOpen, onClose, user }) {
 
         <MenuList>
           <MenuItem>
-            <MenuButton onClick={() => handleMenuAction('profile')}>
+            <MenuButton onClick={() => handleMenuAction('account')}>
               <HiUser />
               Account Settings
             </MenuButton>

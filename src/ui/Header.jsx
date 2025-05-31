@@ -9,7 +9,7 @@ import { useUser } from '../features/authentication/useUser';
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
-  padding: 1rem 1.6rem;
+  padding: 1rem 1.6rem 1rem 0;
   border-bottom: 1px solid var(--color-grey-200);
   display: none;
   align-items: center;
@@ -50,7 +50,7 @@ function Header() {
     <>
       <StyledHeader>
         <LogoContainer>
-          <Logo />
+          <Logo logoType="long" />
         </LogoContainer>
 
         <AvatarContainer>
