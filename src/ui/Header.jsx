@@ -39,12 +39,13 @@ function Header() {
   const { user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { fullName } = user.identities[0].identity_data;
+  const { fullName, avatar } = user.user_metadata;
 
   const handleAvatarClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // console.log(user);
   return (
     <>
       <StyledHeader>
@@ -54,7 +55,7 @@ function Header() {
 
         <AvatarContainer>
           <Avatar
-            src={user.avatar}
+            src={avatar}
             fallbackText={fullName}
             onClick={handleAvatarClick}
             aria-label="User menu"

@@ -253,13 +253,13 @@ function UserMenu({ isOpen, onClose, user }) {
             </MenuButton>
           </MenuItem>
 
-          <MenuItem>
+          {/* <MenuItem>
             <MenuButton onClick={() => handleMenuAction('notifications')}>
               <HiBell />
               Notifications
               <NotificationBadge>3</NotificationBadge>
             </MenuButton>
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem>
             <MenuButton as="div" className={isDarkMode ? 'theme-active' : ''}>
@@ -283,19 +283,19 @@ function UserMenu({ isOpen, onClose, user }) {
             </MenuButton>
           </MenuItem>
 
-          <MenuItem>
+          {/* <MenuItem>
             <MenuButton onClick={() => handleMenuAction('settings')}>
               <HiCog6Tooth />
               App Settings
             </MenuButton>
-          </MenuItem>
+          </MenuItem> */}
 
-          <MenuItem>
+          {/* <MenuItem>
             <MenuButton onClick={() => handleMenuAction('help')}>
               <HiLifebuoy />
               Help & Support
             </MenuButton>
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem>
             <MenuButton className="logout" onClick={handleLogout}>

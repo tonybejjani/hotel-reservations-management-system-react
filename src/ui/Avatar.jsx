@@ -7,7 +7,7 @@ const AvatarButton = styled.button`
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
-  border: 2px solid var(--color-brand-600);
+  /* border: 2px solid var(--color-brand-600); */
   padding: 0;
   background: none;
   cursor: pointer;
