@@ -23,7 +23,7 @@ const StyledSidebar = styled.aside`
 function Sidebar() {
   return (
     <StyledSidebar>
-      {/* <Logo /> */}
+      <Logo />
       <MainNav />
       {/* <Uploader /> */}
     </StyledSidebar>
