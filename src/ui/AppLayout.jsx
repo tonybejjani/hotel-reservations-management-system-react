@@ -3,6 +3,7 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import MainNav from './MainNav'; // Add this import
 import styled from 'styled-components';
 
 const StyledAppLayout = styled.div`
@@ -11,8 +12,14 @@ const StyledAppLayout = styled.div`
   grid-template-rows: auto 1fr;
   height: 100vh;
 
+  /* Tablet: Hide sidebar */
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+  }
+
+  /* Mobile: Show header + content */
+  @media (max-width: 639px) {
+    grid-template-rows: 5.6rem 1fr;
   }
 `;
 
@@ -25,9 +32,9 @@ const Main = styled.main`
     padding: 2rem 2.4rem 3.2rem;
   }
 
-  /* Add bottom padding for mobile navigation */
+  /* Mobile: Add top margin for header + bottom padding for nav */
   @media (max-width: 639px) {
-    padding-bottom: 10rem;
+    padding: 2rem 1.6rem 10rem 1.6rem;
   }
 `;
 
@@ -37,6 +44,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+`;
+
+// Mobile navigation container
+const MobileNav = styled.div`
+  display: none;
+
+  @media (max-width: 639px) {
+    display: block;
+  }
 `;
 
 function AppLayout() {
@@ -49,6 +65,11 @@ function AppLayout() {
           <Outlet />
         </Container>
       </Main>
+
+      {/* Mobile bottom navigation */}
+      <MobileNav>
+        <MainNav />
+      </MobileNav>
     </StyledAppLayout>
   );
 }
