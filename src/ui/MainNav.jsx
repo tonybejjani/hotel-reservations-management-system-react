@@ -3,42 +3,35 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import {
-  // HiIdentification,
-  // HiMiniSquares2X2,
-  // HiOutlineCalendarDays,
-  // HiOutlineCog6Tooth,
-  // HiOutlineHome,
   HiHomeModern,
   HiIdentification,
   HiMiniSquares2X2,
   HiCalendarDays,
   HiCog6Tooth,
   HiUserCircle,
-  // HiOutlineUsers,
 } from 'react-icons/hi2';
-// import { HiOutlineUser, HiOutlineUserCircle } from 'react-icons/hi';
+import MobileNav from './MobileNav';
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+
+  @media (max-width: 639px) {
+    display: none;
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`
   &:link,
   &:visited {
     display: flex;
-    /* flex-direction: column;
-    align-items: center; */
     gap: 0.8rem;
-
     color: var(--color-grey-500);
-
     padding: 1.2rem 2.4rem;
     transition: all 0.3s;
   }
 
-  /* This works because react-router places the active class on the active NavLink */
   &:hover,
   &:active,
   &.active:link,
@@ -70,47 +63,52 @@ const StyledNavLink = styled(NavLink)`
 
 function MainNav() {
   return (
-    <nav>
-      <NavList>
-        <li>
-          <StyledNavLink to="/dashboard">
-            <HiMiniSquares2X2 />
-            <span>Dashboard</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/bookings">
-            <HiCalendarDays />
-            <span>Bookings</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/guests">
-            <HiIdentification />
-            <span>Guests</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/cabins">
-            <HiHomeModern />
-            <span>Cabins</span>
-          </StyledNavLink>
-        </li>
+    <>
+      {/* Desktop/Tablet Navigation */}
+      <nav>
+        <NavList>
+          <li>
+            <StyledNavLink to="/dashboard">
+              <HiMiniSquares2X2 />
+              <span>Dashboard</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/bookings">
+              <HiCalendarDays />
+              <span>Bookings</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/guests">
+              <HiIdentification />
+              <span>Guests</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/cabins">
+              <HiHomeModern />
+              <span>Cabins</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/users">
+              <HiUserCircle />
+              <span>Users</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/settings">
+              <HiCog6Tooth />
+              <span>Settings</span>
+            </StyledNavLink>
+          </li>
+        </NavList>
+      </nav>
 
-        <li>
-          <StyledNavLink to="/users">
-            <HiUserCircle />
-            <span>Users</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/settings">
-            <HiCog6Tooth />
-            <span>Settings</span>
-          </StyledNavLink>
-        </li>
-      </NavList>
-    </nav>
+      {/* Mobile Navigation */}
+      <MobileNav />
+    </>
   );
 }
 
