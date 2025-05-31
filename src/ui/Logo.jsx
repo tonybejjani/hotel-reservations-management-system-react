@@ -18,7 +18,7 @@ function Logo() {
     <StyledLogo>
       <Img
         // src={isDarkMode ? '/logo-purple.png' : '/logo.png'}
-        src="/logo-orange9.png"
+        src="/logo.png"
         alt="Logo"
         mode={isDarkMode ? 'dark' : ''}
       />
