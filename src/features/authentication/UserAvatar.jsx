@@ -23,7 +23,7 @@ const Avatar = styled.img`
   //
 `;
 
-function UserAvatar() {
+function UserAvatar({ tabletView = false }) {
   const { user } = useUser();
 
   const { fullName, avatar } = user.user_metadata;
@@ -34,7 +34,7 @@ function UserAvatar() {
         src={avatar || 'default-user.jpg'}
         alt={`Avatar of ${fullName}`}
       />
-      <span>{fullName}</span>
+      {!tabletView && <span>{fullName}</span>}
     </StyledUserAvatar>
   );
 }

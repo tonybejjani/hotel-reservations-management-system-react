@@ -1,6 +1,6 @@
 /** @format */
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   HiHomeModern,
@@ -9,11 +9,26 @@ import {
   HiCalendarDays,
   HiCog6Tooth,
   HiUserCircle,
+  HiOutlineUser,
 } from 'react-icons/hi2';
+import UserAvatar from '../features/authentication/UserAvatar';
+import Logout from '../features/authentication/Logout';
+import DarkModeToggle from './DarkModeToggle';
+import ButtonIcon from './ButtonIcon';
+
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-bottom: 10rem;
+  align-items: center;
+`;
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
+
   gap: 1.2rem;
   list-style: none;
   margin: 0;
@@ -22,6 +37,17 @@ const NavList = styled.ul`
   /* Tablet/Small Laptop: Tighter spacing */
   @media (min-width: 768px) and (max-width: 1199px) {
     gap: 0.8rem;
+  }
+`;
+
+const UserNavList = styled(NavList)`
+  display: none;
+
+  /* Tablet/Small Laptop: display true */
+  @media (min-width: 768px) and (max-width: 1199px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -118,9 +144,16 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
+const StyledHeaderMenu = styled.p`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+`;
+
 function MainNav() {
+  const navigate = useNavigate();
   return (
-    <nav>
+    <Nav>
       <NavList>
         <li>
           <StyledNavLink to="/dashboard" data-label="Dashboard">
@@ -159,7 +192,25 @@ function MainNav() {
           </StyledNavLink>
         </li>
       </NavList>
-    </nav>
+      <UserNavList type="tablet">
+        <li>
+          <StyledNavLink to="/account" data-label="User Account">
+            <HiOutlineUser />
+          </StyledNavLink>
+        </li>
+        <li>
+          <DarkModeToggle />
+        </li>
+        <li>
+          <Logout />
+        </li>
+        <li>
+          <StyledHeaderMenu>
+            <UserAvatar tabletView={true} />
+          </StyledHeaderMenu>
+        </li>
+      </UserNavList>
+    </Nav>
   );
 }
 

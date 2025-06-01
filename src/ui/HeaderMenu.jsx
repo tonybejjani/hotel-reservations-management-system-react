@@ -8,15 +8,15 @@ import ButtonIcon from './ButtonIcon';
 import DarkModeToggle from './DarkModeToggle';
 
 /** @format */
-const StyledHeaderMobileMenu = styled.ul`
+const StyledHeaderMenu = styled.ul`
   display: flex;
   gap: 0.4rem;
 `;
 
-function HeaderMobileMenu() {
+function HeaderMenu() {
   const navigate = useNavigate();
   return (
-    <StyledHeaderMobileMenu>
+    <StyledHeaderMenu>
       <li>
         <ButtonIcon onClick={() => navigate('/account')}>
           <HiOutlineUser />
@@ -28,8 +28,8 @@ function HeaderMobileMenu() {
       <li>
         <Logout />
       </li>
-    </StyledHeaderMobileMenu>
+    </StyledHeaderMenu>
   );
 }
 
-export default HeaderMobileMenu;
+export default HeaderMenu;

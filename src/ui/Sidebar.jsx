@@ -22,6 +22,7 @@ const StyledSidebar = styled.aside`
   /* Desktop: Full width */
   @media (min-width: 1200px) {
     width: 26rem;
+    padding-top: 6.4rem;
   }
 
   /* Tablet/Small Laptop: Icon-only width */
@@ -45,6 +46,7 @@ function Sidebar() {
   return (
     <StyledSidebar>
       <Logo />
+      <Logo type="short" />
       <MainNav />
     </StyledSidebar>
   );

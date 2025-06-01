@@ -2,9 +2,10 @@
 
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import HeaderMobile from './Header';
+import HeaderMobile from './HeaderMobile';
 import MobileNav from './MobileNav';
 import styled from 'styled-components';
+import Header from './Header';
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -75,6 +76,7 @@ const Container = styled.div`
 function AppLayout() {
   return (
     <StyledAppLayout>
+      <Header />
       <HeaderMobile />
       <Sidebar />
       <Main>
