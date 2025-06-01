@@ -23,13 +23,13 @@ function GuestsTablePicker({ onCloseModal }) {
   return (
     <Menus>
       <Table columns="1.5fr 1.5fr 1.5fr 1.5fr">
-        <Table.Header>
+        <Table.HeaderMobile>
           <FullName>Full Name</FullName>
           <div>Email</div>
           <div>nationalID</div>
           <div>Nationality</div>
           {/* {!isClickable && <div></div>} */}
-        </Table.Header>
+        </Table.HeaderMobile>
         <Table.Body
           data={guests}
           render={(guest) => (

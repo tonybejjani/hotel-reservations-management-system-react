@@ -18,7 +18,7 @@ const CommonRow = styled.div`
   transition: none;
 `;
 
-export const StyledHeader = styled(CommonRow)`
+export const StyledHeaderMobile = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
 
   background-color: var(--color-grey-50);
@@ -78,12 +78,12 @@ function Table({ children, columns }) {
   );
 }
 
-function Header({ children }) {
+function HeaderMobile({ children }) {
   const { columns } = useContext(TableContext);
   return (
-    <StyledHeader role="row" columns={columns} as="header">
+    <StyledHeaderMobile role="row" columns={columns} as="HeaderMobile">
       {children}
-    </StyledHeader>
+    </StyledHeaderMobile>
   );
 }
 
@@ -112,7 +112,7 @@ function Body({ render, data }) {
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
-Table.Header = Header;
+Table.HeaderMobile = HeaderMobile;
 Table.Row = Row;
 Table.Body = Body;
 Table.Footer = Footer;

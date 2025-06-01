@@ -19,7 +19,7 @@ const CommonRow = styled.div`
   transition: none;
 `;
 
-export const StyledHeader = styled(CommonRow)`
+export const StyledHeaderMobile = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
 
   background-color: var(--color-grey-50);

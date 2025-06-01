@@ -19,8 +19,8 @@ const StyledSidebar = styled.aside`
     scale: 2;
   }
 
-  /* Hide on mobile - header takes over */
-  @media (max-width: 639px) {
+  /* Hide on mobile - HeaderMobile takes over */
+  @media (max-width: 767px) {
     display: none;
   }
 `;

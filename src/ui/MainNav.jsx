@@ -16,10 +16,6 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-
-  @media (max-width: 767px) {
-    display: none;
-  }
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -64,7 +60,6 @@ const StyledNavLink = styled(NavLink)`
 function MainNav() {
   return (
     <>
-      {/* Desktop/Tablet Navigation */}
       <nav>
         <NavList>
           <li>
@@ -105,9 +100,6 @@ function MainNav() {
           </li>
         </NavList>
       </nav>
-
-      {/* Mobile Navigation */}
-      <MobileNav />
     </>
   );
 }
