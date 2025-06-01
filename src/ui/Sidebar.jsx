@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 import MainNav from './MainNav';
 import Logo from './Logo';
-// import Uploader from '../data/Uploader';
 
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
@@ -14,9 +13,26 @@ const StyledSidebar = styled.aside`
   flex-direction: column;
   align-items: center;
   gap: 3.2rem;
+  transition: width 0.3s ease;
 
   & :first-child(img) {
     scale: 2;
+  }
+
+  /* Desktop: Full width */
+  @media (min-width: 1200px) {
+    width: 26rem;
+  }
+
+  /* Tablet/Small Laptop: Icon-only width */
+  @media (min-width: 768px) and (max-width: 1199px) {
+    width: 7rem;
+    padding: 1.6rem 0.8rem;
+    gap: 2.4rem;
+
+    & :first-child(img) {
+      scale: 1.2;
+    }
   }
 
   /* Hide on mobile - HeaderMobile takes over */
@@ -30,7 +46,6 @@ function Sidebar() {
     <StyledSidebar>
       <Logo />
       <MainNav />
-      {/* <Uploader /> */}
     </StyledSidebar>
   );
 }
