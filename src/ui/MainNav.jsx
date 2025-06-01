@@ -17,7 +17,7 @@ const NavList = styled.ul`
   flex-direction: column;
   gap: 1.2rem;
 
-  @media (max-width: 639px) {
+  @media (max-width: 767px) {
     display: none;
   }
 `;

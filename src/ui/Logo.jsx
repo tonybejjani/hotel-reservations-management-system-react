@@ -6,6 +6,10 @@ import { useDarkMode } from '../context/DarkModeContext';
 const Img = styled.img`
   scale: 1;
   width: 50%;
+
+  /* @media (max-width: 767px) {
+    display: none;
+  } */
 `;
 
 function Logo({ type = 'default' }) {
