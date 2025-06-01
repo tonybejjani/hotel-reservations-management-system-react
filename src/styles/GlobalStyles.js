@@ -18,6 +18,12 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
 :root {
 
+  --color-brand-600-rgb: 79, 70, 229; /* Convert your brand color to RGB */
+  --color-grey-0-rgb: 255, 255, 255;
+  
+  /* Safe area support */
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+
 
   &, &.light-mode {
 
