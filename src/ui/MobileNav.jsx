@@ -35,8 +35,17 @@ const BottomNavContainer = styled.nav`
 
   display: none;
 
-  @media (max-width: 639px) {
+  /* Show on mobile and phablet */
+  @media (max-width: 767px) {
     display: block;
+  }
+
+  /* Phablet: Enhanced styling */
+  @media (min-width: 640px) and (max-width: 767px) {
+    padding: 1rem 1.5rem 2.5rem 1.5rem;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   /* Dark mode support */
@@ -60,6 +69,12 @@ const BottomNavContainer = styled.nav`
     border-top-color: rgba(var(--color-grey-600-rgb), 0.3);
     box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    /* Phablet dark mode enhancements */
+    @media (min-width: 640px) and (max-width: 767px) {
+      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
   }
 `;
 
@@ -70,12 +85,26 @@ const TabList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+
+  /* Phablet: Better spacing */
+  @media (min-width: 640px) and (max-width: 767px) {
+    gap: 0.8rem;
+    justify-content: center;
+    max-width: 50rem;
+    margin: 0 auto;
+  }
 `;
 
 const TabItem = styled.li`
   flex: 1;
   display: flex;
   justify-content: center;
+
+  /* Phablet: Constrain max width */
+  @media (min-width: 640px) and (max-width: 767px) {
+    flex: none;
+    min-width: 8rem;
+  }
 `;
 
 const StyledTabLink = styled(NavLink)`
@@ -93,9 +122,18 @@ const StyledTabLink = styled(NavLink)`
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 
+  /* Phablet: Enhanced sizing */
+  @media (min-width: 640px) and (max-width: 767px) {
+    padding: 1.2rem 1rem;
+    min-height: 5.2rem;
+    min-width: 5.2rem;
+    gap: 0.6rem;
+  }
+
   &:hover {
     color: var(--color-brand-600);
     background-color: rgba(var(--color-brand-600-rgb), 0.1);
+    transform: translateY(-1px);
   }
 
   &.active {
@@ -115,6 +153,13 @@ const StyledTabLink = styled(NavLink)`
         var(--color-brand-600)
       );
       border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+
+      /* Phablet: Enhanced active indicator */
+      @media (min-width: 640px) and (max-width: 767px) {
+        top: -1rem;
+        width: 3.5rem;
+        height: 0.4rem;
+      }
     }
   }
 
@@ -123,6 +168,17 @@ const StyledTabLink = styled(NavLink)`
     height: 2.4rem;
     transition: all 0.3s ease;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+
+    /* Phablet: Larger icons */
+    @media (min-width: 640px) and (max-width: 767px) {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
+  }
+
+  &:hover svg,
+  &.active svg {
+    transform: scale(1.05);
   }
 
   span {
@@ -130,6 +186,17 @@ const StyledTabLink = styled(NavLink)`
     font-weight: 500;
     white-space: nowrap;
     transition: all 0.3s ease;
+
+    /* Phablet: Larger text */
+    @media (min-width: 640px) and (max-width: 767px) {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  &:hover span,
+  &.active span {
+    font-weight: 600;
   }
 
   /* Hide labels on very small screens */
@@ -160,9 +227,24 @@ const MoreButton = styled.button`
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 
+  /* Phablet: Enhanced sizing */
+  @media (min-width: 640px) and (max-width: 767px) {
+    padding: 1.2rem 1rem;
+    min-height: 5.2rem;
+    min-width: 5.2rem;
+    gap: 0.6rem;
+  }
+
   &:hover {
     color: var(--color-brand-600);
     background-color: rgba(var(--color-brand-600-rgb), 0.1);
+    transform: translateY(-1px);
+  }
+
+  /* Active state when menu is open */
+  &.active {
+    color: var(--color-brand-600);
+    background-color: rgba(var(--color-brand-600-rgb), 0.15);
   }
 
   svg {
@@ -170,6 +252,16 @@ const MoreButton = styled.button`
     height: 2.4rem;
     transition: all 0.3s ease;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+
+    /* Phablet: Larger icons */
+    @media (min-width: 640px) and (max-width: 767px) {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
+  }
+
+  &:hover svg {
+    transform: scale(1.05);
   }
 
   span {
@@ -177,6 +269,16 @@ const MoreButton = styled.button`
     font-weight: 500;
     white-space: nowrap;
     transition: all 0.3s ease;
+
+    /* Phablet: Larger text */
+    @media (min-width: 640px) and (max-width: 767px) {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  &:hover span {
+    font-weight: 600;
   }
 
   @media (max-width: 380px) {
@@ -202,6 +304,12 @@ const MenuOverlay = styled.div`
   opacity: ${(props) => (props.isOpen ? 1 : 0)};
   visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease;
+
+  /* Phablet: Enhanced backdrop */
+  @media (min-width: 640px) and (max-width: 767px) {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+  }
 `;
 
 const MenuContent = styled.div`
@@ -215,6 +323,20 @@ const MenuContent = styled.div`
   transform: translateY(${(props) => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+  max-height: 50vh;
+  overflow-y: auto;
+
+  /* Phablet: Enhanced styling and positioning */
+  @media (min-width: 640px) and (max-width: 767px) {
+    padding: 2.4rem;
+    max-width: 85%;
+    left: 7.5%;
+    right: 7.5%;
+    bottom: 2rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
+    max-height: 60vh;
+  }
 `;
 
 const MenuHeader = styled.div`
@@ -224,6 +346,12 @@ const MenuHeader = styled.div`
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--color-grey-200);
+
+  /* Phablet: Enhanced spacing */
+  @media (min-width: 640px) and (max-width: 767px) {
+    margin-bottom: 2.4rem;
+    padding-bottom: 1.2rem;
+  }
 `;
 
 const MenuTitle = styled.h3`
@@ -231,6 +359,11 @@ const MenuTitle = styled.h3`
   font-weight: 600;
   color: var(--color-grey-800);
   margin: 0;
+
+  /* Phablet: Larger title */
+  @media (min-width: 640px) and (max-width: 767px) {
+    font-size: 2rem;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -246,14 +379,32 @@ const CloseButton = styled.button`
   cursor: pointer;
   transition: all 0.3s ease;
 
+  /* Phablet: Larger close button */
+  @media (min-width: 640px) and (max-width: 767px) {
+    width: 4.4rem;
+    height: 4.4rem;
+  }
+
   &:hover {
     background: var(--color-grey-200);
     color: var(--color-grey-800);
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
   }
 
   svg {
     width: 2rem;
     height: 2rem;
+
+    /* Phablet: Larger icon */
+    @media (min-width: 640px) and (max-width: 767px) {
+      width: 2.2rem;
+      height: 2.2rem;
+    }
   }
 `;
 
@@ -264,6 +415,11 @@ const MenuList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
+  /* Phablet: Enhanced spacing */
+  @media (min-width: 640px) and (max-width: 767px) {
+    gap: 1rem;
+  }
 `;
 
 const MenuNavLink = styled(NavLink)`
@@ -276,16 +432,37 @@ const MenuNavLink = styled(NavLink)`
   border-radius: var(--border-radius-md);
   transition: all 0.3s ease;
   background: var(--color-grey-50);
+  min-height: 5.6rem;
+
+  /* Phablet: Enhanced styling */
+  @media (min-width: 640px) and (max-width: 767px) {
+    padding: 1.8rem 2.4rem;
+    gap: 1.6rem;
+    min-height: 6rem;
+    border-radius: var(--border-radius-lg);
+  }
 
   &:hover {
     color: var(--color-brand-600);
     background: var(--color-brand-50);
+    transform: translateY(-1px);
+
+    /* Phablet: Enhanced hover effect */
+    @media (min-width: 640px) and (max-width: 767px) {
+      box-shadow: 0 4px 12px rgba(var(--color-brand-600-rgb), 0.15);
+    }
   }
 
   &.active {
     color: var(--color-brand-600);
     background: var(--color-brand-100);
     border-left: 4px solid var(--color-brand-600);
+    font-weight: 600;
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
   }
 
   svg {
@@ -293,11 +470,32 @@ const MenuNavLink = styled(NavLink)`
     height: 2.4rem;
     color: inherit;
     transition: all 0.3s ease;
+
+    /* Phablet: Larger icons */
+    @media (min-width: 640px) and (max-width: 767px) {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
+  }
+
+  &:hover svg {
+    transform: scale(1.05);
   }
 
   span {
     font-size: 1.6rem;
     font-weight: 500;
+    transition: all 0.3s ease;
+
+    /* Phablet: Larger text */
+    @media (min-width: 640px) and (max-width: 767px) {
+      font-size: 1.7rem;
+    }
+  }
+
+  &:hover span,
+  &.active span {
+    font-weight: 600;
   }
 `;
 
@@ -330,6 +528,13 @@ function MobileNav() {
     }
   };
 
+  // Close menu on escape key
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      handleMenuClose();
+    }
+  };
+
   return (
     <>
       {/* Bottom Tab Navigation */}
@@ -346,7 +551,12 @@ function MobileNav() {
 
           {/* More button */}
           <TabItem>
-            <MoreButton onClick={handleMenuToggle}>
+            <MoreButton
+              onClick={handleMenuToggle}
+              className={isMenuOpen ? 'active' : ''}
+              aria-label="More navigation options"
+              aria-expanded={isMenuOpen}
+            >
               <HiEllipsisHorizontal />
               <span>More</span>
             </MoreButton>
@@ -355,11 +565,16 @@ function MobileNav() {
       </BottomNavContainer>
 
       {/* Overlay Menu for Secondary Items */}
-      <MenuOverlay isOpen={isMenuOpen} onClick={handleOverlayClick}>
+      <MenuOverlay
+        isOpen={isMenuOpen}
+        onClick={handleOverlayClick}
+        onKeyDown={handleKeyDown}
+        tabIndex={-1}
+      >
         <MenuContent isOpen={isMenuOpen}>
           <MenuHeader>
             <MenuTitle>More Options</MenuTitle>
-            <CloseButton onClick={handleMenuClose}>
+            <CloseButton onClick={handleMenuClose} aria-label="Close menu">
               <HiXMark />
             </CloseButton>
           </MenuHeader>
