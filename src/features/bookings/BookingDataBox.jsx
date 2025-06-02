@@ -23,7 +23,7 @@ const StyledBookingDataBox = styled.section`
   overflow: hidden;
 `;
 
-const HeaderMobile = styled.header`
+const MobileHeader = styled.header`
   background-color: var(--color-brand-500);
   padding: 2rem 4rem;
   color: #e0e7ff;
@@ -123,7 +123,7 @@ function BookingDataBox({ booking }) {
 
   return (
     <StyledBookingDataBox>
-      <HeaderMobile>
+      <MobileHeader>
         <div>
           <HiOutlineHomeModern />
           <p>
@@ -138,7 +138,7 @@ function BookingDataBox({ booking }) {
             : formatDistanceFromNow(startDate)}
           ) &mdash; {format(new Date(endDate), 'EEE, MMM dd yyyy')}
         </p>
-      </HeaderMobile>
+      </MobileHeader>
 
       <Section>
         <Guest>

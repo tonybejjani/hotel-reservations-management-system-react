@@ -96,14 +96,14 @@ const FloatingActionButton = styled.button`
 
   /* Safe area support for devices with notches */
   @supports (bottom: env(safe-area-inset-bottom)) {
-    bottom: calc(9rem + env(safe-area-inset-bottom));
+    bottom: calc(12rem + env(safe-area-inset-bottom));
 
     @media (min-width: 640px) and (max-width: 767px) {
-      bottom: calc(10rem + env(safe-area-inset-bottom));
+      bottom: calc(13rem + env(safe-area-inset-bottom));
     }
 
     @media (max-width: 380px) {
-      bottom: calc(8.5rem + env(safe-area-inset-bottom));
+      bottom: calc(10rem + env(safe-area-inset-bottom));
     }
   }
 `;

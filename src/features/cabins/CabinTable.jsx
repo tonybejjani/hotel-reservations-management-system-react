@@ -49,14 +49,14 @@ function CabinTable() {
   return (
     <Menus>
       <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
-        <Table.HeaderMobile>
+        <Table.MobileHeader>
           <div></div>
           <div>Cabin</div>
           <div>Capacity</div>
           <div>Price</div>
           <div>Discount</div>
           <div></div>
-        </Table.HeaderMobile>
+        </Table.MobileHeader>
         <Table.Body
           data={filteredCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}

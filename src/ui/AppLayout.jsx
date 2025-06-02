@@ -2,7 +2,7 @@
 
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import HeaderMobile from './HeaderMobile';
+import MobileHeader from './MobileHeader';
 import MobileNav from './MobileNav';
 import styled from 'styled-components';
 import Header from './Header';
@@ -77,7 +77,7 @@ function AppLayout() {
   return (
     <StyledAppLayout>
       <Header />
-      <HeaderMobile />
+      <MobileHeader />
       <Sidebar />
       <Main>
         <Container>

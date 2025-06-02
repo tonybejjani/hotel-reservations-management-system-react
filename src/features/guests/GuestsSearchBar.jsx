@@ -45,7 +45,7 @@ const SearchContainer = styled.div`
       margin: 0 -2rem 2rem -2rem;
       padding-left: 2rem;
       padding-right: 2rem;
-      border-bottom: 1px solid var(--color-grey-200);
+
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       display: block;
@@ -125,22 +125,22 @@ const SearchIcon = styled.div`
   }
 
   /* Mobile: Larger icon */
-  @media (max-width: 767px) {
-    left: 1.6rem;
+  @media (max-width: 639px) {
+    left: 4rem;
 
     svg {
-      width: 2.2rem;
-      height: 2.2rem;
+      width: 2.4rem;
+      height: 2.4rem;
     }
   }
 
   /* Phablet: Even larger */
   @media (min-width: 640px) and (max-width: 767px) {
-    left: 1.8rem;
+    left: 4rem;
 
     svg {
-      width: 2.4rem;
-      height: 2.4rem;
+      width: 2.6rem;
+      height: 2.6rem;
     }
   }
 `;
@@ -153,6 +153,7 @@ const ClearButton = styled.button`
   background: none;
   border: none;
   color: var(--color-grey-400);
+
   cursor: pointer;
   padding: 0.4rem;
   border-radius: 50%;
@@ -172,7 +173,7 @@ const ClearButton = styled.button`
 
   /* Mobile: Larger clear button */
   @media (max-width: 767px) {
-    right: 1.6rem;
+    right: 4rem;
     padding: 0.6rem;
 
     svg {

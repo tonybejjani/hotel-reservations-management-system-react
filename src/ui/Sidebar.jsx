@@ -36,7 +36,7 @@ const StyledSidebar = styled.aside`
     }
   }
 
-  /* Hide on mobile - HeaderMobile takes over */
+  /* Hide on mobile - MobileHeader takes over */
   @media (max-width: 767px) {
     display: none;
   }

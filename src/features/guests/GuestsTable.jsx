@@ -21,7 +21,7 @@ function GuestsTable() {
   return (
     <Menus>
       <Table columns="1.5fr 1.5fr 1fr 0.8fr 0.5fr 0.2fr">
-        <Table.HeaderMobile>
+        <Table.MobileHeader>
           <FullName>Full Name</FullName>
           <div>Email</div>
           <div>nationalID</div>
@@ -29,7 +29,7 @@ function GuestsTable() {
           <div></div>
           <div></div>
           {/* {!isClickable && <div></div>} */}
-        </Table.HeaderMobile>
+        </Table.MobileHeader>
         <Table.Body
           data={guests}
           render={(guest) => <GuestRow guest={guest} key={guest.id} />}

@@ -7,7 +7,7 @@ import UserMenu from './UserMenu';
 import { useUser } from '../features/authentication/useUser';
 import LogoMobile from './LogoMobile';
 
-const StyledHeaderMobile = styled.header`
+const StyledMobileHeader = styled.header`
   background-color: var(--color-grey-0);
   padding: 1rem 1.6rem 1rem 0;
   border-bottom: 1px solid var(--color-grey-200);
@@ -35,7 +35,7 @@ const AvatarContainer = styled.div`
   position: relative;
 `;
 
-function HeaderMobile() {
+function MobileHeader() {
   const { user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -48,7 +48,7 @@ function HeaderMobile() {
   // console.log(user);
   return (
     <>
-      <StyledHeaderMobile>
+      <StyledMobileHeader>
         <LogoContainer>
           <LogoMobile type="long" />
         </LogoContainer>
@@ -62,7 +62,7 @@ function HeaderMobile() {
             hasNotification={true} // Show red dot for notifications
           />
         </AvatarContainer>
-      </StyledHeaderMobile>
+      </StyledMobileHeader>
 
       <UserMenu
         isOpen={isMenuOpen}
@@ -73,4 +73,4 @@ function HeaderMobile() {
   );
 }
 
-export default HeaderMobile;
+export default MobileHeader;

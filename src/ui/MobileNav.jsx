@@ -339,7 +339,7 @@ const MenuContent = styled.div`
   }
 `;
 
-const MenuHeaderMobile = styled.div`
+const MenuMobileHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -572,12 +572,12 @@ function MobileNav() {
         tabIndex={-1}
       >
         <MenuContent isOpen={isMenuOpen}>
-          <MenuHeaderMobile>
+          <MenuMobileHeader>
             <MenuTitle>More Options</MenuTitle>
             <CloseButton onClick={handleMenuClose} aria-label="Close menu">
               <HiXMark />
             </CloseButton>
-          </MenuHeaderMobile>
+          </MenuMobileHeader>
 
           <MenuList>
             {secondaryNavItems.map(({ to, icon: Icon, label }) => (

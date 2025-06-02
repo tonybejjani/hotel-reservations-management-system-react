@@ -7,16 +7,45 @@ import { PAGE_SIZE } from '../utils/constants';
 
 const FloatingContainer = styled.div`
   position: fixed;
-  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
 
-  /* Only show on mobile */
-  display: none;
-
+  /* Mobile Portrait: Above FAB, below safe content area */
   @media (max-width: 639px) {
+    bottom: 15rem; /* Increased spacing above FAB */
     display: block;
+  }
+
+  /* Phablet: Show with adjusted positioning */
+  @media (min-width: 640px) and (max-width: 767px) {
+    bottom: 16rem; /* Account for larger FAB */
+    display: block;
+  }
+
+  /* Tablet and up: Hide (use regular pagination) */
+  @media (min-width: 768px) {
+    display: none;
+  }
+
+  /* Very small screens: Closer to content */
+  @media (max-width: 380px) {
+    bottom: 14rem;
+  }
+
+  /* Safe area support for devices with notches */
+  @supports (bottom: env(safe-area-inset-bottom)) {
+    @media (max-width: 639px) {
+      bottom: calc(15rem + env(safe-area-inset-bottom));
+    }
+
+    @media (min-width: 640px) and (max-width: 767px) {
+      bottom: calc(16rem + env(safe-area-inset-bottom));
+    }
+
+    @media (max-width: 380px) {
+      bottom: calc(14rem + env(safe-area-inset-bottom));
+    }
   }
 `;
 
@@ -28,13 +57,44 @@ const FloatingPagination = styled.div`
   );
   border-radius: 3rem;
   padding: 1rem 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* Enhanced shadows for better depth */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  /* Subtle border for better definition */
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
+  /* Dark mode adjustments */
+  .dark-mode & {
+    background: linear-gradient(
+      135deg,
+      var(--color-brand-500) 0%,
+      var(--color-brand-600) 100%
+    );
+
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* Accessibility: Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
 `;
 
 const FloatingButton = styled.button`
@@ -45,24 +105,61 @@ const FloatingButton = styled.button`
   height: 4.5rem;
   border: none;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-grey-0);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Better touch target for accessibility */
+  min-width: 44px;
+  min-height: 44px;
 
   &:hover:not(:disabled) {
-    background-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Focus state for keyboard navigation */
+  &:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
   }
 
   svg {
     width: 2rem;
     height: 2rem;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+
+  /* Dark mode adjustments */
+  .dark-mode & {
+    background-color: rgba(255, 255, 255, 0.1);
+
+    &:hover:not(:disabled) {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  /* Smaller screens: Slightly smaller buttons */
+  @media (max-width: 380px) {
+    width: 4rem;
+    height: 4rem;
+
+    svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
   }
 `;
 
@@ -70,19 +167,34 @@ const PageIndicator = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  color: white;
+  gap: 0.3rem;
+  color: var(--color-grey-0);
   min-width: 6rem;
+  text-align: center;
 `;
 
 const CurrentPage = styled.div`
   font-size: 1.8rem;
   font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+  /* Smaller screens: Adjust font size */
+  @media (max-width: 380px) {
+    font-size: 1.6rem;
+  }
 `;
 
 const PageText = styled.div`
-  font-size: 1.1rem;
-  opacity: 0.8;
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+  /* Smaller screens: Adjust font size */
+  @media (max-width: 380px) {
+    font-size: 1.1rem;
+  }
 `;
 
 function FloatingMobilePagination({ count }) {
@@ -109,7 +221,11 @@ function FloatingMobilePagination({ count }) {
   return (
     <FloatingContainer>
       <FloatingPagination>
-        <FloatingButton onClick={prevPage} disabled={currentPage === 1}>
+        <FloatingButton
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          aria-label="Previous page"
+        >
           <HiChevronLeft />
         </FloatingButton>
 
@@ -118,7 +234,11 @@ function FloatingMobilePagination({ count }) {
           <PageText>of {pageCount}</PageText>
         </PageIndicator>
 
-        <FloatingButton onClick={nextPage} disabled={currentPage === pageCount}>
+        <FloatingButton
+          onClick={nextPage}
+          disabled={currentPage === pageCount}
+          aria-label="Next page"
+        >
           <HiChevronRight />
         </FloatingButton>
       </FloatingPagination>

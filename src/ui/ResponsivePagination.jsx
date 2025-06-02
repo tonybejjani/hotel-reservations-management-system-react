@@ -16,13 +16,8 @@ const PaginationContainer = styled.div`
   box-shadow: var(--shadow-sm);
 
   /* Hide on mobile (1-column grid) */
-  @media (max-width: 639px) {
+  @media (max-width: 767px) {
     display: none;
-  }
-
-  @media (max-width: 640px) and (min-width: 640px) {
-    padding: 1rem;
-    gap: 1rem;
   }
 `;
 
