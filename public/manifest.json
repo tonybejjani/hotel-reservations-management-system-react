@@ -1,6 +1,6 @@
 {
   "short_name": "Escape",
-  "name": "Escape Hotel Management",
+  "name": "CheckInn Hotel Management",
   "icons": [
     {
       "src": "favicon.ico",
@@ -12,5 +12,7 @@
   "display": "fullscreen",
   "orientation": "portrait-primary",
   "theme_color": "#2563eb",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "scope": "/",
+  "prefer_related_applications": false
 }

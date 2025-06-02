@@ -161,6 +161,7 @@ html {
   @media (max-width: 1024px) {
     height: 100%;
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
     height: -webkit-fill-available; /* iOS Safari */
     height: fill-available; /* Future standard */
   }
@@ -190,17 +191,74 @@ body {
   @media (max-width: 1024px) {
     min-height: 100%;
     min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
     min-height: -webkit-fill-available; /* iOS Safari */
     min-height: fill-available; /* Future standard */
     
     /* Force full height on mobile */
     height: 100%;
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
     height: -webkit-fill-available;
     
     /* Optimize for mobile browsers */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: none; /* Prevent pull-to-refresh */
+    
+    /* Safari-specific fixes */
+    -webkit-appearance: none;
+    -webkit-touch-callout: none;
+  }
+}
+
+/* ===== ROOT CONTAINER - FULL SCREEN ===== */
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  
+  /* CRITICAL: Full-screen mobile app container */
+  @media (max-width: 1024px) {
+    min-height: 100%;
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
+    min-height: -webkit-fill-available; /* iOS Safari */
+    min-height: fill-available; /* Future standard */
+    
+    /* Ensure it takes full available height */
+    height: 100%;
+    height: auto;
+    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* ===== SAFARI-SPECIFIC URL BAR HIDING ===== */
+@media (max-width: 1024px) {
+  /* Force minimal UI on Safari */
+  @supports (-webkit-touch-callout: none) {
+    html, body {
+      height: -webkit-fill-available !important;
+      min-height: -webkit-fill-available !important;
+    }
+    
+    #root {
+      height: -webkit-fill-available !important;
+      min-height: -webkit-fill-available !important;
+    }
+  }
+  
+  /* Chrome/Android specific */
+  @supports not (-webkit-touch-callout: none) {
+    html, body {
+      height: calc(var(--vh, 1vh) * 100) !important;
+      min-height: calc(var(--vh, 1vh) * 100) !important;
+    }
+    
+    #root {
+      height: calc(var(--vh, 1vh) * 100) !important;
+      min-height: calc(var(--vh, 1vh) * 100) !important;
+    }
   }
 }
 
@@ -289,12 +347,14 @@ img {
   @media (max-width: 1024px) {
     min-height: 100%;
     min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
     min-height: -webkit-fill-available; /* iOS Safari */
     min-height: fill-available; /* Future standard */
     
     /* Ensure it takes full available height */
     height: 100%;
     height: auto;
+    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
     min-height: -webkit-fill-available;
   }
 }
