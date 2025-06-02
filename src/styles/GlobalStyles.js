@@ -154,9 +154,16 @@ const GlobalStyles = createGlobalStyle`
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
-  /* CRITICAL: Prevent horizontal overflow that causes wobbling */
   overflow-x: hidden;
   width: 100%;
+  
+  /* CRITICAL: Full-screen mobile app behavior */
+  @media (max-width: 1024px) {
+    height: 100%;
+    height: 100vh;
+    height: -webkit-fill-available; /* iOS Safari */
+    height: fill-available; /* Future standard */
+  }
 }
 
 body {
@@ -170,8 +177,6 @@ body {
   min-height: 100vh;
   line-height: 1.6;
   font-size: 1.6rem;
-  
-  /* CRITICAL: Prevent horizontal scroll wobbling */
   overflow-x: hidden;
   width: 100%;
   position: relative;
@@ -180,6 +185,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  
+  /* CRITICAL: Full-screen mobile behavior */
+  @media (max-width: 1024px) {
+    min-height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available; /* iOS Safari */
+    min-height: fill-available; /* Future standard */
+    
+    /* Force full height on mobile */
+    height: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
+    
+    /* Optimize for mobile browsers */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none; /* Prevent pull-to-refresh */
+  }
 }
 
 input,
@@ -257,6 +279,95 @@ img {
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
 
+/* ===== ROOT CONTAINER - FULL SCREEN ===== */
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  
+  /* CRITICAL: Full-screen mobile app container */
+  @media (max-width: 1024px) {
+    min-height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available; /* iOS Safari */
+    min-height: fill-available; /* Future standard */
+    
+    /* Ensure it takes full available height */
+    height: 100%;
+    height: auto;
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* ===== MOBILE VIEWPORT STABILITY & FULL-SCREEN FIXES ===== */
+@media (max-width: 1024px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100vw;
+    max-width: 100%;
+    
+    /* Full-screen mobile web app */
+    height: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+  
+  /* Prevent any child elements from causing horizontal overflow */
+  * {
+    max-width: 100%;
+  }
+  
+  /* iOS Safari specific fixes */
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: -webkit-fill-available;
+    -webkit-overflow-scrolling: touch;
+    
+    /* Prevent bounce scrolling that can interfere with URL bar hiding */
+    overscroll-behavior-y: none;
+    -webkit-overscroll-behavior-y: none;
+  }
+}
+
+/* ===== PROGRESSIVE WEB APP OPTIMIZATIONS ===== */
+@media (max-width: 1024px) {
+  /* Prevent zoom on input focus */
+  input[type="color"],
+  input[type="date"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="email"],
+  input[type="month"],
+  input[type="number"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="text"],
+  input[type="time"],
+  input[type="url"],
+  input[type="week"],
+  select:focus,
+  textarea {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+  }
+  
+  /* Prevent callouts on touch */
+  * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection for inputs and content */
+  input, textarea, [contenteditable] {
+    -webkit-user-select: auto;
+    user-select: auto;
+  }
+}
+
 /* ===== SCROLLBAR STYLING - FIXED FOR MOBILE ===== */
 ::-webkit-scrollbar {
   width: 8px;
@@ -298,39 +409,6 @@ img {
   @media (max-width: 1024px) {
     scrollbar-width: none; /* Hide scrollbar on mobile */
   }
-}
-
-/* ===== MOBILE VIEWPORT STABILITY FIXES ===== */
-@media (max-width: 1024px) {
-  html, body {
-    /* Ensure viewport stays fixed during scroll */
-    overflow-x: hidden !important;
-    width: 100vw;
-    max-width: 100%;
-  }
-  
-  /* Prevent any child elements from causing horizontal overflow */
-  * {
-    max-width: 100%;
-  }
-  
-  /* Fix for iOS Safari viewport units */
-  html {
-    height: -webkit-fill-available;
-  }
-  
-  body {
-    min-height: -webkit-fill-available;
-    /* iOS Safari scrolling optimization */
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* ===== ROOT CONTAINER FIX ===== */
-#root {
-  overflow-x: hidden;
-  width: 100%;
-  min-height: 100vh;
 }
 
 /* ===== RESPONSIVE TYPOGRAPHY ===== */
