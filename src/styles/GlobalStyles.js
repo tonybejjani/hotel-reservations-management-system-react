@@ -18,6 +18,7 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
 :root {
 
+
   &, &.light-mode {
 
     /* ===== NEUTRAL GREYS (LIGHT THEME) ===== */
