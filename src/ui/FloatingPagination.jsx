@@ -1,9 +1,10 @@
 /** @format */
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import { useSearchParams } from 'react-router-dom';
 import { PAGE_SIZE } from '../utils/constants';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const FloatingContainer = styled.div`
   position: fixed;
@@ -140,15 +141,12 @@ const FloatingButton = styled.button`
     width: 2rem;
     height: 2rem;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-  }
 
-  /* Dark mode adjustments */
-  .dark-mode & {
-    background-color: rgba(255, 255, 255, 0.1);
-
-    &:hover:not(:disabled) {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
+    ${(props) =>
+      props.mode === 'dark' &&
+      css`
+        color: var(--color-grey-900);
+      `}
   }
 
   /* Smaller screens: Slightly smaller buttons */
@@ -171,6 +169,12 @@ const PageIndicator = styled.div`
   color: var(--color-grey-0);
   min-width: 6rem;
   text-align: center;
+
+  ${(props) =>
+    props.mode === 'dark' &&
+    css`
+      color: var(--color-grey-900);
+    `}
 `;
 
 const CurrentPage = styled.div`
@@ -199,6 +203,11 @@ const PageText = styled.div`
 
 function FloatingMobilePagination({ count }) {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const { isDarkMode } = useDarkMode();
+
+  const mode = isDarkMode ? 'dark' : '';
+
   const currentPage = !searchParams.get('page')
     ? 1
     : Number(searchParams.get('page'));
@@ -225,11 +234,12 @@ function FloatingMobilePagination({ count }) {
           onClick={prevPage}
           disabled={currentPage === 1}
           aria-label="Previous page"
+          mode={mode}
         >
           <HiChevronLeft />
         </FloatingButton>
 
-        <PageIndicator>
+        <PageIndicator mode={mode}>
           <CurrentPage>{currentPage}</CurrentPage>
           <PageText>of {pageCount}</PageText>
         </PageIndicator>

@@ -18,7 +18,6 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
 :root {
 
-
   &, &.light-mode {
 
     /* ===== NEUTRAL GREYS (LIGHT THEME) ===== */
@@ -80,18 +79,17 @@ const GlobalStyles = createGlobalStyle`
   &.dark-mode {
 
     /* ===== NEUTRAL GREYS (DARK THEME - BETTER CONTRAST!) ===== */
-    --color-grey-0: #0a0a0a;          /* Almost black background */
-    --color-grey-50: #1a1a1a;         /* Very dark surface - increased contrast */
-    --color-grey-100: #262626;        /* Dark surface - increased contrast */
-    --color-grey-200: #404040;        /* Dark elevated surface - increased contrast */
-    --color-grey-300: #525252;        /* Dark borders - increased contrast */
-    --color-grey-400: #737373;        /* Dark muted text - much brighter */
-    --color-grey-500: #a3a3a3;        /* Medium text - much brighter */
-    --color-grey-600: #d4d4d4;        /* Light text - much brighter */
-    --color-grey-700: #e5e5e5;        /* Primary text - much brighter */
-    --color-grey-800: #f5f5f5;        /* High contrast text - much brighter */
-    --color-grey-900: #ffffff;        /* Highest contrast text - pure white */
-
+    --color-grey-0: #18212f;
+    --color-grey-50: #111827;
+    --color-grey-100: #1f2937;
+    --color-grey-200: #374151;
+    --color-grey-300: #4b5563;
+    --color-grey-400: #6b7280;
+    --color-grey-500: #9ca3af;
+    --color-grey-600: #d1d5db;
+    --color-grey-700: #e5e7eb;
+    --color-grey-800: #f3f4f6;
+    --color-grey-900: #f9fafb;
     /* ===== SEMANTIC COLORS (DARK THEME - BETTER CONTRAST!) ===== */
     --color-blue-100: #1e3a8a;        /* Darker blue for dark theme */
     --color-blue-700: #93c5fd;        /* Much brighter blue for better contrast */

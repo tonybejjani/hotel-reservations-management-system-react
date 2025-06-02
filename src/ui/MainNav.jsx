@@ -29,7 +29,7 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: column;
 
-  gap: 1.2rem;
+  gap: 0.4rem;
   list-style: none;
   margin: 0;
   padding: 0;
