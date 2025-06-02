@@ -14,147 +14,131 @@ import { createGlobalStyle } from 'styled-components';
 />
 */
 
-/* Colors adapted from https://tailwindcss.com/docs/customizing-colors */
+/* Colors adapted from industry standards - Sophisticated Blue primary */
 const GlobalStyles = createGlobalStyle`
 :root {
 
-
   &, &.light-mode {
 
+    /* ===== NEUTRAL GREYS (LIGHT THEME) ===== */
+    --color-grey-0: #ffffff;
+    --color-grey-50: #f9fafb;
+    --color-grey-100: #f3f4f6;
+    --color-grey-200: #e5e7eb;
+    --color-grey-300: #d1d5db;
+    --color-grey-400: #9ca3af;
+    --color-grey-500: #6b7280;
+    --color-grey-600: #4b5563;
+    --color-grey-700: #374151;
+    --color-grey-800: #1f2937;
+    --color-grey-900: #111827;
 
-    --color-grey-0: #FCFCFA;
-    --color-grey-50: #F8F8F8;
-    --color-grey-100: #F0EFEC;
-    --color-grey-200: #E5E4DF;
-    --color-grey-300: #D6D2CC;
-    --color-grey-400: #BDB8B0;
-    --color-grey-500: #A8A39D;
-    --color-grey-600: #7A756F;
-    --color-grey-700: #4A4641;
-    --color-grey-800: #2B2825;
-    --color-grey-900: #1A1816;
-
-    --color-blue-100: #e0f2fe;
-    --color-blue-700: #0369a1;
+    /* ===== SEMANTIC COLORS (LIGHT THEME) ===== */
+    --color-blue-100: #dbeafe;
+    --color-blue-700: #1d4ed8;
     --color-green-100: #dcfce7;
     --color-green-700: #15803d;
-    --color-yellow-100: #fef9c3;
-    --color-yellow-700: #a16207;
+    --color-yellow-100: #fef3c7;
+    --color-yellow-700: #b45309;
     --color-silver-100: #e5e7eb;
     --color-silver-700: #374151;
     --color-indigo-100: #e0e7ff;
     --color-indigo-700: #4338ca;
 
+    /* ===== SOPHISTICATED BLUE BRAND ===== */
+    --color-brand-50: #eff6ff;
+    --color-brand-100: #dbeafe;
+    --color-brand-200: #bfdbfe;
+    --color-brand-500: #3b82f6;
+    --color-brand-600: #2563eb;
+    --color-brand-700: #1d4ed8;
+    --color-brand-800: #1e40af;
+    --color-brand-900: #1e3a8a;
 
-    --color-brand-50: #f0f5ec;
-    --color-brand-100: #d8e5d3;
-    --color-brand-200: #b5cfae;
-    --color-brand-500: #8A9A5B;
-    --color-brand-600:rgb(50, 127, 50);
-    --color-brand-700: #476947;
-    --color-brand-800:rgb(54, 88, 52);
-    --color-brand-900: #213621;
-
-
-    
-
+    /* ===== ERROR COLORS ===== */
     --color-red-100: #fee2e2;
     --color-red-700: #b91c1c;
     --color-red-800: #991b1b;
 
-    --backdrop-color: rgba(255, 255, 255, 0.1);
+    /* ===== DESIGN TOKENS ===== */
+    --backdrop-color: rgba(0, 0, 0, 0.1);
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 
-      /* For dark mode */
+    /* For dark mode */
     --image-grayscale: 0;
     --image-opacity: 100%;
 
     ::-webkit-calendar-picker-indicator {
-
-    scale: 1.5;
-  } 
-
-
+      scale: 1.5;
+    } 
   }
 
   &.dark-mode {
 
-    --color-grey-0: #18212f;
-    --color-grey-50: #111827;
-    --color-grey-100: #1f2937;
-    --color-grey-200: #374151;
-    --color-grey-300: #4b5563;
-    --color-grey-400: #6b7280;
-    --color-grey-500: #9ca3af;
-    --color-grey-600: #d1d5db;
-    --color-grey-700: #e5e7eb;
-    --color-grey-800: #f3f4f6;
-    --color-grey-900: #f9fafb;
+    /* ===== NEUTRAL GREYS (DARK THEME - BETTER CONTRAST!) ===== */
+    --color-grey-0: #0a0a0a;          /* Almost black background */
+    --color-grey-50: #1a1a1a;         /* Very dark surface - increased contrast */
+    --color-grey-100: #262626;        /* Dark surface - increased contrast */
+    --color-grey-200: #404040;        /* Dark elevated surface - increased contrast */
+    --color-grey-300: #525252;        /* Dark borders - increased contrast */
+    --color-grey-400: #737373;        /* Dark muted text - much brighter */
+    --color-grey-500: #a3a3a3;        /* Medium text - much brighter */
+    --color-grey-600: #d4d4d4;        /* Light text - much brighter */
+    --color-grey-700: #e5e5e5;        /* Primary text - much brighter */
+    --color-grey-800: #f5f5f5;        /* High contrast text - much brighter */
+    --color-grey-900: #ffffff;        /* Highest contrast text - pure white */
 
-    --color-blue-100: #075985;
-    --color-blue-700: #e0f2fe;
-    --color-green-100: #166534;
-    --color-green-700: #dcfce7;
-    --color-yellow-100: #854d0e;
-    --color-yellow-700: #fef9c3;
-    --color-silver-100: #374151;
-    --color-silver-700: #f3f4f6;
-    --color-indigo-100: #3730a3;
-    --color-indigo-700: #e0e7ff;
+    /* ===== SEMANTIC COLORS (DARK THEME - BETTER CONTRAST!) ===== */
+    --color-blue-100: #1e3a8a;        /* Darker blue for dark theme */
+    --color-blue-700: #93c5fd;        /* Much brighter blue for better contrast */
+    --color-green-100: #14532d;       /* Darker green */
+    --color-green-700: #86efac;       /* Much brighter green for better contrast */
+    --color-yellow-100: #78350f;      /* Darker yellow */
+    --color-yellow-700: #fde047;      /* Much brighter yellow for better contrast */
+    --color-silver-100: #404040;      /* Dark silver - better contrast */
+    --color-silver-700: #d4d4d4;      /* Light silver - better contrast */
+    --color-indigo-100: #312e81;      /* Darker indigo */
+    --color-indigo-700: #c7d2fe;      /* Much brighter indigo for better contrast */
 
-    --color-red-100: #fee2e2;
-    --color-red-700:rgb(193, 81, 81);
-    --color-red-800: #991b1b;
+    /* ===== SOPHISTICATED BLUE BRAND (DARK THEME - BETTER CONTRAST!) ===== */
+    --color-brand-50: #172554;        /* Very dark brand */
+    --color-brand-100: #1e3a8a;       /* Dark brand */
+    --color-brand-200: #1e40af;       /* Medium dark brand */
+    --color-brand-500: #60a5fa;       /* Bright brand for dark bg - increased brightness */
+    --color-brand-600: #3b82f6;       /* Main brand color - good contrast */
+    --color-brand-700: #93c5fd;       /* Much brighter for better text contrast */
+    --color-brand-800: #bfdbfe;       /* Even brighter for high contrast needs */
+    --color-brand-900: #dbeafe;       /* Very bright for maximum contrast */
 
-    --color-brand-50: #f0f5ec;
-    --color-brand-100:rgb(187, 227, 171);
-    --color-brand-200:rgb(153, 206, 138);
-    --color-brand-500:rgb(136, 164, 52);
-    --color-brand-600:rgb(45, 170, 45);
-    --color-brand-700: #476947;
-    --color-brand-800:rgb(54, 88, 52);
-    --color-brand-900: #213621;
+    /* ===== ERROR COLORS (DARK THEME - BETTER CONTRAST!) ===== */
+    --color-red-100: #7f1d1d;         /* Dark red */
+    --color-red-700: #fca5a5;         /* Much brighter red for better contrast */
+    --color-red-800: #f87171;         /* Brighter red - better contrast */
 
-    --backdrop-color: rgba(0, 0, 0, 0.3);
+    /* ===== DESIGN TOKENS (DARK THEME) ===== */
+    --backdrop-color: rgba(0, 0, 0, 0.7);
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.8);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.7), 0 2px 4px -2px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8), 0 4px 6px -4px rgba(0, 0, 0, 0.8);
 
     --image-grayscale: 10%;
     --image-opacity: 90%;
 
     ::-webkit-calendar-picker-indicator {
-    filter: invert(1)
-    brightness(111%)
-    sepia(100%)
-    saturate(10000%)
-    hue-rotate(180deg);
-    scale: 1.5;
-  } 
+      filter: invert(1) brightness(111%) sepia(100%) saturate(10000%) hue-rotate(180deg);
+      scale: 1.5;
+    } 
   }
 
-    /* Indigo */
-  /* --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-brand-800: #3730a3;
-  --color-brand-900: #312e81; */
-
-
+  /* ===== BORDER RADIUS SYSTEM ===== */
   --border-radius-tiny: 3px;
   --border-radius-sm: 5px;
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
-
- 
-
 }
 
 *,
@@ -164,25 +148,31 @@ const GlobalStyles = createGlobalStyle`
   padding: 0;
   margin: 0;
 
-  /* Creating animations for dark mode */
-  transition: background-color 0.3s, border 0.3s;
+  /* Creating smooth animations for dark mode */
+  transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
 }
 
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: "lato", sans-serif;
-  font-weight: 300;
-
-  letter-spacing: 0.4px;
+  font-family: "Inter", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.2px;
   color: var(--color-grey-700);
-
-  transition: color 0.3s, background-color 0.3s;
+  background-color: var(--color-grey-0);
+  
+  transition: color 0.3s ease, background-color 0.3s ease;
   min-height: 100vh;
-  line-height: 1.5;
+  line-height: 1.6;
   font-size: 1.6rem;
+  
+  /* Better font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 input,
@@ -195,7 +185,8 @@ select {
 
 button {
   cursor: pointer;
-
+  background: none;
+  border: none;
 }
 
 *:disabled {
@@ -205,31 +196,35 @@ button {
 select:disabled,
 input:disabled {
   background-color: var(--color-grey-100);
-  color: var(--color-grey-600);
+  color: var(--color-grey-500);
 }
-
 
 input:focus,
 button:focus,
 textarea:focus,
 select:focus {
   outline: 2px solid var(--color-brand-600);
-  outline-offset: -1px;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 
 input::-webkit-calendar-picker-indicator {
-              opacity: 100;
+  opacity: 1;
 }
-/* Parent selector, finally 😃 */
+
+/* Parent selector for SVG buttons */
 button:has(svg) {
   line-height: 0;
 }
 
-
-
 a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-brand-600);
 }
 
 ul {
@@ -249,13 +244,94 @@ h6 {
 
 img {
   max-width: 100%;
-
-  /* For dark mode */
+  height: auto;
+  
+  /* For dark mode image adjustments */
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
-}`;
+}
 
-/*
-FOR DARK MODE
+/* ===== SCROLLBAR STYLING ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
 
-*/
+::-webkit-scrollbar-track {
+  background: var(--color-grey-100);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-grey-300);
+  border-radius: 4px;
+  
+  &:hover {
+    background: var(--color-grey-400);
+  }
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-grey-300) var(--color-grey-100);
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+@media (max-width: 768px) {
+  html {
+    font-size: 56.25%; /* 9px */
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 50%; /* 8px */
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+    font-size: 68.75%; /* 11px */
+  }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --color-grey-100: #e0e0e0;
+    --color-grey-200: #c0c0c0;
+    --color-grey-800: #1a1a1a;
+    --color-grey-900: #000000;
+  }
+  
+  &.dark-mode {
+    --color-grey-0: #000000;
+    --color-grey-900: #ffffff;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+`;
+
 export default GlobalStyles;

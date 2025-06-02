@@ -31,7 +31,7 @@ const Name = styled.div`
 `;
 
 const Email = styled.div`
-  font-weight: 300;
+  font-weight: 400;
 `;
 
 const NationalID = styled.div`

@@ -3,6 +3,7 @@
 // import styled, { css } from 'styled-components';
 
 import styled, { css } from 'styled-components';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const sizes = {
   small: css`
@@ -40,6 +41,15 @@ const variations = {
       background-color: var(--color-brand-700);
     }
   `,
+  primaryDark: css`
+    color: var(--color-grey-900);
+    background-color: var(--color-brand-600);
+
+    &:hover {
+      color: var(--color-brand-100);
+      background-color: var(--color-brand-700);
+    }
+  `,
   secondary: css`
     color: var(--color-grey-600);
     background: var(--color-green-300);
@@ -59,7 +69,7 @@ const variations = {
   `,
 };
 
-const Button = styled.button`
+const StyledButton = styled.button`
   ${(props) =>
     css`
       ${sizes[props.size]}
@@ -75,8 +85,26 @@ const Button = styled.button`
   box-shadow: var(--shadow-sm);
 `;
 
-Button.defaultProps = {
+StyledButton.defaultProps = {
   variation: 'primary',
   size: 'medium',
 };
+
+function Button({ children, variation = 'primary', size, ...props }) {
+  const { isDarkMode } = useDarkMode();
+
+  const mode = isDarkMode ? 'dark' : '';
+
+  const variationMode = `${variation}${
+    mode.charAt(0).toUpperCase() + mode.slice(1)
+  }`;
+
+  console.log(variation);
+  return (
+    <StyledButton variation={variationMode} mode={mode} {...props}>
+      {children}
+    </StyledButton>
+  );
+}
+
 export default Button;

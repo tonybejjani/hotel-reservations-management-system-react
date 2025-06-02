@@ -2,6 +2,7 @@
 
 import { useSearchParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -24,6 +25,13 @@ const FilterButton = styled.button`
       color: var(--color-brand-50);
     `}
 
+  ${(props) =>
+    props.mode === 'dark' &&
+    props.active === 'activate' &&
+    css`
+      color: var(--color-brand-900);
+    `}
+
   border-radius: var(--border-radius-sm);
   font-weight: 500;
   font-size: 1.4rem;
@@ -35,10 +43,22 @@ const FilterButton = styled.button`
     background-color: var(--color-brand-600);
     color: var(--color-brand-50);
   }
+
+  ${(props) =>
+    props.mode === 'dark' &&
+    css`
+      &:hover:not(:disabled) {
+        color: var(--color-brand-800);
+      }
+    `}
 `;
 
 function Filter({ filterField, options, defaultFilter }) {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const { isDarkMode } = useDarkMode();
+
+  const mode = isDarkMode ? 'dark' : '';
 
   const activeFilter =
     searchParams.get(filterField) || options[defaultFilter].value;
@@ -61,6 +81,7 @@ function Filter({ filterField, options, defaultFilter }) {
           onClick={() => handleClick(option.value)}
           active={activeFilter === option.value ? 'activate' : ''}
           disabled={activeFilter === option.value}
+          mode={mode}
         >
           {option.label}
         </FilterButton>
