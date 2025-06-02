@@ -154,6 +154,9 @@ const GlobalStyles = createGlobalStyle`
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+  /* CRITICAL: Prevent horizontal overflow that causes wobbling */
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
@@ -167,6 +170,11 @@ body {
   min-height: 100vh;
   line-height: 1.6;
   font-size: 1.6rem;
+  
+  /* CRITICAL: Prevent horizontal scroll wobbling */
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
   
   /* Better font rendering */
   -webkit-font-smoothing: antialiased;
@@ -249,14 +257,24 @@ img {
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
 
-/* ===== SCROLLBAR STYLING ===== */
+/* ===== SCROLLBAR STYLING - FIXED FOR MOBILE ===== */
 ::-webkit-scrollbar {
   width: 8px;
+  
+  /* Hide scrollbar on mobile/tablet to prevent wobbling */
+  @media (max-width: 1024px) {
+    width: 0px;
+    background: transparent;
+  }
 }
 
 ::-webkit-scrollbar-track {
   background: var(--color-grey-100);
   border-radius: 4px;
+  
+  @media (max-width: 1024px) {
+    background: transparent;
+  }
 }
 
 ::-webkit-scrollbar-thumb {
@@ -266,12 +284,53 @@ img {
   &:hover {
     background: var(--color-grey-400);
   }
+  
+  @media (max-width: 1024px) {
+    background: transparent;
+  }
 }
 
-/* Firefox scrollbar */
+/* Firefox scrollbar - Hide on mobile */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-grey-300) var(--color-grey-100);
+  
+  @media (max-width: 1024px) {
+    scrollbar-width: none; /* Hide scrollbar on mobile */
+  }
+}
+
+/* ===== MOBILE VIEWPORT STABILITY FIXES ===== */
+@media (max-width: 1024px) {
+  html, body {
+    /* Ensure viewport stays fixed during scroll */
+    overflow-x: hidden !important;
+    width: 100vw;
+    max-width: 100%;
+  }
+  
+  /* Prevent any child elements from causing horizontal overflow */
+  * {
+    max-width: 100%;
+  }
+  
+  /* Fix for iOS Safari viewport units */
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: -webkit-fill-available;
+    /* iOS Safari scrolling optimization */
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ===== ROOT CONTAINER FIX ===== */
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
 }
 
 /* ===== RESPONSIVE TYPOGRAPHY ===== */
