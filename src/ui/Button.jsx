@@ -99,7 +99,6 @@ function Button({ children, variation = 'primary', size, ...props }) {
     mode.charAt(0).toUpperCase() + mode.slice(1)
   }`;
 
-  console.log(variation);
   return (
     <StyledButton variation={variationMode} mode={mode} {...props}>
       {children}

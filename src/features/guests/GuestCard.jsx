@@ -27,15 +27,26 @@ const Card = styled.div`
 const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 1rem;
 `;
 
 const GuestName = styled.h3`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-800);
-  margin-bottom: 0.4rem;
+  /* margin-bottom: 0.4rem; */
+
+  /* background-color: var(--color-brand-50); */
+
+  border-radius: var(--border-radius-md);
+  @media (max-width: 767px) {
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2rem;
+  }
 `;
 
 const GuestId = styled.span`
@@ -67,15 +78,23 @@ const InfoRow = styled.div`
 `;
 
 const InfoLabel = styled.span`
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: 500;
   color: var(--color-grey-600);
+
+  @media (min-width: 767px) and (max-width: 1024px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const InfoValue = styled.span`
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--color-grey-800);
   font-weight: 500;
+
+  @media (min-width: 767px) and (max-width: 1024px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const CountryFlag = styled.div`
@@ -87,6 +106,14 @@ const CountryFlag = styled.div`
     width: 2rem;
     height: auto;
     border-radius: 2px;
+
+    @media (max-width: 639px) {
+      width: 4rem;
+    }
+
+    @media (max-width: 320px) {
+      width: 4rem;
+    }
   }
 `;
 

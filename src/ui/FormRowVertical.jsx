@@ -11,6 +11,10 @@ const StyledFormRow = styled.div`
 
 const Label = styled.label`
   font-weight: 500;
+
+  @media (max-width: 480px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Error = styled.span`

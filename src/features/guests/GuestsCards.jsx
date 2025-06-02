@@ -33,7 +33,7 @@ function GuestsCards({ guests = [], count = 0 }) {
         </CardsGrid>
       </Menus>
 
-      {/* Desktop/Tablet pagination */}
+      {/* Tablet/Small laptop pagination */}
       <ResponsivePagination count={count} />
 
       {/* Mobile floating pagination */}
