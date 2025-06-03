@@ -341,6 +341,49 @@ img {
   white-space: nowrap;
   border: 0;
 }
+
+
+
+/* ===== PWA FULL-SCREEN FIXES ===== */
+@media all and (display-mode: standalone) {
+  html, body {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height */
+    overflow: hidden;
+  }
+  
+  #root {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Remove any bottom margins/padding in PWA mode */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* ===== iOS SAFE AREA HANDLING ===== */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* In PWA mode, handle safe areas differently */
+  @media all and (display-mode: standalone) {
+    body {
+      padding-bottom: 0 !important; /* Remove bottom safe area padding */
+    }
+  }
+}
 `;
 
 export default GlobalStyles;
