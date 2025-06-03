@@ -30,21 +30,37 @@
     <!-- Prevent phone number detection -->
     <meta name="format-detection" content="telephone=no" />
 
+    <!-- Favicon and manifest -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="manifest" href="/manifest.json" />
 
+    <!-- Font preloading for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <title>CheckInn</title>
+    <title>Escape</title>
+
+    <!-- Viewport height calculation script for mobile -->
+    <script>
+      // Set dynamic viewport height for mobile browsers
+      function setVH() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+
+      // Initial set
+      setVH();
+
+      // Update on resize and orientation change
+      window.addEventListener('resize', setVH);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setVH, 100);
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
