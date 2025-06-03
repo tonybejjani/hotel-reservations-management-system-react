@@ -13,6 +13,12 @@ const StyledAppLayout = styled.div`
   grid-template-rows: auto 1fr;
   height: 100vh;
 
+  @media all and (display-mode: standalone) {
+    height: 100vh;
+    height: 100dvh;
+    min-height: unset;
+    overflow: hidden;
+  }
   /* Desktop: Full sidebar */
   @media (min-width: 1200px) {
     grid-template-columns: 26rem 1fr;
@@ -38,7 +44,6 @@ const StyledAppLayout = styled.div`
 const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
-  overflow: scroll;
 
   @media (max-width: 768px) {
     padding: 2rem 2.4rem 3.2rem;

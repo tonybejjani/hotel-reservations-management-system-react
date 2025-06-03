@@ -377,10 +377,16 @@ img {
 
 /* ===== PWA FULL-SCREEN FIXES ===== */
 @media all and (display-mode: standalone) {
-  html, body {
+  html {
     height: 100vh;
     height: 100dvh;
-    /* Remove overflow: hidden - this was hiding navigation */
+  }
+  
+  body {
+    height: 100vh;
+    height: 100dvh;
+    margin: 0 !important;
+    overflow: visible !important;
   }
   
   #root {
@@ -389,15 +395,27 @@ img {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     
-    /* Ensure navigation is visible */
-    display: flex;
-    flex-direction: column;
+    /* Ensure navigation is visible - CRITICAL */
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+/* ===== iOS SAFE AREA HANDLING ===== */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-top: env(safe-area-inset-top);
+    /* IMPORTANT: Keep bottom padding for navigation */
+    padding-bottom: env(safe-area-inset-bottom);
   }
   
-  /* Keep safe margins but don't hide navigation */
-  body {
-    margin: 0 !important;
-    /* Remove padding: 0 - this was hiding bottom nav */
+  /* In PWA mode, ensure bottom nav is visible */
+  @media all and (display-mode: standalone) {
+    body {
+      padding-bottom: calc(env(safe-area-inset-bottom) + 60px) !important;
+    }
   }
 }
 
