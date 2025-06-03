@@ -1,11 +1,11 @@
 /** @format */
-import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 :root {
+  /* Mobile viewport handling */
+  --vh: 1vh;
 
   &, &.light-mode {
-
     /* ===== NEUTRAL GREYS (LIGHT THEME) ===== */
     --color-grey-0: #ffffff;
     --color-grey-50: #f9fafb;
@@ -63,7 +63,6 @@ const GlobalStyles = createGlobalStyle`
   }
 
   &.dark-mode {
-
     /* ===== NEUTRAL GREYS (DARK THEME - BETTER CONTRAST!) ===== */
     --color-grey-0: #18212f;
     --color-grey-50: #111827;
@@ -76,32 +75,33 @@ const GlobalStyles = createGlobalStyle`
     --color-grey-700: #e5e7eb;
     --color-grey-800: #f3f4f6;
     --color-grey-900: #f9fafb;
+    
     /* ===== SEMANTIC COLORS (DARK THEME - BETTER CONTRAST!) ===== */
-    --color-blue-100: #1e3a8a;        /* Darker blue for dark theme */
-    --color-blue-700: #93c5fd;        /* Much brighter blue for better contrast */
-    --color-green-100: #14532d;       /* Darker green */
-    --color-green-700: #86efac;       /* Much brighter green for better contrast */
-    --color-yellow-100: #78350f;      /* Darker yellow */
-    --color-yellow-700: #fde047;      /* Much brighter yellow for better contrast */
-    --color-silver-100: #404040;      /* Dark silver - better contrast */
-    --color-silver-700: #d4d4d4;      /* Light silver - better contrast */
-    --color-indigo-100: #312e81;      /* Darker indigo */
-    --color-indigo-700: #c7d2fe;      /* Much brighter indigo for better contrast */
+    --color-blue-100: #1e3a8a;
+    --color-blue-700: #93c5fd;
+    --color-green-100: #14532d;
+    --color-green-700: #86efac;
+    --color-yellow-100: #78350f;
+    --color-yellow-700: #fde047;
+    --color-silver-100: #404040;
+    --color-silver-700: #d4d4d4;
+    --color-indigo-100: #312e81;
+    --color-indigo-700: #c7d2fe;
 
     /* ===== SOPHISTICATED BLUE BRAND (DARK THEME - BETTER CONTRAST!) ===== */
-    --color-brand-50: #172554;        /* Very dark brand */
-    --color-brand-100: #1e3a8a;       /* Dark brand */
-    --color-brand-200: #1e40af;       /* Medium dark brand */
-    --color-brand-500: #60a5fa;       /* Bright brand for dark bg - increased brightness */
-    --color-brand-600: #3b82f6;       /* Main brand color - good contrast */
-    --color-brand-700: #93c5fd;       /* Much brighter for better text contrast */
-    --color-brand-800: #bfdbfe;       /* Even brighter for high contrast needs */
-    --color-brand-900: #dbeafe;       /* Very bright for maximum contrast */
+    --color-brand-50: #172554;
+    --color-brand-100: #1e3a8a;
+    --color-brand-200: #1e40af;
+    --color-brand-500: #60a5fa;
+    --color-brand-600: #3b82f6;
+    --color-brand-700: #93c5fd;
+    --color-brand-800: #bfdbfe;
+    --color-brand-900: #dbeafe;
 
     /* ===== ERROR COLORS (DARK THEME - BETTER CONTRAST!) ===== */
-    --color-red-100: #7f1d1d;         /* Dark red */
-    --color-red-700: #fca5a5;         /* Much brighter red for better contrast */
-    --color-red-800: #f87171;         /* Brighter red - better contrast */
+    --color-red-100: #7f1d1d;
+    --color-red-700: #fca5a5;
+    --color-red-800: #f87171;
 
     /* ===== DESIGN TOKENS (DARK THEME) ===== */
     --backdrop-color: rgba(0, 0, 0, 0.7);
@@ -139,6 +139,12 @@ html {
   font-size: 62.5%;
   width: 100%;
   overflow-x: hidden;
+  
+  /* Safari address bar handling */
+  @media (max-width: 1024px) {
+    height: 100%;
+    height: 100dvh; /* Dynamic viewport - key for Safari */
+  }
 }
 
 body {
@@ -161,62 +167,71 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   
-  /* Simple mobile viewport */
+  /* Desktop fallback */
+  min-height: 100vh;
+  
+  /* Modern browsers - dynamic viewport */
+  min-height: 100dvh; /* Dynamic viewport height - automatically adjusts for address bar */
+  
+  /* iOS Safari specific */
+  min-height: -webkit-fill-available;
+  
   @media (max-width: 1024px) {
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
+    /* Force full height on mobile */
+    height: 100%;
+    height: 100dvh; /* Safari automatically hides address bar */
     height: -webkit-fill-available;
-    min-height: 100vh;
-    min-height: calc(var(--vh, 1vh) * 100);
-    min-height: -webkit-fill-available;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport - handles address bar automatically */
+  min-height: -webkit-fill-available;
   
   @media (max-width: 1024px) {
-    min-height: calc(var(--vh, 1vh) * 100);
-    min-height: -webkit-fill-available;
+    height: 100%;
+    height: 100dvh; /* Safari will hide address bar when scrolling */
+    height: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Simple mobile optimizations */
+/* ===== MOBILE SAFARI OPTIMIZATIONS ===== */
 @media (max-width: 1024px) {
-  input[type="text"], input[type="email"], input[type="password"], textarea {
+  /* Prevent zoom on inputs */
+  input[type="text"], 
+  input[type="email"], 
+  input[type="password"], 
+  textarea {
     font-size: 16px !important;
   }
 
-  /* ===== FIX WOBBLING - SIMPLER APPROACH ===== */
-  html {
-    overflow-x: hidden;
-    width: 100%;
-  }
-  
-  body {
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  #root {
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100vw;
-  }
-  
-  /* Prevent horizontal scroll on all elements */
+  /* Prevent horizontal scroll */
   * {
     max-width: 100vw;
     overflow-x: hidden;
   }
   
-  /* Only prevent text selection during scrolling, not always */
+  /* Only prevent text selection during scrolling */
   body.scrolling {
     -webkit-user-select: none;
     user-select: none;
+  }
+  
+  /* Allow text selection for inputs */
+  input, textarea, [contenteditable] {
+    -webkit-user-select: auto;
+    user-select: auto;
+    touch-action: manipulation;
   }
 }
 
@@ -373,29 +388,22 @@ img {
   border: 0;
 }
 
-
-
-/* ===== PWA FULL-SCREEN FIXES ===== */
+/* ===== PWA STANDALONE MODE ===== */
 @media all and (display-mode: standalone) {
-  html {
-    height: 100vh;
-    height: 100dvh;
+  html, body, #root {
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: unset !important;
   }
   
   body {
-    height: 100vh;
-    height: 100dvh;
     margin: 0 !important;
     overflow: visible !important;
   }
   
   #root {
-    height: 100vh;
-    height: 100dvh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    
-    /* Ensure navigation is visible - CRITICAL */
     display: flex !important;
     flex-direction: column !important;
   }
@@ -407,7 +415,6 @@ img {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     padding-top: env(safe-area-inset-top);
-    /* IMPORTANT: Keep bottom padding for navigation */
     padding-bottom: env(safe-area-inset-bottom);
   }
   
@@ -419,26 +426,29 @@ img {
   }
 }
 
-/* ===== iOS SAFE AREA HANDLING ===== */
-@supports (padding: max(0px)) {
-  body {
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    /* Keep bottom safe area for navigation */
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-top: env(safe-area-inset-top);
-  }
-  
-  /* In PWA mode, still respect bottom safe area */
-  @media all and (display-mode: standalone) {
+/* ===== SAFARI KEYBOARD HANDLING ===== */
+@supports (height: 100dvh) {
+  @media (max-width: 1024px) {
     body {
-      /* Don't remove bottom padding - navigation needs it */
-      padding-bottom: env(safe-area-inset-bottom) !important;
+      /* Use dynamic viewport that excludes address bar */
+      height: 100dvh;
+      min-height: 100dvh;
+    }
+    
+    #root {
+      height: 100dvh;
+      min-height: 100dvh;
     }
   }
 }
 
-
+/* Fallback for older Safari */
+@supports not (height: 100dvh) {
+  @media (max-width: 1024px) {
+    body {
+      height: calc(100vh - env(keyboard-inset-height, 0px));
+      min-height: calc(100vh - env(keyboard-inset-height, 0px));
+    }
+  }
+}
 `;
-
-export default GlobalStyles;

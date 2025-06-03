@@ -23,7 +23,6 @@ import NewBooking from './pages/NewBooking';
 import Guests from './pages/Guests';
 import { GlobalProvider } from './context/GlobalContext';
 import BookingsMain from './features/bookings/BookingsMain';
-import { useFullScreen } from './hooks/useFullScreen';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +34,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  useFullScreen();
   return (
     <DarkModeProvider>
       <GlobalProvider>

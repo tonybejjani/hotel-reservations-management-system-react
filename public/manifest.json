@@ -1,18 +1,28 @@
 {
   "short_name": "CheckInn",
   "name": "CheckInn - Hotel Bookings Management System",
+  "description": "Modern hotel booking management system",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/vite.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": "/ ",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#2563eb",
   "background_color": "#2563eb",
   "scope": "/",
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "categories": ["business", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
 }
