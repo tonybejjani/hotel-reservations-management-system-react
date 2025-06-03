@@ -1,20 +1,6 @@
 /** @format */
 import { createGlobalStyle } from 'styled-components';
 
-/*
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://fonts.googleapis.com/css2?family=Sono:wght@400;500;600&display=swap"
-  rel="stylesheet"
-/>
-*/
-
-/* Colors adapted from industry standards - Sophisticated Blue primary */
 const GlobalStyles = createGlobalStyle`
 :root {
 
@@ -146,23 +132,13 @@ const GlobalStyles = createGlobalStyle`
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-
-  /* Creating smooth animations for dark mode */
   transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
 }
 
 html {
   font-size: 62.5%;
-  scroll-behavior: smooth;
-  overflow-x: hidden;
   width: 100%;
-  
-  /* CRITICAL: Minimal browser interface on mobile */
-  @media (max-width: 1024px) {
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
-    height: -webkit-fill-available; /* iOS Safari */
-  }
+  overflow-x: hidden;
 }
 
 body {
@@ -176,8 +152,8 @@ body {
   min-height: 100vh;
   line-height: 1.6;
   font-size: 1.6rem;
-  overflow-x: hidden;
   width: 100%;
+  overflow-x: hidden;
   position: relative;
   
   /* Better font rendering */
@@ -185,74 +161,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   
-  /* CRITICAL: Mobile full-screen behavior */
+  /* Simple mobile viewport */
   @media (max-width: 1024px) {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
     height: -webkit-fill-available;
-    
     min-height: 100vh;
     min-height: calc(var(--vh, 1vh) * 100);
     min-height: -webkit-fill-available;
-    
-    /* Remove the position fixed - this was causing issues */
-    position: relative;
-    
-    /* Mobile optimizations */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: none;
-    -webkit-overscroll-behavior-y: none;
   }
 }
 
-/* ===== ROOT CONTAINER - SIMPLE APPROACH ===== */
 #root {
-  overflow-x: hidden;
   width: 100%;
   min-height: 100vh;
   
   @media (max-width: 1024px) {
-    min-height: 100vh;
     min-height: calc(var(--vh, 1vh) * 100);
     min-height: -webkit-fill-available;
-    
-    /* Simple full height without complex positioning */
-    height: auto;
-    width: 100%;
   }
 }
 
-/* ===== REMOVE ALL THE COMPLEX @supports RULES AND REPLACE WITH THIS ===== */
+/* Simple mobile optimizations */
 @media (max-width: 1024px) {
-  /* Prevent zoom on input focus */
-  input[type="color"],
-  input[type="date"],
-  input[type="datetime"],
-  input[type="datetime-local"],
-  input[type="email"],
-  input[type="month"],
-  input[type="number"],
-  input[type="password"],
-  input[type="search"],
-  input[type="tel"],
-  input[type="text"],
-  input[type="time"],
-  input[type="url"],
-  input[type="week"],
-  select:focus,
-  textarea {
-    font-size: 16px !important; /* Prevent zoom on iOS */
-  }
-  
-  /* Allow text selection for inputs only */
-  input, textarea, [contenteditable] {
-    -webkit-user-select: auto;
-    user-select: auto;
-  }
-  
-  /* Prevent horizontal overflow */
-  * {
-    max-width: 100%;
+  input[type="text"], input[type="email"], input[type="password"], textarea {
+    font-size: 16px !important;
   }
 }
 
@@ -293,7 +226,6 @@ input::-webkit-calendar-picker-indicator {
   opacity: 1;
 }
 
-/* Parent selector for SVG buttons */
 button:has(svg) {
   line-height: 0;
 }
@@ -326,74 +258,67 @@ h6 {
 img {
   max-width: 100%;
   height: auto;
-  
-  /* For dark mode image adjustments */
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
 
-/* ===== SCROLLBAR STYLING - HIDE ON MOBILE ===== */
-::-webkit-scrollbar {
-  width: 8px;
-  
-  /* Hide scrollbar on mobile/tablet */
-  @media (max-width: 1024px) {
+/* Hide scrollbars on mobile */
+@media (max-width: 1024px) {
+  ::-webkit-scrollbar {
     width: 0px;
     background: transparent;
   }
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-grey-100);
-  border-radius: 4px;
   
-  @media (max-width: 1024px) {
-    background: transparent;
+  * {
+    scrollbar-width: none;
   }
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-grey-300);
-  border-radius: 4px;
-  
-  &:hover {
-    background: var(--color-grey-400);
+/* Desktop scrollbars */
+@media (min-width: 1025px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-grey-100);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-grey-300);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--color-grey-400);
+    }
   }
   
-  @media (max-width: 1024px) {
-    background: transparent;
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-grey-300) var(--color-grey-100);
   }
 }
 
-/* Firefox scrollbar - Hide on mobile */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-grey-300) var(--color-grey-100);
-  
-  @media (max-width: 1024px) {
-    scrollbar-width: none; /* Hide scrollbar on mobile */
-  }
-}
-
-/* ===== RESPONSIVE TYPOGRAPHY ===== */
+/* Responsive typography */
 @media (max-width: 768px) {
   html {
-    font-size: 56.25%; /* 9px */
+    font-size: 56.25%;
   }
 }
 
 @media (max-width: 480px) {
   html {
-    font-size: 50%; /* 8px */
+    font-size: 50%;
   }
 }
 
 @media (min-width: 1200px) {
   html {
-    font-size: 68.75%; /* 11px */
+    font-size: 68.75%;
   }
 }
 
-/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -405,21 +330,6 @@ img {
   }
 }
 
-@media (prefers-contrast: high) {
-  :root {
-    --color-grey-100: #e0e0e0;
-    --color-grey-200: #c0c0c0;
-    --color-grey-800: #1a1a1a;
-    --color-grey-900: #000000;
-  }
-  
-  &.dark-mode {
-    --color-grey-0: #000000;
-    --color-grey-900: #ffffff;
-  }
-}
-
-/* ===== UTILITY CLASSES ===== */
 .sr-only {
   position: absolute;
   width: 1px;
