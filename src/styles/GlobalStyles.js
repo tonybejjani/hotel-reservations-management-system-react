@@ -1,5 +1,7 @@
 /** @format */
 
+import { createGlobalStyle } from 'styled-components';
+
 const GlobalStyles = createGlobalStyle`
 :root {
   /* Mobile viewport handling */
@@ -452,3 +454,5 @@ img {
   }
 }
 `;
+
+export default GlobalStyles;
