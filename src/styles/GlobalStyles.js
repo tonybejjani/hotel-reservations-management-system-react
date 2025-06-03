@@ -187,6 +187,42 @@ body {
   input[type="text"], input[type="email"], input[type="password"], textarea {
     font-size: 16px !important;
   }
+
+    /* ===== FIX WOBBLING/UNSTABLE SCROLLING ===== */
+  html, body {
+    overflow-x: hidden !important;
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+  
+  #root {
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
+  /* Prevent horizontal bounce/wobble */
+  * {
+    overscroll-behavior-x: none;
+    -webkit-overscroll-behavior-x: none;
+  }
+  
+  /* Stabilize touch scrolling */
+  body {
+    touch-action: pan-y !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection only for inputs */
+  input, textarea, [contenteditable] {
+    -webkit-user-select: auto;
+    user-select: auto;
+    touch-action: manipulation;
+  }
 }
 
 input,
@@ -384,6 +420,8 @@ img {
     }
   }
 }
+
+
 `;
 
 export default GlobalStyles;
