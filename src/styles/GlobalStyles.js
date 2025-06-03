@@ -160,15 +160,8 @@ html {
   /* CRITICAL: Minimal browser interface on mobile */
   @media (max-width: 1024px) {
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height - latest standard */
+    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
     height: -webkit-fill-available; /* iOS Safari */
-    
-    /* Force minimal UI */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
   }
 }
 
@@ -192,119 +185,45 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   
-  /* CRITICAL: Minimal browser interface on mobile */
+  /* CRITICAL: Mobile full-screen behavior */
   @media (max-width: 1024px) {
-    min-height: 100vh;
-    min-height: 100dvh; /* Dynamic viewport height */
-    min-height: -webkit-fill-available; /* iOS Safari */
-    
     height: 100vh;
-    height: 100dvh;
+    height: calc(var(--vh, 1vh) * 100);
     height: -webkit-fill-available;
     
-    /* Force scroll container behavior */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+    min-height: -webkit-fill-available;
     
-    /* Optimize for mobile browsers */
+    /* Remove the position fixed - this was causing issues */
+    position: relative;
+    
+    /* Mobile optimizations */
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none; /* Prevent pull-to-refresh */
-    -webkit-overscroll-behavior: none;
-    
-    /* Hide browser UI aggressively */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
+    overscroll-behavior-y: none;
+    -webkit-overscroll-behavior-y: none;
   }
 }
 
-/* ===== ROOT CONTAINER - MINIMAL BROWSER UI ===== */
+/* ===== ROOT CONTAINER - SIMPLE APPROACH ===== */
 #root {
   overflow-x: hidden;
   width: 100%;
   min-height: 100vh;
   
-  /* CRITICAL: Force minimal browser interface */
   @media (max-width: 1024px) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    
-    height: 100vh;
-    height: 100dvh; /* Dynamic viewport height */
-    height: -webkit-fill-available; /* iOS Safari */
-    
     min-height: 100vh;
-    min-height: 100dvh;
+    min-height: calc(var(--vh, 1vh) * 100);
     min-height: -webkit-fill-available;
     
-    /* Enable scrolling within container */
-    overflow-y: auto;
-    overflow-x: hidden;
-    
-    /* iOS Safari specific */
-    -webkit-overflow-scrolling: touch;
+    /* Simple full height without complex positioning */
+    height: auto;
+    width: 100%;
   }
 }
 
-/* ===== AGGRESSIVE MOBILE BROWSER UI HIDING ===== */
+/* ===== REMOVE ALL THE COMPLEX @supports RULES AND REPLACE WITH THIS ===== */
 @media (max-width: 1024px) {
-  /* Safari iOS specific targeting */
-  @supports (-webkit-touch-callout: none) {
-    html {
-      height: 100vh !important;
-      height: -webkit-fill-available !important;
-      position: fixed !important;
-    }
-    
-    body {
-      height: 100vh !important;
-      height: -webkit-fill-available !important;
-      position: fixed !important;
-      width: 100vw !important;
-    }
-    
-    #root {
-      height: 100vh !important;
-      height: -webkit-fill-available !important;
-      position: absolute !important;
-      inset: 0 !important;
-    }
-  }
-  
-  /* Chrome/Android/Firefox specific */
-  @supports not (-webkit-touch-callout: none) {
-    html {
-      height: 100vh !important;
-      height: 100dvh !important;
-      position: fixed !important;
-    }
-    
-    body {
-      height: 100vh !important;
-      height: 100dvh !important;
-      position: fixed !important;
-      width: 100vw !important;
-    }
-    
-    #root {
-      height: 100vh !important;
-      height: 100dvh !important;
-      position: absolute !important;
-      inset: 0 !important;
-    }
-  }
-  
-  /* Prevent any child elements from causing horizontal overflow */
-  * {
-    max-width: 100% !important;
-  }
-  
   /* Prevent zoom on input focus */
   input[type="color"],
   input[type="date"],
@@ -329,6 +248,11 @@ body {
   input, textarea, [contenteditable] {
     -webkit-user-select: auto;
     user-select: auto;
+  }
+  
+  /* Prevent horizontal overflow */
+  * {
+    max-width: 100%;
   }
 }
 
