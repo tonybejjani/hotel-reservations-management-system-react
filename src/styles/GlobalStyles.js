@@ -157,13 +157,18 @@ html {
   overflow-x: hidden;
   width: 100%;
   
-  /* CRITICAL: Full-screen mobile app behavior */
+  /* CRITICAL: Minimal browser interface on mobile */
   @media (max-width: 1024px) {
-    height: 100%;
     height: 100vh;
-    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
+    height: 100dvh; /* Dynamic viewport height - latest standard */
     height: -webkit-fill-available; /* iOS Safari */
-    height: fill-available; /* Future standard */
+    
+    /* Force minimal UI */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 
@@ -187,78 +192,143 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   
-  /* CRITICAL: Full-screen mobile behavior */
+  /* CRITICAL: Minimal browser interface on mobile */
   @media (max-width: 1024px) {
-    min-height: 100%;
     min-height: 100vh;
-    min-height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
+    min-height: 100dvh; /* Dynamic viewport height */
     min-height: -webkit-fill-available; /* iOS Safari */
-    min-height: fill-available; /* Future standard */
     
-    /* Force full height on mobile */
-    height: 100%;
     height: 100vh;
-    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
+    height: 100dvh;
     height: -webkit-fill-available;
+    
+    /* Force scroll container behavior */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     
     /* Optimize for mobile browsers */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: none; /* Prevent pull-to-refresh */
+    -webkit-overscroll-behavior: none;
     
-    /* Safari-specific fixes */
-    -webkit-appearance: none;
+    /* Hide browser UI aggressively */
     -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
 }
 
-/* ===== ROOT CONTAINER - FULL SCREEN ===== */
+/* ===== ROOT CONTAINER - MINIMAL BROWSER UI ===== */
 #root {
   overflow-x: hidden;
   width: 100%;
   min-height: 100vh;
   
-  /* CRITICAL: Full-screen mobile app container */
+  /* CRITICAL: Force minimal browser interface */
   @media (max-width: 1024px) {
-    min-height: 100%;
-    min-height: 100vh;
-    min-height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
-    min-height: -webkit-fill-available; /* iOS Safari */
-    min-height: fill-available; /* Future standard */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     
-    /* Ensure it takes full available height */
-    height: 100%;
-    height: auto;
-    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height */
+    height: -webkit-fill-available; /* iOS Safari */
+    
+    min-height: 100vh;
+    min-height: 100dvh;
     min-height: -webkit-fill-available;
+    
+    /* Enable scrolling within container */
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+    /* iOS Safari specific */
+    -webkit-overflow-scrolling: touch;
   }
 }
 
-/* ===== SAFARI-SPECIFIC URL BAR HIDING ===== */
+/* ===== AGGRESSIVE MOBILE BROWSER UI HIDING ===== */
 @media (max-width: 1024px) {
-  /* Force minimal UI on Safari */
+  /* Safari iOS specific targeting */
   @supports (-webkit-touch-callout: none) {
-    html, body {
+    html {
+      height: 100vh !important;
       height: -webkit-fill-available !important;
-      min-height: -webkit-fill-available !important;
+      position: fixed !important;
+    }
+    
+    body {
+      height: 100vh !important;
+      height: -webkit-fill-available !important;
+      position: fixed !important;
+      width: 100vw !important;
     }
     
     #root {
+      height: 100vh !important;
       height: -webkit-fill-available !important;
-      min-height: -webkit-fill-available !important;
+      position: absolute !important;
+      inset: 0 !important;
     }
   }
   
-  /* Chrome/Android specific */
+  /* Chrome/Android/Firefox specific */
   @supports not (-webkit-touch-callout: none) {
-    html, body {
-      height: calc(var(--vh, 1vh) * 100) !important;
-      min-height: calc(var(--vh, 1vh) * 100) !important;
+    html {
+      height: 100vh !important;
+      height: 100dvh !important;
+      position: fixed !important;
+    }
+    
+    body {
+      height: 100vh !important;
+      height: 100dvh !important;
+      position: fixed !important;
+      width: 100vw !important;
     }
     
     #root {
-      height: calc(var(--vh, 1vh) * 100) !important;
-      min-height: calc(var(--vh, 1vh) * 100) !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      position: absolute !important;
+      inset: 0 !important;
     }
+  }
+  
+  /* Prevent any child elements from causing horizontal overflow */
+  * {
+    max-width: 100% !important;
+  }
+  
+  /* Prevent zoom on input focus */
+  input[type="color"],
+  input[type="date"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="email"],
+  input[type="month"],
+  input[type="number"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="text"],
+  input[type="time"],
+  input[type="url"],
+  input[type="week"],
+  select:focus,
+  textarea {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+  }
+  
+  /* Allow text selection for inputs only */
+  input, textarea, [contenteditable] {
+    -webkit-user-select: auto;
+    user-select: auto;
   }
 }
 
@@ -337,102 +407,11 @@ img {
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
 
-/* ===== ROOT CONTAINER - FULL SCREEN ===== */
-#root {
-  overflow-x: hidden;
-  width: 100%;
-  min-height: 100vh;
-  
-  /* CRITICAL: Full-screen mobile app container */
-  @media (max-width: 1024px) {
-    min-height: 100%;
-    min-height: 100vh;
-    min-height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
-    min-height: -webkit-fill-available; /* iOS Safari */
-    min-height: fill-available; /* Future standard */
-    
-    /* Ensure it takes full available height */
-    height: 100%;
-    height: auto;
-    height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height */
-    min-height: -webkit-fill-available;
-  }
-}
-
-/* ===== MOBILE VIEWPORT STABILITY & FULL-SCREEN FIXES ===== */
-@media (max-width: 1024px) {
-  html, body {
-    overflow-x: hidden !important;
-    width: 100vw;
-    max-width: 100%;
-    
-    /* Full-screen mobile web app */
-    height: 100%;
-    height: 100vh;
-    height: -webkit-fill-available;
-  }
-  
-  /* Prevent any child elements from causing horizontal overflow */
-  * {
-    max-width: 100%;
-  }
-  
-  /* iOS Safari specific fixes */
-  html {
-    height: -webkit-fill-available;
-  }
-  
-  body {
-    min-height: -webkit-fill-available;
-    -webkit-overflow-scrolling: touch;
-    
-    /* Prevent bounce scrolling that can interfere with URL bar hiding */
-    overscroll-behavior-y: none;
-    -webkit-overscroll-behavior-y: none;
-  }
-}
-
-/* ===== PROGRESSIVE WEB APP OPTIMIZATIONS ===== */
-@media (max-width: 1024px) {
-  /* Prevent zoom on input focus */
-  input[type="color"],
-  input[type="date"],
-  input[type="datetime"],
-  input[type="datetime-local"],
-  input[type="email"],
-  input[type="month"],
-  input[type="number"],
-  input[type="password"],
-  input[type="search"],
-  input[type="tel"],
-  input[type="text"],
-  input[type="time"],
-  input[type="url"],
-  input[type="week"],
-  select:focus,
-  textarea {
-    font-size: 16px !important; /* Prevent zoom on iOS */
-  }
-  
-  /* Prevent callouts on touch */
-  * {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  
-  /* Allow text selection for inputs and content */
-  input, textarea, [contenteditable] {
-    -webkit-user-select: auto;
-    user-select: auto;
-  }
-}
-
-/* ===== SCROLLBAR STYLING - FIXED FOR MOBILE ===== */
+/* ===== SCROLLBAR STYLING - HIDE ON MOBILE ===== */
 ::-webkit-scrollbar {
   width: 8px;
   
-  /* Hide scrollbar on mobile/tablet to prevent wobbling */
+  /* Hide scrollbar on mobile/tablet */
   @media (max-width: 1024px) {
     width: 0px;
     background: transparent;
