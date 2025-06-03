@@ -188,40 +188,35 @@ body {
     font-size: 16px !important;
   }
 
-    /* ===== FIX WOBBLING/UNSTABLE SCROLLING ===== */
-  html, body {
-    overflow-x: hidden !important;
-    overscroll-behavior-x: none;
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
+  /* ===== FIX WOBBLING - SIMPLER APPROACH ===== */
+  html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  body {
+    overflow-x: hidden;
+    width: 100%;
     position: relative;
+    -webkit-overflow-scrolling: touch;
   }
   
   #root {
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
   
-  /* Prevent horizontal bounce/wobble */
+  /* Prevent horizontal scroll on all elements */
   * {
-    overscroll-behavior-x: none;
-    -webkit-overscroll-behavior-x: none;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   
-  /* Stabilize touch scrolling */
-  body {
-    touch-action: pan-y !important;
-    -webkit-touch-callout: none;
+  /* Only prevent text selection during scrolling, not always */
+  body.scrolling {
     -webkit-user-select: none;
     user-select: none;
-  }
-  
-  /* Allow text selection only for inputs */
-  input, textarea, [contenteditable] {
-    -webkit-user-select: auto;
-    user-select: auto;
-    touch-action: manipulation;
   }
 }
 
@@ -384,8 +379,8 @@ img {
 @media all and (display-mode: standalone) {
   html, body {
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height */
-    overflow: hidden;
+    height: 100dvh;
+    /* Remove overflow: hidden - this was hiding navigation */
   }
   
   #root {
@@ -393,14 +388,16 @@ img {
     height: 100dvh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    
+    /* Ensure navigation is visible */
+    display: flex;
+    flex-direction: column;
   }
   
-  /* Remove any bottom margins/padding in PWA mode */
+  /* Keep safe margins but don't hide navigation */
   body {
     margin: 0 !important;
-    padding: 0 !important;
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
+    /* Remove padding: 0 - this was hiding bottom nav */
   }
 }
 
@@ -409,14 +406,16 @@ img {
   body {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+    /* Keep bottom safe area for navigation */
     padding-bottom: env(safe-area-inset-bottom);
     padding-top: env(safe-area-inset-top);
   }
   
-  /* In PWA mode, handle safe areas differently */
+  /* In PWA mode, still respect bottom safe area */
   @media all and (display-mode: standalone) {
     body {
-      padding-bottom: 0 !important; /* Remove bottom safe area padding */
+      /* Don't remove bottom padding - navigation needs it */
+      padding-bottom: env(safe-area-inset-bottom) !important;
     }
   }
 }
