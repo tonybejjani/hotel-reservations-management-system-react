@@ -52,11 +52,21 @@ const Main = styled.main`
   /* Mobile: Bottom padding for navigation */
   @media (max-width: 639px) {
     padding: 2rem 1.6rem 9rem 1.6rem;
+
+    /* PWA Fix: Remove bottom padding in standalone mode */
+    @media all and (display-mode: standalone) {
+      padding-bottom: 2rem;
+    }
   }
 
   /* Phablet: Enhanced bottom padding for larger nav */
   @media (min-width: 640px) and (max-width: 767px) {
     padding: 2.4rem 2rem 10rem 2rem;
+
+    /* PWA Fix: Remove bottom padding in standalone mode */
+    @media all and (display-mode: standalone) {
+      padding-bottom: 2.4rem;
+    }
   }
 `;
 
