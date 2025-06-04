@@ -4,9 +4,6 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 :root {
-  /* Mobile viewport handling */
-  --vh: 1vh;
-
   &, &.light-mode {
     /* ===== NEUTRAL GREYS (LIGHT THEME) ===== */
     --color-grey-0: #ffffff;
@@ -128,6 +125,7 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-lg: 9px;
 }
 
+/* ===== RESET & BASE ===== */
 *,
 *::before,
 *::after {
@@ -137,27 +135,32 @@ const GlobalStyles = createGlobalStyle`
   transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
 }
 
+/* ===== HTML - ADDRESS BAR HIDING FOUNDATION ===== */
 html {
   font-size: 62.5%;
   width: 100%;
   overflow-x: hidden;
   
-  /* Safari address bar handling */
+  /* Desktop */
+  height: 100%;
+  
+  /* Mobile - Address bar hiding like lebtivity.com */
   @media (max-width: 1024px) {
-    height: 100%;
-    height: 100dvh; /* Dynamic viewport - key for Safari */
+    height: 100vh;
+    height: 100svh; /* Small viewport - excludes UI elements (KEY!) */
+    height: 100dvh; /* Dynamic viewport - adjusts to address bar */
+    height: -webkit-fill-available; /* Safari fallback */
   }
 }
 
+/* ===== BODY - MAIN ADDRESS BAR HIDING ===== */
 body {
   font-family: "Inter", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   font-weight: 400;
   letter-spacing: 0.2px;
   color: var(--color-grey-700);
   background-color: var(--color-grey-0);
-  
   transition: color 0.3s ease, background-color 0.3s ease;
-  min-height: 100vh;
   line-height: 1.6;
   font-size: 1.6rem;
   width: 100%;
@@ -169,36 +172,46 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   
-  /* Desktop fallback */
+  /* Desktop */
   min-height: 100vh;
   
-  /* Modern browsers - dynamic viewport */
-  min-height: 100dvh; /* Dynamic viewport height - automatically adjusts for address bar */
-  
-  /* iOS Safari specific */
-  min-height: -webkit-fill-available;
-  
+  /* Mobile - lebtivity.com approach */
   @media (max-width: 1024px) {
-    /* Force full height on mobile */
-    height: 100%;
-    height: 100dvh; /* Safari automatically hides address bar */
-    height: -webkit-fill-available;
+    height: 100vh;
+    height: 100svh !important; /* Small viewport - THIS IS THE KEY FOR ADDRESS BAR HIDING */
+    height: 100dvh; /* Dynamic viewport fallback */
+    height: -webkit-fill-available; /* Safari fallback */
+    min-height: 100vh;
+    min-height: 100svh !important; /* Minimum small viewport */
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    
+    /* Enhanced mobile behavior */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+    position: relative;
   }
 }
 
+/* ===== ROOT CONTAINER - ADDRESS BAR COMPENSATION ===== */
 #root {
   width: 100%;
-  min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport - handles address bar automatically */
-  min-height: -webkit-fill-available;
   
+  /* Desktop */
+  min-height: 100vh;
+  
+  /* Mobile - Full viewport utilization */
   @media (max-width: 1024px) {
-    height: 100%;
-    height: 100dvh; /* Safari will hide address bar when scrolling */
-    height: -webkit-fill-available;
+    height: 100vh;
+    height: 100svh !important; /* Small viewport - excludes address bar */
+    height: 100dvh; /* Dynamic viewport fallback */
+    height: -webkit-fill-available; /* Safari fallback */
+    min-height: 100vh;
+    min-height: 100svh !important;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -207,36 +220,51 @@ body {
   }
 }
 
-/* ===== MOBILE SAFARI OPTIMIZATIONS ===== */
+/* ===== ENHANCED MOBILE OPTIMIZATIONS ===== */
 @media (max-width: 1024px) {
-  /* Prevent zoom on inputs */
+  /* Prevent zoom on inputs - crucial for mobile UX */
   input[type="text"], 
   input[type="email"], 
   input[type="password"], 
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
   textarea {
     font-size: 16px !important;
+    -webkit-appearance: none;
+    border-radius: 0;
   }
 
-  /* Prevent horizontal scroll */
+  /* Strict horizontal scroll prevention */
   * {
     max-width: 100vw;
-    overflow-x: hidden;
+    max-width: 100svw; /* Small viewport width */
+    overflow-x: hidden !important;
   }
   
-  /* Only prevent text selection during scrolling */
-  body.scrolling {
+  /* Enhanced touch behavior */
+  body {
     -webkit-user-select: none;
     user-select: none;
+    touch-action: pan-y;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
   }
   
-  /* Allow text selection for inputs */
-  input, textarea, [contenteditable] {
-    -webkit-user-select: auto;
-    user-select: auto;
+  /* Allow text selection for interactive elements */
+  input, textarea, [contenteditable="true"] {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
     touch-action: manipulation;
+  }
+  
+  /* Smooth scrolling optimization */
+  body, #root {
+    scroll-behavior: smooth;
   }
 }
 
+/* ===== FORM ELEMENTS ===== */
 input,
 button,
 textarea,
@@ -309,15 +337,18 @@ img {
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
 
+/* ===== SCROLLBARS ===== */
 /* Hide scrollbars on mobile */
 @media (max-width: 1024px) {
   ::-webkit-scrollbar {
     width: 0px;
     background: transparent;
+    display: none;
   }
   
   * {
     scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 }
 
@@ -347,7 +378,7 @@ img {
   }
 }
 
-/* Responsive typography */
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
 @media (max-width: 768px) {
   html {
     font-size: 56.25%;
@@ -366,7 +397,7 @@ img {
   }
 }
 
-/* Accessibility */
+/* ===== ACCESSIBILITY ===== */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -390,24 +421,35 @@ img {
   border: 0;
 }
 
-/* ===== PWA STANDALONE MODE ===== */
+/* ===== PWA STANDALONE MODE - MAXIMUM VIEWPORT ===== */
 @media all and (display-mode: standalone) {
-  html, body, #root {
+  html {
     height: 100vh !important;
+    height: 100svh !important; /* Small viewport for PWA */
     height: 100dvh !important;
-    min-height: unset !important;
   }
   
   body {
+    height: 100vh !important;
+    height: 100svh !important; /* Full screen in PWA mode */
+    height: 100dvh !important;
+    min-height: unset !important;
     margin: 0 !important;
-    overflow: visible !important;
+    position: fixed !important;
+    width: 100% !important;
+    overflow: hidden !important;
   }
   
   #root {
-    overflow-y: auto;
+    height: 100vh !important;
+    height: 100svh !important; /* Critical for PWA fullscreen */
+    height: 100dvh !important;
+    min-height: unset !important;
+    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
     display: flex !important;
     flex-direction: column !important;
+    position: relative !important;
   }
 }
 
@@ -420,7 +462,7 @@ img {
     padding-bottom: env(safe-area-inset-bottom);
   }
   
-  /* In PWA mode, ensure bottom nav is visible */
+  /* PWA mode safe areas */
   @media all and (display-mode: standalone) {
     body {
       padding-bottom: calc(env(safe-area-inset-bottom) + 60px) !important;
@@ -428,11 +470,34 @@ img {
   }
 }
 
-/* ===== SAFARI KEYBOARD HANDLING ===== */
-@supports (height: 100dvh) {
+/* ===== MODERN VIEWPORT SUPPORT ===== */
+/* Small Viewport Height - THE KEY FOR ADDRESS BAR HIDING */
+@supports (height: 100svh) {
   @media (max-width: 1024px) {
     body {
-      /* Use dynamic viewport that excludes address bar */
+      height: 100svh !important; /* Excludes address bar automatically */
+      min-height: 100svh !important;
+    }
+    
+    #root {
+      height: 100svh !important;
+      min-height: 100svh !important;
+    }
+  }
+  
+  /* PWA mode with small viewport */
+  @media all and (display-mode: standalone) {
+    html, body, #root {
+      height: 100svh !important;
+      min-height: 100svh !important;
+    }
+  }
+}
+
+/* Dynamic Viewport Height - Fallback */
+@supports (height: 100dvh) and (not (height: 100svh)) {
+  @media (max-width: 1024px) {
+    body {
       height: 100dvh;
       min-height: 100dvh;
     }
@@ -444,12 +509,17 @@ img {
   }
 }
 
-/* Fallback for older Safari */
+/* Legacy Safari fallback */
 @supports not (height: 100dvh) {
   @media (max-width: 1024px) {
     body {
-      height: calc(100vh - env(keyboard-inset-height, 0px));
-      min-height: calc(100vh - env(keyboard-inset-height, 0px));
+      height: -webkit-fill-available;
+      min-height: -webkit-fill-available;
+    }
+    
+    #root {
+      height: -webkit-fill-available;
+      min-height: -webkit-fill-available;
     }
   }
 }
