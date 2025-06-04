@@ -14,13 +14,13 @@ const FloatingContainer = styled.div`
 
   /* Mobile Portrait: Above FAB, below safe content area */
   @media (max-width: 639px) {
-    bottom: 15rem; /* Increased spacing above FAB */
+    bottom: 3rem; /* Increased spacing above FAB */
     display: block;
   }
 
   /* Phablet: Show with adjusted positioning */
   @media (min-width: 640px) and (max-width: 767px) {
-    bottom: 16rem; /* Account for larger FAB */
+    bottom: 3rem; /* Account for larger FAB */
     display: block;
   }
 
@@ -31,21 +31,21 @@ const FloatingContainer = styled.div`
 
   /* Very small screens: Closer to content */
   @media (max-width: 380px) {
-    bottom: 14rem;
+    bottom: 3rem;
   }
 
   /* Safe area support for devices with notches */
   @supports (bottom: env(safe-area-inset-bottom)) {
     @media (max-width: 639px) {
-      bottom: calc(15rem + env(safe-area-inset-bottom));
+      bottom: calc(3rem + env(safe-area-inset-bottom));
     }
 
     @media (min-width: 640px) and (max-width: 767px) {
-      bottom: calc(16rem + env(safe-area-inset-bottom));
+      bottom: calc(3rem + env(safe-area-inset-bottom));
     }
 
     @media (max-width: 380px) {
-      bottom: calc(14rem + env(safe-area-inset-bottom));
+      bottom: calc(3rem + env(safe-area-inset-bottom));
     }
   }
 `;
