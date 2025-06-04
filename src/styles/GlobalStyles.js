@@ -144,7 +144,7 @@ html {
   /* Desktop */
   height: 100%;
   
-  /* Mobile - Address bar hiding like lebtivity.com */
+  /* Mobile - Address bar hiding */
   @media (max-width: 1024px) {
     height: 100vh;
     height: 100svh; /* Small viewport - excludes UI elements (KEY!) */
