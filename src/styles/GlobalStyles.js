@@ -132,7 +132,6 @@ const GlobalStyles = createGlobalStyle`
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
 }
 
 /* ===== HTML - ADDRESS BAR HIDING FOUNDATION ===== */
@@ -140,15 +139,11 @@ html {
   font-size: 62.5%;
   width: 100%;
   overflow-x: hidden;
-  
-  /* Desktop */
   height: 100%;
   
-  /* Mobile - Address bar hiding */
   @media (max-width: 1024px) {
-    height: 100vh;
-    height: 100svh; /* Small viewport - excludes UI elements (KEY!) */
-    height: 100dvh; /* Dynamic viewport - adjusts to address bar */
+    height: 100svh; /* Small viewport - excludes address bar */
+    height: 100dvh; /* Dynamic viewport fallback */
     height: -webkit-fill-available; /* Safari fallback */
   }
 }
@@ -172,46 +167,36 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   
-  /* Desktop */
   min-height: 100vh;
   
-  /* Mobile - lebtivity.com approach */
   @media (max-width: 1024px) {
-    height: 100vh;
-    height: 100svh !important; /* Small viewport - THIS IS THE KEY FOR ADDRESS BAR HIDING */
+    height: 100svh; /* Small viewport - excludes address bar */
     height: 100dvh; /* Dynamic viewport fallback */
     height: -webkit-fill-available; /* Safari fallback */
-    min-height: 100vh;
-    min-height: 100svh !important; /* Minimum small viewport */
-    min-height: 100dvh;
-    min-height: -webkit-fill-available;
-    
-    /* Enhanced mobile behavior */
+    min-height: 100svh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    position: relative;
+    
+    /* Optimized touch behavior */
+    touch-action: pan-y;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
   }
 }
 
 /* ===== ROOT CONTAINER - ADDRESS BAR COMPENSATION ===== */
 #root {
   width: 100%;
-  
-  /* Desktop */
   min-height: 100vh;
   
-  /* Mobile - Full viewport utilization */
   @media (max-width: 1024px) {
-    height: 100vh;
-    height: 100svh !important; /* Small viewport - excludes address bar */
+    height: 100svh; /* Small viewport - excludes address bar */
     height: 100dvh; /* Dynamic viewport fallback */
     height: -webkit-fill-available; /* Safari fallback */
-    min-height: 100vh;
-    min-height: 100svh !important;
-    min-height: 100dvh;
-    min-height: -webkit-fill-available;
-    
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -235,23 +220,19 @@ body {
     border-radius: 0;
   }
 
-  /* Strict horizontal scroll prevention */
+  /* Prevent horizontal scroll on all elements */
   * {
     max-width: 100vw;
-    max-width: 100svw; /* Small viewport width */
     overflow-x: hidden !important;
   }
   
-  /* Enhanced touch behavior */
-  body {
+  /* Enhanced touch behavior for UI elements */
+  button, .btn, [role="button"] {
     -webkit-user-select: none;
     user-select: none;
-    touch-action: pan-y;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
   }
   
-  /* Allow text selection for interactive elements */
+  /* Allow text selection for content elements */
   input, textarea, [contenteditable="true"] {
     -webkit-user-select: auto !important;
     user-select: auto !important;
@@ -271,6 +252,7 @@ textarea,
 select {
   font: inherit;
   color: inherit;
+  transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
 }
 
 button {
@@ -421,19 +403,9 @@ img {
   border: 0;
 }
 
-/* ===== PWA STANDALONE MODE - MAXIMUM VIEWPORT ===== */
+/* ===== PWA STANDALONE MODE ===== */
 @media all and (display-mode: standalone) {
-  html {
-    height: 100vh !important;
-    height: 100svh !important; /* Small viewport for PWA */
-    height: 100dvh !important;
-  }
-  
   body {
-    height: 100vh !important;
-    height: 100svh !important; /* Full screen in PWA mode */
-    height: 100dvh !important;
-    min-height: unset !important;
     margin: 0 !important;
     position: fixed !important;
     width: 100% !important;
@@ -441,10 +413,6 @@ img {
   }
   
   #root {
-    height: 100vh !important;
-    height: 100svh !important; /* Critical for PWA fullscreen */
-    height: 100dvh !important;
-    min-height: unset !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
     display: flex !important;
@@ -462,64 +430,9 @@ img {
     padding-bottom: env(safe-area-inset-bottom);
   }
   
-  /* PWA mode safe areas */
   @media all and (display-mode: standalone) {
     body {
       padding-bottom: calc(env(safe-area-inset-bottom) + 60px) !important;
-    }
-  }
-}
-
-/* ===== MODERN VIEWPORT SUPPORT ===== */
-/* Small Viewport Height - THE KEY FOR ADDRESS BAR HIDING */
-@supports (height: 100svh) {
-  @media (max-width: 1024px) {
-    body {
-      height: 100svh !important; /* Excludes address bar automatically */
-      min-height: 100svh !important;
-    }
-    
-    #root {
-      height: 100svh !important;
-      min-height: 100svh !important;
-    }
-  }
-  
-  /* PWA mode with small viewport */
-  @media all and (display-mode: standalone) {
-    html, body, #root {
-      height: 100svh !important;
-      min-height: 100svh !important;
-    }
-  }
-}
-
-/* Dynamic Viewport Height - Fallback */
-@supports (height: 100dvh) and (not (height: 100svh)) {
-  @media (max-width: 1024px) {
-    body {
-      height: 100dvh;
-      min-height: 100dvh;
-    }
-    
-    #root {
-      height: 100dvh;
-      min-height: 100dvh;
-    }
-  }
-}
-
-/* Legacy Safari fallback */
-@supports not (height: 100dvh) {
-  @media (max-width: 1024px) {
-    body {
-      height: -webkit-fill-available;
-      min-height: -webkit-fill-available;
-    }
-    
-    #root {
-      height: -webkit-fill-available;
-      min-height: -webkit-fill-available;
     }
   }
 }
