@@ -12,15 +12,15 @@ const FloatingContainer = styled.div`
   transform: translateX(-50%);
   z-index: 1000;
 
-  /* Mobile Portrait: Above FAB, below safe content area */
+  /* Mobile Portrait: Above mobile nav */
   @media (max-width: 639px) {
-    bottom: 3rem; /* Increased spacing above FAB */
+    bottom: 8rem; /* Above 5.6rem mobile nav + margin */
     display: block;
   }
 
-  /* Phablet: Show with adjusted positioning */
+  /* Phablet: Above taller mobile nav */
   @media (min-width: 640px) and (max-width: 767px) {
-    bottom: 3rem; /* Account for larger FAB */
+    bottom: 8.5rem; /* Above 6rem mobile nav + margin */
     display: block;
   }
 
@@ -29,23 +29,36 @@ const FloatingContainer = styled.div`
     display: none;
   }
 
-  /* Very small screens: Closer to content */
-  @media (max-width: 380px) {
-    bottom: 3rem;
+  /* PWA Standalone: Much closer to bottom */
+  @media all and (display-mode: standalone) {
+    @media (max-width: 639px) {
+      bottom: 2.5rem; /* No mobile nav in PWA */
+    }
+
+    @media (min-width: 640px) and (max-width: 767px) {
+      bottom: 3rem; /* Slightly more space on phablets */
+    }
   }
 
   /* Safe area support for devices with notches */
   @supports (bottom: env(safe-area-inset-bottom)) {
     @media (max-width: 639px) {
-      bottom: calc(3rem + env(safe-area-inset-bottom));
+      bottom: calc(8rem + env(safe-area-inset-bottom));
     }
 
     @media (min-width: 640px) and (max-width: 767px) {
-      bottom: calc(3rem + env(safe-area-inset-bottom));
+      bottom: calc(8.5rem + env(safe-area-inset-bottom));
     }
 
-    @media (max-width: 380px) {
-      bottom: calc(3rem + env(safe-area-inset-bottom));
+    /* PWA with safe area */
+    @media all and (display-mode: standalone) {
+      @media (max-width: 639px) {
+        bottom: calc(2.5rem + env(safe-area-inset-bottom));
+      }
+
+      @media (min-width: 640px) and (max-width: 767px) {
+        bottom: calc(3rem + env(safe-area-inset-bottom));
+      }
     }
   }
 `;
