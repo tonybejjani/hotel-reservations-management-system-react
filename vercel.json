@@ -14,7 +14,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400, stale-while-revalidate=604800"
+          "value": "public, max-age=86400"
         }
       ]
     },
@@ -28,15 +28,11 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
-        },
-        {
-          "key": "Service-Worker-Allowed",
-          "value": "/"
         }
       ]
     },
     {
-      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif))",
+      "source": "/static/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
