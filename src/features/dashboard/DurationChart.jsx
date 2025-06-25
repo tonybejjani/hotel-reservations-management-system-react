@@ -37,8 +37,17 @@ const ChartBox = styled.div`
     @media (max-width: 1200px) {
       font-size: 1.6rem;
     }
-    @media (max-width: 380px) {
+
+    @media (max-width: 480px) {
       font-size: 1.3rem;
+    }
+
+    @media (max-width: 380px) {
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 340px) {
+      font-size: 1rem;
     }
   }
 
@@ -63,11 +72,12 @@ const ChartBox = styled.div`
     }
 
     @media (max-width: 380px) {
-      transform: scale(0.65);
+      transform: scale(0.6);
     }
-    @media (max-width: 320px) {
-      transform: scale(0.55);
-    }
+
+    /* @media (max-width: 320px) {
+      transform: scale(0.5);
+    } */
   }
 
   /* .recharts-legend-item-text {
