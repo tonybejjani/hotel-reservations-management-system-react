@@ -17,7 +17,7 @@ const StyledGuests = styled.div`
 `;
 
 const PageHeader = styled.div`
-  margin-bottom: 2.4rem;
+  margin-bottom: 1.6rem;
 
   /* Desktop: Single row with search + action */
   @media (min-width: 1025px) {
@@ -36,7 +36,7 @@ const PageHeader = styled.div`
 
   /* Mobile: Minimal header */
   @media (max-width: 767px) {
-    margin-bottom: 1.6rem;
+    margin-bottom: 0;
   }
 `;
 

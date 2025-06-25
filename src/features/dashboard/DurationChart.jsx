@@ -25,9 +25,54 @@ const ChartBox = styled.div`
     margin-bottom: 1.6rem;
   }
 
-  & .recharts-pie-label-text {
-    font-weight: 600;
+  .recharts-legend-item {
+    @media (max-width: 1500px) {
+      font-size: 1.4rem;
+    }
+
+    @media (max-width: 1400px) {
+      font-size: 1.4rem;
+    }
+
+    @media (max-width: 1200px) {
+      font-size: 1.6rem;
+    }
+    @media (max-width: 380px) {
+      font-size: 1.3rem;
+    }
   }
+
+  .recharts-pie {
+    @media (max-width: 1500px) {
+      transform: scale(0.8); /* Scales entire pie, not just radius */
+      transform-origin: center;
+    }
+
+    @media (max-width: 1400px) {
+      transform: scale(0.8);
+      transform-origin: center;
+    }
+
+    @media (max-width: 1024px) {
+      transform: scale(1);
+      transform-origin: center;
+    }
+
+    @media (max-width: 480px) {
+      transform: scale(0.7);
+    }
+
+    @media (max-width: 380px) {
+      transform: scale(0.65);
+    }
+    @media (max-width: 320px) {
+      transform: scale(0.55);
+    }
+  }
+
+  /* .recharts-legend-item-text {
+    color: #333;
+  } */
 `;
 
 const startDataLight = [

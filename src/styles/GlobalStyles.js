@@ -140,11 +140,10 @@ html {
   width: 100%;
   overflow-x: hidden;
   height: 100%;
-  
+
+  /* disable pull-to-refresh on mobile */
   @media (max-width: 1024px) {
-    height: 100svh; /* Small viewport - excludes address bar */
-    height: 100dvh; /* Dynamic viewport fallback */
-    height: -webkit-fill-available; /* Safari fallback */
+  overscroll-behavior-y: none;
   }
 }
 
@@ -167,43 +166,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   
-  min-height: 100vh;
-  
-  @media (max-width: 1024px) {
-    height: 100svh; /* Small viewport - excludes address bar */
-    height: 100dvh; /* Dynamic viewport fallback */
-    height: -webkit-fill-available; /* Safari fallback */
-    min-height: 100svh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    
-    /* Optimized touch behavior */
-    touch-action: pan-y;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
-  }
 }
 
-/* ===== ROOT CONTAINER - ADDRESS BAR COMPENSATION ===== */
-#root {
-  width: 100%;
-  min-height: 100vh;
-  
-  @media (max-width: 1024px) {
-    height: 100svh; /* Small viewport - excludes address bar */
-    height: 100dvh; /* Dynamic viewport fallback */
-    height: -webkit-fill-available; /* Safari fallback */
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
 
 /* ===== ENHANCED MOBILE OPTIMIZATIONS ===== */
 @media (max-width: 1024px) {
@@ -222,8 +186,8 @@ body {
 
   /* Prevent horizontal scroll on all elements */
   * {
-    max-width: 100vw;
-    overflow-x: hidden !important;
+    /* max-width: 100vw;
+    overflow-x: hidden !important; */
   }
   
   /* Enhanced touch behavior for UI elements */
@@ -379,46 +343,12 @@ img {
   }
 }
 
-/* ===== ACCESSIBILITY ===== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* ===== PWA STANDALONE MODE ===== */
-@media all and (display-mode: standalone) {
-  body {
-    margin: 0 !important;
-    position: fixed !important;
-    width: 100% !important;
-    overflow: hidden !important;
+@media (display-mode: standalone) {
+  * {
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   
-  #root {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-    display: flex !important;
-    flex-direction: column !important;
-    position: relative !important;
-  }
 }
 
 /* ===== iOS SAFE AREA HANDLING ===== */

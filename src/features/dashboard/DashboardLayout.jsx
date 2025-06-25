@@ -8,12 +8,32 @@ import Stats from './Stats';
 import SalesChart from './SalesChart';
 import DurationChart from './DurationChart';
 import TodayActivity from '../check-in-out/TodayActivity';
+
 const StyledDashboardLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto 34rem auto;
   gap: 2.4rem;
+
+  @media (max-width: 1024px) {
+    display: block;
+
+    & > * {
+      margin-bottom: 2.4rem;
+    }
+  }
 `;
+
+// const SecondStat = styled.div`
+//   display: flex;
+
+//   gap: 2.4rem;
+//   width: 100%;
+//   height: 100%;
+
+//   & > * {
+//     flex: 1;
+//   }
+// `;
 
 function DashboardLayout() {
   const { bookings, isLoading: isLoadingBookings } = useRecentBookings();
@@ -30,8 +50,10 @@ function DashboardLayout() {
   return (
     <StyledDashboardLayout>
       <Stats bookings={bookings} staysConfirmed={staysConfirmed} />
+
       <TodayActivity />
       <DurationChart staysConfirmed={staysConfirmed} />
+
       <SalesChart bookings={bookings} numDays={numDays} />
     </StyledDashboardLayout>
   );

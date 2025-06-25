@@ -6,6 +6,26 @@ import { HiOutlineBanknotes, HiOutlineCalendarDays } from 'react-icons/hi2';
 import { formatCurrency } from '../../utils/helpers';
 import { useSearchParams } from 'react-router-dom';
 import useCabins from '../cabins/useCabins';
+import styled from 'styled-components';
+
+const StatLayout = styled.div`
+  display: contents;
+
+  @media all and (display-mode: standalone) {
+  }
+
+  /* Phablet: Slightly taller header */
+  @media (max-width: 1024px) {
+    display: grid;
+    gap: 2.4rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Mobile first - start with 320px base */
+  @media (max-width: 420px) {
+    grid-template-columns: repeat(auto-fit, minmax(36rem, 1fr));
+  }
+`;
 
 function Stats({ staysConfirmed, bookings }) {
   const { cabins, isLoading } = useCabins();
@@ -36,7 +56,7 @@ function Stats({ staysConfirmed, bookings }) {
   const occupancyRate = (occupations / totalNights) * 100;
 
   return (
-    <>
+    <StatLayout>
       <Stat
         icon={<HiOutlineBriefcase />}
         color="blue"
@@ -62,7 +82,7 @@ function Stats({ staysConfirmed, bookings }) {
         title="occupancy rate"
         value={`${Math.round(occupancyRate)} %`}
       ></Stat>
-    </>
+    </StatLayout>
   );
 }
 
